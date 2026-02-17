@@ -44,3 +44,10 @@ import './generated/button-with-icon.spec';
 import './generated/button-loading.spec';
 import './generated/button-group.spec';
 import './generated/button-with-link.spec';
+
+// Toggle tests
+import './generated/toggle.spec';
+import './generated/toggle-checked.spec';
+import './generated/toggle-disabled.spec';
+import './generated/toggle-indeterminate.spec';
+import './generated/toggle-custom-label.spec';
