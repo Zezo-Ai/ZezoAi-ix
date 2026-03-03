@@ -199,6 +199,10 @@ export class Button
       //         'aria-label': a11y['aria-label'] ?? this.ariaLabelButton,
       //         'aria-describedby': a11y['aria-describedby'],
       //       },
+      ariaAttributes: {
+        ...a11y,
+        'aria-label': a11y['aria-label'] ?? this.ariaLabelButton,
+      },
       href: this.href,
       target: this.target,
       rel: this.rel,
