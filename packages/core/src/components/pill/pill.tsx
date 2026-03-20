@@ -76,7 +76,10 @@ export class Pill implements IxComponentInterface {
 
   private readonly containerElementRef = makeRef<HTMLElement>();
 
+  private a11yAttributes: A11yAttributes = {};
+
   componentWillLoad() {
+    this.a11yAttributes = a11yHostAttributes(this.hostElement);
     this.checkIfContentAvailable();
   }
 
@@ -105,7 +108,6 @@ export class Pill implements IxComponentInterface {
   }
 
   render() {
-    const hostA11y = a11yHostAttributes(this.hostElement);
     let customStyle = {};
 
     if (this.variant === 'custom') {
@@ -115,9 +117,12 @@ export class Pill implements IxComponentInterface {
       };
     }
 
-    // Add role="group" when aria-label is set without explicit role (ARIA spec requirement)
+    const hasAccessibleName = Boolean(
+      this.a11yAttributes['aria-label'] ||
+        this.a11yAttributes['aria-labelledby']
+    );
     const containerRole =
-      hostA11y['role'] || (hostA11y['aria-label'] ? 'group' : undefined);
+      this.a11yAttributes['role'] || (hasAccessibleName ? 'group' : undefined);
 
     return (
       <Host
@@ -133,7 +138,7 @@ export class Pill implements IxComponentInterface {
         }}
       >
         <div
-          {...hostA11y}
+          {...this.a11yAttributes}
           role={containerRole}
           ref={this.containerElementRef}
           style={{ ...customStyle }}
