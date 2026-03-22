@@ -17,6 +17,12 @@ import {
   InheritAriaAttributesMixinContract,
 } from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import type { IconButtonVariant } from './icon-button.types';
+  A11yAttributes,
+  a11yHostAttributes,
+  getFallbackLabelFromIconName,
+} from '../utils/a11y';
+import { DefaultMixins } from '../utils/internal/component';
+import type { IconButtonVariant } from './icon-button.types';
 
 @Component({
   tag: 'ix-icon-button',

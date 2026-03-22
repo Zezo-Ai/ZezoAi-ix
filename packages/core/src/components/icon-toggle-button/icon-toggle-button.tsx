@@ -19,7 +19,11 @@ import {
 import { BaseButtonProps } from '../button/base-button';
 import { ButtonVariant } from '../button/button';
 import { BaseIconButton } from '../icon-button/base-icon-button';
-import { a11yBoolean, a11yHostAttributes } from '../utils/a11y';
+import {
+  a11yBoolean,
+  a11yHostAttributes,
+  getFallbackLabelFromIconName,
+} from '../utils/a11y';
 
 @Component({
   tag: 'ix-icon-toggle-button',
@@ -79,6 +83,7 @@ export class IconToggleButton {
    * ARIA label for the icon button
    * Will be set for the native HTML button element
    *
+   * @deprecated Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in 5.0.0
    * @since 3.2.0
    */
   @Prop() ariaLabelIconButton?: string;
@@ -124,7 +129,9 @@ export class IconToggleButton {
         ...this.a11yAttributes,
         'aria-pressed': a11yBoolean(this.pressed),
         'aria-label':
-          this.a11yAttributes['aria-label'] ?? this.ariaLabelIconButton,
+          this.a11yAttributes['aria-label'] ??
+          this.ariaLabelIconButton ??
+          getFallbackLabelFromIconName(this.icon),
       },
       extraClasses: {
         'icon-button': true,

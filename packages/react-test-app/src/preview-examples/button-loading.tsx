@@ -46,7 +46,7 @@ export default () => {
         Button
       </IxButton>
 
-      <IxIconButton
+      <IxButton
         variant="subtle-primary"
         onClick={() => {
           setToggle3(true);
@@ -55,6 +55,18 @@ export default () => {
           }, 2500);
         }}
         loading={toggle3}
+        icon={iconStar}
+      ></IxButton>
+
+      <IxIconButton
+        variant="subtle-primary"
+        onClick={() => {
+          setToggle(true);
+          setTimeout(() => {
+            setToggle(false);
+          }, 2500);
+        }}
+        loading={toggle}
         icon={iconStar}
         aria-label="Toggle loading"
       ></IxIconButton>

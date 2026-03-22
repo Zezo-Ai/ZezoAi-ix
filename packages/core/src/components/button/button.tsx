@@ -13,11 +13,12 @@ import {
   h,
   Host,
   Listen,
+  Mixin,
   Prop,
   Watch,
-  Mixin,
 } from '@stencil/core';
 import { a11yHostAttributes } from '../utils/a11y';
+import { DefaultMixins } from '../utils/internal/component';
 import { BaseButton, BaseButtonProps } from './base-button';
 import { BaseButtonStyle, BaseButtonVariant } from './base-button.types';
 import { IxButtonComponent } from './button-component';
@@ -184,10 +185,6 @@ export class Button
       ?.focus();
   }
 
-  private ariaLabelForInnerControl(): string | undefined {
-    return this.a11yAttributes['aria-label'] ?? this.ariaLabelButton;
-  }
-
   override render() {
     const baseButtonProps: BaseButtonProps = {
       variant: this.variant,
@@ -209,7 +206,6 @@ export class Button
       //       },
       ariaAttributes: {
         ...this.a11yAttributes,
-        'aria-label': this.ariaLabelForInnerControl(),
       },
       href: this.href,
       target: this.target,
