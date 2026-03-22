@@ -17,6 +17,7 @@ export default () => {
   const [toggle, setToggle] = useState(false);
   const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
+  const [toggle4, setToggle4] = useState(false);
   return (
     <>
       <IxButton
@@ -56,17 +57,18 @@ export default () => {
         }}
         loading={toggle3}
         icon={iconStar}
+        aria-label="Star"
       ></IxButton>
 
       <IxIconButton
         variant="subtle-primary"
         onClick={() => {
-          setToggle(true);
+          setToggle4(true);
           setTimeout(() => {
-            setToggle(false);
+            setToggle4(false);
           }, 2500);
         }}
-        loading={toggle}
+        loading={toggle4}
         icon={iconStar}
         aria-label="Toggle loading"
       ></IxIconButton>

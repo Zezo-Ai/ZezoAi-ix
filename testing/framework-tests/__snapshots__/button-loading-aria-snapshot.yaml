@@ -1,6 +1,7 @@
 - main:
   - button "Button"
   - button "Button"
+  - button "Star"
   - button "Toggle loading"
   - button "Loading Button" [disabled]:
     - status "Loading"

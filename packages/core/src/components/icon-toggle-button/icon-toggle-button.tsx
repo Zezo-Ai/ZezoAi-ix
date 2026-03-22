@@ -83,7 +83,7 @@ export class IconToggleButton {
    * ARIA label for the icon button
    * Will be set for the native HTML button element
    *
-   * @deprecated Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in 5.0.0
+   * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in a future major version.
    * @since 3.2.0
    */
   @Prop() ariaLabelIconButton?: string;

@@ -20,6 +20,7 @@ export default class ButtonLoading {
   loading = false;
   loading2 = false;
   loading3 = false;
+  loading4 = false;
 
   toggle() {
     this.loading = true;
@@ -39,6 +40,13 @@ export default class ButtonLoading {
     this.loading3 = true;
     setTimeout(() => {
       this.loading3 = false;
+    }, 2500);
+  }
+
+  toggle4() {
+    this.loading4 = true;
+    setTimeout(() => {
+      this.loading4 = false;
     }, 2500);
   }
 }

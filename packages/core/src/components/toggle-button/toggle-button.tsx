@@ -74,7 +74,7 @@ export class ToggleButton {
   /**
    * ARIA label that will be set on the native HTML button element
    *
-   * @deprecated Set the native `aria-label` on the ix-toggle-button host element. Will be removed in 5.0.0
+   * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
    * @since 3.2.0
    */
   @Prop() ariaLabelButton?: string;

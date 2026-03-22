@@ -15,16 +15,19 @@ import { ref } from 'vue';
 let toggle1 = ref(false);
 let toggle2 = ref(false);
 let toggle3 = ref(false);
+let toggle4 = ref(false);
 
 function load(value: string) {
   if (value === '1') toggle1.value = true;
   if (value === '2') toggle2.value = true;
   if (value === '3') toggle3.value = true;
+  if (value === '4') toggle4.value = true;
 
   setTimeout(() => {
     if (value === '1') toggle1.value = false;
     if (value === '2') toggle2.value = false;
     if (value === '3') toggle3.value = false;
+    if (value === '4') toggle4.value = false;
   }, 2500);
 }
 </script>
@@ -44,10 +47,17 @@ function load(value: string) {
     >
       Button
     </IxButton>
-    <IxIconButton
+    <IxButton
       variant="subtle-primary"
       :loading="toggle3"
       @click="load('3')"
+      :icon="iconStar"
+      aria-label="Star"
+    ></IxButton>
+    <IxIconButton
+      variant="subtle-primary"
+      :loading="toggle4"
+      @click="load('4')"
       :icon="iconStar"
       aria-label="Toggle loading"
     ></IxIconButton>
