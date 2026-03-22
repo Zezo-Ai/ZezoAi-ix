@@ -206,6 +206,7 @@ export class Button
       //       },
       ariaAttributes: {
         ...this.a11yAttributes,
+        'aria-label': this.a11yAttributes['aria-label'] ?? this.ariaLabelButton,
       },
       href: this.href,
       target: this.target,
