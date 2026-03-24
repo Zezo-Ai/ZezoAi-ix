@@ -86,7 +86,7 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   /**
    * Placement of the dropdown
    */
-  @Prop() placement: AlignedPlacement = 'bottom-start';
+  @Prop({ mutable: true }) placement: AlignedPlacement = 'bottom-start';
 
   /**
    * Position strategy
@@ -322,12 +322,61 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
     );
   }
 
+  private intersectObserverTrigger?: IntersectionObserver;
+  private closeTimer?: NodeJS.Timeout;
+
   private async registerListener(element: ElementReference) {
     this.triggerElement = await this.resolveElement(element);
-    if (this.triggerElement) {
-      this.addEventListenersFor();
-      this.discoverSubmenu();
+
+    if (!this.triggerElement) {
+      return;
     }
+
+    this.intersectObserverTrigger = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          clearTimeout(this.closeTimer);
+          if (!entry.isIntersecting) {
+            this.closeTimer = setTimeout(() => {
+              dropdownController.dismiss(this);
+            }, 0);
+            return;
+          }
+
+          const isTopHidden =
+            entry.intersectionRect.top > entry.boundingClientRect.top;
+          const isBottomHidden =
+            entry.intersectionRect.bottom < entry.boundingClientRect.bottom;
+          const isLeftHidden =
+            entry.intersectionRect.left > entry.boundingClientRect.left;
+          const isRightHidden =
+            entry.intersectionRect.right < entry.boundingClientRect.right;
+          if (isTopHidden) {
+            this.placement = 'bottom-start';
+          }
+
+          if (isBottomHidden) {
+            this.placement = 'top-start';
+          }
+
+          if (isLeftHidden) {
+            this.placement = 'right-start';
+          }
+
+          if (isRightHidden) {
+            this.placement = 'left-start';
+          }
+        });
+      },
+      {
+        threshold: [0, 0.5, 1],
+      }
+    );
+
+    this.intersectObserverTrigger.observe(this.triggerElement!);
+
+    this.addEventListenersFor();
+    this.discoverSubmenu();
   }
 
   private async resolveElement(element: ElementReference) {
@@ -460,6 +509,7 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   }
 
   private cleanupOnHide() {
+    clearTimeout(this.closeTimer);
     this.destroyAutoUpdate();
     this.arrowFocusController?.disconnect();
     this.itemObserver?.disconnect();
