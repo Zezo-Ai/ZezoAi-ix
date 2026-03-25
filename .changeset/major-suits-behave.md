@@ -5,4 +5,4 @@
 '@siemens/ix-vue': minor
 ---
 
-`ix-dropdown` now checks whether the provided trigger or anchor element is visible in the viewport before opening. If the trigger or anchor element is outside the visible viewport, the dropdown will not open. This prevents the dropdown from rendering in an unexpected screen position. To allow the dropdown to open regardless of trigger or anchor visibility, set `suppressTriggerVisibilityCheck` to `true`.
+`ix-dropdown` now observes the visibility of the trigger element in the viewport while the dropdown is open. If the trigger element scrolls outside the visible viewport, the dropdown will automatically close to prevent it from remaining visible in an unexpected screen position. To keep the dropdown open regardless of trigger visibility, set `suppressTriggerVisibilityCheck` to `true`.
