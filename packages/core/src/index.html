@@ -22,6 +22,96 @@ SPDX-License-Identifier: MIT
 
       defineCustomElement();
     </script>
+    <style>
+      .container {
+        position: relative;
+        height: 220px;
+        width: min(100%, 32rem);
+        max-width: 100%;
+        padding: 16px;
+        border: 1px solid #cbd5dc;
+      }
+
+      .overflow-auto {
+        overflow: auto;
+      }
+
+      .transform-scroll {
+        overflow: auto;
+      }
+
+      .content {
+        height: 500px;
+        padding-top: 140px;
+      }
+
+      .manual-dropdown {
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="container transform-scroll" id="transform-container">
+      <div class="content" style="padding: 40rem; min-width: 120rem">
+        <ix-button id="transform-trigger">Hello</ix-button>
+      </div>
+
+      <ix-dropdown
+        id="transform-dropdown"
+        class="manual-dropdown"
+        trigger="transform-trigger"
+        positioning-strategy="fixed"
+        enable-top-layer
+      >
+        <ix-dropdown-item label="Item 1"></ix-dropdown-item>
+        <ix-dropdown-item label="Item 2"></ix-dropdown-item>
+      </ix-dropdown>
+    </div>
+
+    <script type="module">
+      const transformFrame = document.getElementById('transform-container');
+      const transformTrigger = document.getElementById('transform-trigger');
+      const manualDropdown = document.getElementById('transform-dropdown');
+
+      function scrollTriggerIntoView() {
+        transformTrigger.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
+      }
+
+      function syncManualDropdown() {
+        if (!manualDropdown.show) {
+          return;
+        }
+
+        const triggerRect = transformTrigger.getBoundingClientRect();
+        const x = Math.round(triggerRect.left);
+        const y = Math.round(triggerRect.bottom + 8);
+
+        manualDropdown.style.top = '0';
+        manualDropdown.style.left = '0';
+        manualDropdown.style.transform = `translate(${x}px, ${y}px)`;
+      }
+
+      transformFrame.addEventListener('scroll', syncManualDropdown, {
+        passive: true,
+      });
+
+      window.addEventListener('resize', syncManualDropdown, {
+        passive: true,
+      });
+
+      manualDropdown.addEventListener('showChanged', (event) => {
+        if (event.detail) {
+          requestAnimationFrame(syncManualDropdown);
+        }
+      });
+
+      requestAnimationFrame(scrollTriggerIntoView);
+    </script>
+  </body>
 </html>

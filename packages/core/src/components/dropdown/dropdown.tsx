@@ -86,7 +86,8 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   /**
    * Placement of the dropdown
    */
-  @Prop({ mutable: true }) placement: AlignedPlacement = 'bottom-start';
+  @Prop({ mutable: true, reflect: true }) placement: AlignedPlacement =
+    'bottom-start';
 
   /**
    * Position strategy
@@ -97,6 +98,18 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
    * An optional header shown at the top of the dropdown
    */
   @Prop() header?: string;
+
+  /**
+   * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+   */
+  @Prop() suppressTriggerVisibilityCheck = false;
+
+  /**
+   * Enable Popover API rendering for top-layer positioning.
+   *
+   * @default false in v4.x, will default to true in v5.0.0
+   */
+  @Prop() enableTopLayer: boolean = false;
 
   /**
    * Move dropdown along main axis of alignment
@@ -129,13 +142,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
 
   /** @internal */
   @Prop() suppressOverflowBehavior = false;
-
-  /**
-   * Enable Popover API rendering for top-layer positioning.
-   *
-   * @default false in v4.x, will default to true in v5.0.0
-   */
-  @Prop() enableTopLayer: boolean = false;
 
   /**
    * Fire event after visibility of dropdown has changed
@@ -323,7 +329,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   }
 
   private intersectObserverTrigger?: IntersectionObserver;
-  private closeTimer?: NodeJS.Timeout;
 
   private async registerListener(element: ElementReference) {
     this.triggerElement = await this.resolveElement(element);
@@ -332,14 +337,29 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
       return;
     }
 
+    this.addObserverForTriggerVisibility();
+    this.addEventListenersFor();
+    this.discoverSubmenu();
+  }
+
+  private addObserverForTriggerVisibility() {
+    if (this.suppressTriggerVisibilityCheck) {
+      return;
+    }
+
+    if (this.intersectObserverTrigger) {
+      this.intersectObserverTrigger.disconnect();
+    }
+
+    if (!this.triggerElement) {
+      return;
+    }
+
     this.intersectObserverTrigger = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          clearTimeout(this.closeTimer);
           if (!entry.isIntersecting) {
-            this.closeTimer = setTimeout(() => {
-              dropdownController.dismiss(this);
-            }, 0);
+            dropdownController.dismiss(this);
             return;
           }
 
@@ -374,9 +394,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
     );
 
     this.intersectObserverTrigger.observe(this.triggerElement!);
-
-    this.addEventListenersFor();
-    this.discoverSubmenu();
   }
 
   private async resolveElement(element: ElementReference) {
@@ -509,7 +526,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   }
 
   private cleanupOnHide() {
-    clearTimeout(this.closeTimer);
     this.destroyAutoUpdate();
     this.arrowFocusController?.disconnect();
     this.itemObserver?.disconnect();
