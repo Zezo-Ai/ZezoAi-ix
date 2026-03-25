@@ -27,6 +27,7 @@ import {
   Method,
   Prop,
   Watch,
+  State,
 } from '@stencil/core';
 import { ComponentInterface } from '@stencil/core/internal';
 import {
@@ -86,8 +87,7 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   /**
    * Placement of the dropdown
    */
-  @Prop({ mutable: true, reflect: true }) placement: AlignedPlacement =
-    'bottom-start';
+  @Prop() placement: AlignedPlacement = 'bottom-start';
 
   /**
    * Position strategy
@@ -148,8 +148,11 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
    */
   @Event() showChanged!: EventEmitter<boolean>;
 
+  @State() fallbackPlacement?: AlignedPlacement;
+
   private autoUpdateCleanup?: () => void;
   private readonly dialogRef = makeRef<HTMLDialogElement>();
+  private intersectObserverTrigger?: IntersectionObserver;
 
   private triggerElement?: Element;
   private anchorElement?: Element;
@@ -328,8 +331,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
     );
   }
 
-  private intersectObserverTrigger?: IntersectionObserver;
-
   private async registerListener(element: ElementReference) {
     this.triggerElement = await this.resolveElement(element);
 
@@ -337,7 +338,6 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
       return;
     }
 
-    this.addObserverForTriggerVisibility();
     this.addEventListenersFor();
     this.discoverSubmenu();
   }
@@ -371,20 +371,23 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
             entry.intersectionRect.left > entry.boundingClientRect.left;
           const isRightHidden =
             entry.intersectionRect.right < entry.boundingClientRect.right;
+
+          this.fallbackPlacement = undefined;
+
           if (isTopHidden) {
-            this.placement = 'bottom-start';
+            this.fallbackPlacement = 'bottom-start';
           }
 
           if (isBottomHidden) {
-            this.placement = 'top-start';
+            this.fallbackPlacement = 'top-start';
           }
 
           if (isLeftHidden) {
-            this.placement = 'right-start';
+            this.fallbackPlacement = 'right-start';
           }
 
           if (isRightHidden) {
-            this.placement = 'left-start';
+            this.fallbackPlacement = 'left-start';
           }
         });
       },
@@ -393,7 +396,7 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
       }
     );
 
-    this.intersectObserverTrigger.observe(this.triggerElement!);
+    this.intersectObserverTrigger.observe(this.anchorElement!);
   }
 
   private async resolveElement(element: ElementReference) {
@@ -497,6 +500,8 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
 
     await this.resolveAnchorElement();
 
+    this.addObserverForTriggerVisibility();
+
     if (this.anchorElement) {
       this.applyDropdownPosition();
     } else {
@@ -567,7 +572,16 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
       );
     }
 
-    positionConfig.placement = isSubmenu ? 'right-start' : this.placement;
+    let placement = this.placement;
+
+    if (
+      this.suppressTriggerVisibilityCheck === false &&
+      this.fallbackPlacement
+    ) {
+      placement = this.fallbackPlacement;
+    }
+
+    positionConfig.placement = isSubmenu ? 'right-start' : placement;
 
     positionConfig.middleware = [
       ...(positionConfig.middleware?.filter(Boolean) || []),
@@ -590,6 +604,10 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
           targetElement,
           positionConfig
         );
+
+        this.hostElement.dataset.ixDropdownPlacement =
+          computeResponse.placement;
+
         Object.assign(targetElement.style, {
           top: '0',
           left: '0',

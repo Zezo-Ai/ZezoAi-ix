@@ -1001,7 +1001,10 @@ regressionTest.describe('dropdown transition visibility', () => {
       }
 
       await expect(dropdown).toHaveClass(/show/);
-      await expect(dropdown).toHaveAttribute('placement', placement);
+      await expect(dropdown).toHaveAttribute(
+        'data-ix-dropdown-placement',
+        placement
+      );
     }).toPass({ timeout: 2000 });
   }
 
@@ -1117,6 +1120,26 @@ regressionTest.describe('dropdown transition visibility', () => {
       const container = page.locator('#transform-container');
       const triggerButton = page.getByLabel('Trigger');
       const dropdown = page.locator('#transform-dropdown');
+
+      await container.evaluate((element) => element.scrollTo(0, 0));
+
+      await expect(triggerButton).not.toBeInViewport();
+      await expect(dropdown).not.toBeInViewport();
+      await expect(dropdown).not.toHaveClass(/show/);
+    }
+  );
+
+  regressionTest(
+    'suppress hide dropdown if trigger is not visible anymore',
+    async ({ page }) => {
+      const container = page.locator('#transform-container');
+      const triggerButton = page.getByLabel('Trigger');
+      const dropdown = page.locator('#transform-dropdown');
+
+      await dropdown.evaluate(
+        (dropdown: HTMLIxDropdownElement) =>
+          (dropdown.suppressTriggerVisibilityCheck = true)
+      );
 
       await container.evaluate((element) => element.scrollTo(0, 0));
 
