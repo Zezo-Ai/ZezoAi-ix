@@ -343,12 +343,12 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   }
 
   private addObserverForTriggerVisibility() {
-    if (this.suppressTriggerVisibilityCheck) {
-      return;
-    }
-
     if (this.intersectObserverTrigger) {
       this.intersectObserverTrigger.disconnect();
+    }
+
+    if (this.suppressTriggerVisibilityCheck) {
+      return;
     }
 
     if (!this.triggerElement) {
@@ -526,6 +526,7 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
   }
 
   private cleanupOnHide() {
+    this.intersectObserverTrigger?.disconnect();
     this.destroyAutoUpdate();
     this.arrowFocusController?.disconnect();
     this.itemObserver?.disconnect();
