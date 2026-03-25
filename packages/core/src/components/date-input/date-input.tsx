@@ -468,6 +468,7 @@ export class DateInput
             data-testid="open-calendar"
             class={{ 'calendar-hidden': this.disabled || this.readonly }}
             variant="subtle-tertiary"
+            size="16"
             icon={iconCalendar}
             onClick={(event) => this.onCalenderClick(event)}
           ></ix-icon-button>

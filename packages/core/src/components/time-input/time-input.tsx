@@ -495,6 +495,7 @@ export class TimeInput
             data-testid="open-time-picker"
             class={{ 'time-icon-hidden': this.disabled || this.readonly }}
             variant="subtle-tertiary"
+            size="16"
             icon={iconClock}
             onClick={(event) => this.onTimeIconClick(event)}
             aria-label={this.ariaLabelTimeToggleButton}

@@ -360,6 +360,7 @@ export class Input implements IxInputFieldComponent<string> {
                   'eye-hidden': this.type !== 'password' || this.disabled,
                 }}
                 variant="tertiary"
+                size="16"
                 icon={
                   this.inputType === 'password' ? iconEye : iconEyeCancelled
                 }
