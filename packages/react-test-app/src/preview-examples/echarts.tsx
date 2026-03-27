@@ -10,22 +10,27 @@
 import './echarts.scoped.css';
 
 import { useEffect, useState } from 'react';
-import { registerTheme } from '@siemens/ix-echarts';
+import { registerTheme, resolveEChartThemeName } from '@siemens/ix-echarts';
 import { themeSwitcher } from '@siemens/ix';
 import ReactEcharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
 
-export default function Echarts() {
-  registerTheme(echarts);
-
-  const [theme, setTheme] = useState(themeSwitcher.getCurrentTheme());
+function useEChartTheme() {
+  const [theme, setTheme] = useState(resolveEChartThemeName());
 
   useEffect(() => {
-    themeSwitcher.themeChanged.on((theme: string) => {
-      setTheme(theme);
+    themeSwitcher.themeChanged.on(() => {
+      setTheme(resolveEChartThemeName());
     });
   }, []);
+
+  return theme;
+}
+
+export default function Echarts() {
+  registerTheme(echarts);
+  const theme = useEChartTheme();
 
   const options: EChartsOption = {
     tooltip: {

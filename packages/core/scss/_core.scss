@@ -46,7 +46,6 @@
   --ix-safe-area-inset-left: 0rem;
 }
 
-:not([data-ix-theme]) body:not([data-ix-theme]),
 [data-ix-theme] {
   --animate-duration: var(--theme-default-time);
   --bs-font-sans-serif: Siemens Sans, system-ui, -apple-system, 'Segoe UI',

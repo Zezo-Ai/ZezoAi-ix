@@ -644,6 +644,10 @@ importers:
         version: link:../vue-test-app
 
   packages/echarts:
+    dependencies:
+      '@siemens/ix':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@playwright/test':
         specifier: 'catalog:'

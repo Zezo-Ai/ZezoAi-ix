@@ -17,7 +17,7 @@ import { Breakpoint } from '../utils/breakpoints';
 import { ContextProvider, useContextProvider } from '../utils/context';
 import { menuController } from '../utils/menu-service/menu-service';
 import { hasSlottedElements } from '../utils/shadow-dom';
-import { IxTheme, themeSwitcher } from '../utils/theme-switcher';
+import { themeSwitcher, ThemeVariant } from '../utils/theme-switcher';
 import { Disposable } from '../utils/typed-event';
 
 @Component({
@@ -31,12 +31,14 @@ export class Application {
   /**
    * Application theme
    */
-  @Prop() theme?: IxTheme;
+  @Prop() theme?: string;
 
   /**
-   * Use the system appearance dark or light
+   * Color schema of the theme
+   *
+   * @since 5.0.0
    */
-  @Prop() themeSystemAppearance = false;
+  @Prop() colorSchema?: ThemeVariant = 'system';
 
   /**
    * Change the responsive layout of the menu structure
@@ -120,25 +122,25 @@ export class Application {
   }
 
   @Watch('theme')
-  @Watch('themeSystemAppearance')
+  @Watch('colorSchema')
   private changeTheme() {
     if (!this.theme) {
-      if (this.themeSystemAppearance) {
-        themeSwitcher.setVariant();
+      const defaultTheme = themeSwitcher.getTheme();
+      const defaultMode = themeSwitcher.getMode();
+
+      if (!defaultTheme) {
+        return;
       }
 
+      if (!defaultMode) {
+        return;
+      }
+
+      themeSwitcher.setTheme(defaultTheme, defaultMode);
       return;
     }
 
-    if (themeSwitcher.hasVariantSuffix(this.theme)) {
-      themeSwitcher.setTheme(`theme-${this.theme}`);
-      return;
-    }
-
-    themeSwitcher.setTheme(
-      `theme-${this.theme}-dark`,
-      this.themeSystemAppearance
-    );
+    themeSwitcher.setTheme(this.theme, this.colorSchema);
   }
 
   @Watch('appSwitchConfig')

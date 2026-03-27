@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ActionCardVariant } from "./components/action-card/action-card.types";
-import { IxTheme } from "./components/utils/theme-switcher";
+import { ThemeVariant } from "./components/utils/theme-switcher";
 import { Breakpoint } from "./components/utils/breakpoints";
 import { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 import { BlindVariant } from "./components/blind/blind.types";
@@ -59,7 +59,7 @@ import { RefreshTreeOptions } from "./components/tree/tree.types";
 import { TextDecoration, TypographyColors, TypographyFormat } from "./components/typography/typography.types";
 import { UploadFileState } from "./components/upload/upload-file-state";
 export { ActionCardVariant } from "./components/action-card/action-card.types";
-export { IxTheme } from "./components/utils/theme-switcher";
+export { ThemeVariant } from "./components/utils/theme-switcher";
 export { Breakpoint } from "./components/utils/breakpoints";
 export { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 export { BlindVariant } from "./components/blind/blind.types";
@@ -163,18 +163,19 @@ export namespace Components {
          */
         "breakpoints": Breakpoint[];
         /**
+          * Color schema of the theme
+          * @since 5.0.0
+          * @default 'system'
+         */
+        "colorSchema"?: ThemeVariant;
+        /**
           * Change the responsive layout of the menu structure
          */
         "forceBreakpoint": Breakpoint | undefined;
         /**
           * Application theme
          */
-        "theme"?: IxTheme;
-        /**
-          * Use the system appearance dark or light
-          * @default false
-         */
-        "themeSystemAppearance": boolean;
+        "theme"?: string;
     }
     interface IxApplicationHeader {
         /**
@@ -6445,18 +6446,19 @@ declare namespace LocalJSX {
          */
         "breakpoints"?: Breakpoint[];
         /**
+          * Color schema of the theme
+          * @since 5.0.0
+          * @default 'system'
+         */
+        "colorSchema"?: ThemeVariant;
+        /**
           * Change the responsive layout of the menu structure
          */
         "forceBreakpoint"?: Breakpoint | undefined;
         /**
           * Application theme
          */
-        "theme"?: IxTheme;
-        /**
-          * Use the system appearance dark or light
-          * @default false
-         */
-        "themeSystemAppearance"?: boolean;
+        "theme"?: string;
     }
     interface IxApplicationHeader {
         /**
@@ -11146,8 +11148,8 @@ declare namespace LocalJSX {
         "passive": boolean;
     }
     interface IxApplicationAttributes {
-        "theme": IxTheme;
-        "themeSystemAppearance": boolean;
+        "theme": string;
+        "colorSchema": ThemeVariant;
         "forceBreakpoint": Breakpoint | undefined;
     }
     interface IxApplicationHeaderAttributes {

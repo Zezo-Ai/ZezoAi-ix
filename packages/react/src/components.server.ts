@@ -142,7 +142,7 @@ export const IxApplication: StencilReactComponent<IxApplicationElement, IxApplic
     tagName: 'ix-application',
     properties: {
         theme: 'theme',
-        themeSystemAppearance: 'theme-system-appearance',
+        colorSchema: 'color-schema',
         forceBreakpoint: 'force-breakpoint'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
