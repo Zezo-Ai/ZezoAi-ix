@@ -10,19 +10,23 @@
 import './echarts.scoped.css';
 
 import { useEffect, useState } from 'react';
-import { registerTheme, resolveEChartThemeName } from '@siemens/ix-echarts';
 import { themeSwitcher } from '@siemens/ix';
+import { registerTheme, resolveEChartThemeName } from '@siemens/ix-echarts';
 import ReactEcharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
 
 function useEChartTheme() {
-  const [theme, setTheme] = useState(resolveEChartThemeName());
+  const [theme, setTheme] = useState(resolveEChartThemeName);
 
   useEffect(() => {
-    themeSwitcher.themeChanged.on(() => {
+    const disposer = themeSwitcher.themeChanged.on(() => {
       setTheme(resolveEChartThemeName());
     });
+
+    return () => {
+      disposer.dispose();
+    };
   }, []);
 
   return theme;
