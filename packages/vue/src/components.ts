@@ -80,7 +80,6 @@ import { defineCustomElement as defineIxPagination } from '@siemens/ix/component
 import { defineCustomElement as defineIxPane } from '@siemens/ix/components/ix-pane.js';
 import { defineCustomElement as defineIxPaneLayout } from '@siemens/ix/components/ix-pane-layout.js';
 import { defineCustomElement as defineIxPill } from '@siemens/ix/components/ix-pill.js';
-import { defineCustomElement as defineIxPlayground } from '@siemens/ix/components/ix-playground.js';
 import { defineCustomElement as defineIxProgressIndicator } from '@siemens/ix/components/ix-progress-indicator.js';
 import { defineCustomElement as defineIxPushCard } from '@siemens/ix/components/ix-push-card.js';
 import { defineCustomElement as defineIxRadio } from '@siemens/ix/components/ix-radio.js';
@@ -1179,9 +1178,6 @@ export const IxPill: StencilVueComponent<JSX.IxPill> = /*@__PURE__*/ defineConta
   'alignLeft',
   'tooltipText'
 ]);
-
-
-export const IxPlayground: StencilVueComponent<JSX.IxPlayground> = /*@__PURE__*/ defineContainer<JSX.IxPlayground>('ix-playground', defineIxPlayground);
 
 
 export const IxProgressIndicator: StencilVueComponent<JSX.IxProgressIndicator> = /*@__PURE__*/ defineContainer<JSX.IxProgressIndicator>('ix-progress-indicator', defineIxProgressIndicator, [

@@ -83,7 +83,6 @@ import { IxPagination as IxPaginationElement, defineCustomElement as defineIxPag
 import { IxPaneLayout as IxPaneLayoutElement, defineCustomElement as defineIxPaneLayout } from "@siemens/ix/components/ix-pane-layout.js";
 import { IxPane as IxPaneElement, defineCustomElement as defineIxPane } from "@siemens/ix/components/ix-pane.js";
 import { IxPill as IxPillElement, defineCustomElement as defineIxPill } from "@siemens/ix/components/ix-pill.js";
-import { IxPlayground as IxPlaygroundElement, defineCustomElement as defineIxPlayground } from "@siemens/ix/components/ix-playground.js";
 import { IxProgressIndicator as IxProgressIndicatorElement, defineCustomElement as defineIxProgressIndicator } from "@siemens/ix/components/ix-progress-indicator.js";
 import { IxPushCard as IxPushCardElement, defineCustomElement as defineIxPushCard } from "@siemens/ix/components/ix-push-card.js";
 import { IxRadioGroup as IxRadioGroupElement, defineCustomElement as defineIxRadioGroup } from "@siemens/ix/components/ix-radio-group.js";
@@ -1114,17 +1113,6 @@ export const IxPill: StencilReactComponent<IxPillElement, IxPillEvents> = /*@__P
     react: React,
     events: {} as IxPillEvents,
     defineCustomElement: defineIxPill
-});
-
-export type IxPlaygroundEvents = NonNullable<unknown>;
-
-export const IxPlayground: StencilReactComponent<IxPlaygroundElement, IxPlaygroundEvents> = /*@__PURE__*/ createComponent<IxPlaygroundElement, IxPlaygroundEvents>({
-    tagName: 'ix-playground',
-    elementClass: IxPlaygroundElement,
-    // @ts-ignore - ignore potential React type mismatches between the Stencil Output Target and your project.
-    react: React,
-    events: {} as IxPlaygroundEvents,
-    defineCustomElement: defineIxPlayground
 });
 
 export type IxProgressIndicatorEvents = NonNullable<unknown>;

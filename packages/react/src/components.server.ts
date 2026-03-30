@@ -85,7 +85,6 @@ import { IxPagination as IxPaginationElement } from "@siemens/ix/components/ix-p
 import { IxPaneLayout as IxPaneLayoutElement } from "@siemens/ix/components/ix-pane-layout.js";
 import { IxPane as IxPaneElement } from "@siemens/ix/components/ix-pane.js";
 import { IxPill as IxPillElement } from "@siemens/ix/components/ix-pill.js";
-import { IxPlayground as IxPlaygroundElement } from "@siemens/ix/components/ix-playground.js";
 import { IxProgressIndicator as IxProgressIndicatorElement } from "@siemens/ix/components/ix-progress-indicator.js";
 import { IxPushCard as IxPushCardElement } from "@siemens/ix/components/ix-push-card.js";
 import { IxRadioGroup as IxRadioGroupElement } from "@siemens/ix/components/ix-radio-group.js";
@@ -1537,16 +1536,6 @@ export const IxPill: StencilReactComponent<IxPillElement, IxPillEvents> = /*@__P
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxPill as ReactWebComponent<IxPillElement, IxPillEvents>,
-    serializeShadowRoot
-});
-
-export type IxPlaygroundEvents = NonNullable<unknown>;
-
-export const IxPlayground: StencilReactComponent<IxPlaygroundElement, IxPlaygroundEvents> = /*@__PURE__*/ createComponent<IxPlaygroundElement, IxPlaygroundEvents>({
-    tagName: 'ix-playground',
-    properties: {},
-    hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
-    clientModule: clientComponents.IxPlayground as ReactWebComponent<IxPlaygroundElement, IxPlaygroundEvents>,
     serializeShadowRoot
 });
 

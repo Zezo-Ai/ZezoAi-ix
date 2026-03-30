@@ -2261,28 +2261,6 @@ export declare interface IxPill extends Components.IxPill {}
 
 
 @ProxyCmp({
-})
-@Component({
-  selector: 'ix-playground',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-content></ng-content>',
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: [],
-  standalone: false
-})
-export class IxPlayground {
-  protected el: HTMLIxPlaygroundElement;
-  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
-    c.detach();
-    this.el = r.nativeElement;
-  }
-}
-
-
-export declare interface IxPlayground extends Components.IxPlayground {}
-
-
-@ProxyCmp({
   inputs: ['helperText', 'label', 'max', 'min', 'showTextAsTooltip', 'size', 'status', 'textAlignment', 'type', 'value']
 })
 @Component({
