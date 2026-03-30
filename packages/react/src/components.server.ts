@@ -85,6 +85,7 @@ import { IxPagination as IxPaginationElement } from "@siemens/ix/components/ix-p
 import { IxPaneLayout as IxPaneLayoutElement } from "@siemens/ix/components/ix-pane-layout.js";
 import { IxPane as IxPaneElement } from "@siemens/ix/components/ix-pane.js";
 import { IxPill as IxPillElement } from "@siemens/ix/components/ix-pill.js";
+import { IxPlayground as IxPlaygroundElement } from "@siemens/ix/components/ix-playground.js";
 import { IxProgressIndicator as IxProgressIndicatorElement } from "@siemens/ix/components/ix-progress-indicator.js";
 import { IxPushCard as IxPushCardElement } from "@siemens/ix/components/ix-push-card.js";
 import { IxRadioGroup as IxRadioGroupElement } from "@siemens/ix/components/ix-radio-group.js";
@@ -1539,6 +1540,16 @@ export const IxPill: StencilReactComponent<IxPillElement, IxPillEvents> = /*@__P
     serializeShadowRoot
 });
 
+export type IxPlaygroundEvents = NonNullable<unknown>;
+
+export const IxPlayground: StencilReactComponent<IxPlaygroundElement, IxPlaygroundEvents> = /*@__PURE__*/ createComponent<IxPlaygroundElement, IxPlaygroundEvents>({
+    tagName: 'ix-playground',
+    properties: {},
+    hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
+    clientModule: clientComponents.IxPlayground as ReactWebComponent<IxPlaygroundElement, IxPlaygroundEvents>,
+    serializeShadowRoot
+});
+
 export type IxProgressIndicatorEvents = NonNullable<unknown>;
 
 export const IxProgressIndicator: StencilReactComponent<IxProgressIndicatorElement, IxProgressIndicatorEvents> = /*@__PURE__*/ createComponent<IxProgressIndicatorElement, IxProgressIndicatorEvents>({
@@ -1949,11 +1960,7 @@ export type IxToastContainerEvents = NonNullable<unknown>;
 
 export const IxToastContainer: StencilReactComponent<IxToastContainerElement, IxToastContainerEvents> = /*@__PURE__*/ createComponent<IxToastContainerElement, IxToastContainerEvents>({
     tagName: 'ix-toast-container',
-    properties: {
-        containerId: 'container-id',
-        containerClass: 'container-class',
-        position: 'position'
-    },
+    properties: { position: 'position' },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxToastContainer as ReactWebComponent<IxToastContainerElement, IxToastContainerEvents>,
     serializeShadowRoot

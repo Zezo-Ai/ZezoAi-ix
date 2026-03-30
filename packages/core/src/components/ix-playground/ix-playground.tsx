@@ -1,4 +1,5 @@
 import { Component, Host, h } from '@stencil/core';
+import { toast } from 'src/public-api';
 
 @Component({
   tag: 'ix-playground',
@@ -6,10 +7,16 @@ import { Component, Host, h } from '@stencil/core';
   shadow: true,
 })
 export class IxPlayground {
+  showToast() {
+    toast({
+      message: 'This is a toast message',
+      autoClose: false,
+    });
+  }
   render() {
     return (
       <Host>
-        <slot></slot>
+        <button onClick={() => this.showToast()}>Show Toast</button>
       </Host>
     );
   }

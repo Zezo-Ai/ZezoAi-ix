@@ -81,6 +81,7 @@ import { defineCustomElement as defineIxPagination } from '@siemens/ix/component
 import { defineCustomElement as defineIxPane } from '@siemens/ix/components/ix-pane.js';
 import { defineCustomElement as defineIxPaneLayout } from '@siemens/ix/components/ix-pane-layout.js';
 import { defineCustomElement as defineIxPill } from '@siemens/ix/components/ix-pill.js';
+import { defineCustomElement as defineIxPlayground } from '@siemens/ix/components/ix-playground.js';
 import { defineCustomElement as defineIxProgressIndicator } from '@siemens/ix/components/ix-progress-indicator.js';
 import { defineCustomElement as defineIxPushCard } from '@siemens/ix/components/ix-push-card.js';
 import { defineCustomElement as defineIxRadio } from '@siemens/ix/components/ix-radio.js';
@@ -2363,6 +2364,28 @@ export declare interface IxPill extends Components.IxPill {}
 
 
 @ProxyCmp({
+  defineCustomElementFn: defineIxPlayground
+})
+@Component({
+  selector: 'ix-playground',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<ng-content></ng-content>',
+  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
+  inputs: [],
+})
+export class IxPlayground {
+  protected el: HTMLIxPlaygroundElement;
+  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
+    c.detach();
+    this.el = r.nativeElement;
+  }
+}
+
+
+export declare interface IxPlayground extends Components.IxPlayground {}
+
+
+@ProxyCmp({
   defineCustomElementFn: defineIxProgressIndicator,
   inputs: ['helperText', 'label', 'max', 'min', 'showTextAsTooltip', 'size', 'status', 'textAlignment', 'type', 'value']
 })
@@ -2927,7 +2950,7 @@ export declare interface IxToast extends Components.IxToast {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxToastContainer,
-  inputs: ['containerClass', 'containerId', 'position'],
+  inputs: ['position'],
   methods: ['showToast']
 })
 @Component({
@@ -2935,7 +2958,7 @@ export declare interface IxToast extends Components.IxToast {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['containerClass', 'containerId', 'position'],
+  inputs: ['position'],
 })
 export class IxToastContainer {
   protected el: HTMLIxToastContainerElement;
