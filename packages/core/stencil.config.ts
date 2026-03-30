@@ -56,6 +56,7 @@ export const config: Config = {
     browserArgs: ['--no-sandbox', '--disable-stuid-sandbox'],
     browserHeadless: 'shell',
   },
+  excludeComponents: ['ix-playground'],
   namespace: 'siemens-ix',
   watchIgnoredRegex: [/component-doc.json/],
   globalStyle: './scss/ix.scss',

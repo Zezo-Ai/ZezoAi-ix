@@ -179,6 +179,7 @@ ixPagination();
 ixPane();
 ixPaneLayout();
 ixPill();
+ixPlayground();
 ixProgressIndicator();
 ixPushCard();
 ixRadio();

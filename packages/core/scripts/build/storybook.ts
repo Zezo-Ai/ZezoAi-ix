@@ -40,6 +40,7 @@ export function storybookOutputTarget(config: {
       docs: JsonDocs
     ) => {
       const storyBookDefine = docs.components
+        .filter((component) => component.tag !== 'ix-playground')
         .map((component) => {
           return `import { defineCustomElement as ${kebabToCamelCase(
             component.tag
