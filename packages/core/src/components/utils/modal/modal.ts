@@ -64,14 +64,12 @@ export interface ModalConfig<TReason = any, CONTENT = any> {
    */
   centered?: boolean;
   /**
-   * Open as a non-modal dialog (no lightbox; page stays interactive). Same semantics as
-   * **`HTMLIxModalElement.isNonBlocking`**. Set before the imperative `showModal()` call on the
-   * element.
+   * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`.
+   * Set before calling `showModal()`; changing while open is unsupported.
    *
-   * Initial focus follows the core component (`[autofocus]`, header close, first control). There is
-   * no focus trap; the page stays keyboard-reachable. Escape dismisses unless **`disableEscapeClose`**
-   * is set on the modal. Prefer **`aria-labelledby`** / **`aria-describedby`** (or host **`aria-label`**)
-   * so assistive tech names the dialog when it opens.
+   * Same semantics as **`HTMLIxModalElement.isNonBlocking`**. Initial focus and Escape are handled
+   * by the component; prefer **`aria-labelledby`** / **`aria-describedby`** (or **`aria-label`**) for
+   * an accessible name.
    */
   isNonBlocking?: boolean;
   /**

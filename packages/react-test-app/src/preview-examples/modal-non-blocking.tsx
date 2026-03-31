@@ -32,11 +32,9 @@ function CustomModal() {
   return (
     <Modal ref={modalRef} isNonBlocking disableEscapeClose={false}>
       <IxModalHeader onCloseClick={() => dismiss()}>
-        Non-blocking headline
+        Message headline
       </IxModalHeader>
-      <IxModalContent>
-        Page behind stays interactive. Use Cancel, OK, or the close icon.
-      </IxModalContent>
+      <IxModalContent>Message text lorem ipsum</IxModalContent>
       <IxModalFooter>
         <IxButton variant="subtle-primary" onClick={() => dismiss()}>
           Cancel

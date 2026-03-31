@@ -9,7 +9,7 @@
 
 import { Component } from '@angular/core';
 import { ModalService } from '@siemens/ix-angular';
-import ModalByInstanceContent from './modal-by-instance-content';
+import ModalNonBlockingContent from './modal-non-blocking-content';
 
 @Component({
   standalone: false,
@@ -29,8 +29,7 @@ export default class ModalNonBlocking {
 
   async openModal() {
     await this.modalService.open({
-      content: ModalByInstanceContent,
-      data: 'Some data',
+      content: ModalNonBlockingContent,
       isNonBlocking: true,
     });
   }

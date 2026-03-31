@@ -2,3 +2,9 @@
   - text: Content behind the dialog
   - button "Behind control"
   - button "Show non-blocking modal"
+  - dialog:
+    - text: Message headline
+    - button "Close modal"
+    - text: Message text lorem ipsum
+    - button "Cancel"
+    - button "OK"

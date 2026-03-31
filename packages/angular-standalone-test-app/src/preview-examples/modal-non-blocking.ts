@@ -10,7 +10,7 @@
 import { Component } from '@angular/core';
 import { IxButton, IxTypography, ModalService } from '@siemens/ix-angular/standalone';
 
-import ModalByInstanceContent from './modal-by-instance-content';
+import ModalNonBlockingContent from './modal-non-blocking-content';
 
 @Component({
   selector: 'app-example',
@@ -30,8 +30,7 @@ export default class ModalNonBlocking {
 
   async openModal() {
     await this.modalService.open({
-      content: ModalByInstanceContent,
-      data: 'Some data',
+      content: ModalNonBlockingContent,
       isNonBlocking: true,
     });
   }

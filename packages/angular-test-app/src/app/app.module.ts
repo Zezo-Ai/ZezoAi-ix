@@ -177,6 +177,7 @@ import ModalByInstanceContent from '../preview-examples/modal-by-instance-conten
 import ModalByTemplate from '../preview-examples/modal-by-template';
 import ModalClose from '../preview-examples/modal-close';
 import ModalFormIxButtonSubmit from '../preview-examples/modal-form-ix-button-submit';
+import ModalNonBlockingContent from '../preview-examples/modal-non-blocking-content';
 import ModalNonBlocking from '../preview-examples/modal-non-blocking';
 import ModalSizes from '../preview-examples/modal-sizes';
 import NumberInput from '../preview-examples/number-input';
@@ -415,6 +416,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     ModalByTemplate,
     ModalClose,
     ModalFormIxButtonSubmit,
+    ModalNonBlockingContent,
     ModalNonBlocking,
     ModalSizes,
     PaginationAdvanced,

@@ -56,8 +56,6 @@ regressionTest.describe('modal', () => {
     expect(await page.screenshot({ fullPage: true })).toMatchSnapshot();
   });
 
-  // Baseline PNGs for this test must be recorded inside the ix-visual-tests Docker
-  // image (Linux), not on a macOS/Windows host — see .cursor/skills/test-visual/SKILL.md.
   regressionTest('non-blocking', async ({ page }) => {
     await page.goto('modal/non-blocking');
 
