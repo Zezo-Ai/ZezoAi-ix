@@ -1407,6 +1407,7 @@ export namespace Components {
         "suppressOverflowBehavior": boolean;
         /**
           * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+          * @since 5.0.0
           * @default false
          */
         "suppressTriggerVisibilityCheck": boolean;
@@ -7474,6 +7475,7 @@ declare namespace LocalJSX {
         "suppressOverflowBehavior"?: boolean;
         /**
           * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+          * @since 5.0.0
           * @default false
          */
         "suppressTriggerVisibilityCheck"?: boolean;

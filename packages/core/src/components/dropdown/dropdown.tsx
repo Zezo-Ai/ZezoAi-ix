@@ -101,6 +101,8 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
 
   /**
    * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+   *
+   * @since 5.0.0
    */
   @Prop() suppressTriggerVisibilityCheck = false;
 
@@ -375,19 +377,19 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
           this.fallbackPlacement = undefined;
 
           if (isTopHidden) {
-            this.fallbackPlacement = 'bottom-start';
+            this.fallbackPlacement = this.createFallbackPlacement('bottom');
           }
 
           if (isBottomHidden) {
-            this.fallbackPlacement = 'top-start';
+            this.fallbackPlacement = this.createFallbackPlacement('top');
           }
 
           if (isLeftHidden) {
-            this.fallbackPlacement = 'right-start';
+            this.fallbackPlacement = this.createFallbackPlacement('right');
           }
 
           if (isRightHidden) {
-            this.fallbackPlacement = 'left-start';
+            this.fallbackPlacement = this.createFallbackPlacement('left');
           }
         });
       },
@@ -397,6 +399,14 @@ export class Dropdown implements ComponentInterface, DropdownInterface {
     );
 
     this.intersectObserverTrigger.observe(this.anchorElement!);
+  }
+
+  private createFallbackPlacement(
+    side: 'top' | 'right' | 'bottom' | 'left'
+  ): AlignedPlacement {
+    const alignment = this.placement.endsWith('-end') ? 'end' : 'start';
+
+    return `${side}-${alignment}`;
   }
 
   private async resolveElement(element: ElementReference) {

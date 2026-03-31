@@ -886,9 +886,23 @@ regressionTest(
 );
 
 regressionTest.describe('dropdown transition visibility', () => {
+  type VisibilityTestPlacement =
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'top-start'
+    | 'top-end'
+    | 'left-start'
+    | 'left-end'
+    | 'right-start'
+    | 'right-end';
+
+  function getPlacementSide(placement: VisibilityTestPlacement) {
+    return placement.split('-')[0] as 'top' | 'right' | 'bottom' | 'left';
+  }
+
   async function moveTriggerToPlacementEdge(
     page: Page,
-    placement: 'bottom-start' | 'top-start' | 'left-start' | 'right-start'
+    placement: VisibilityTestPlacement
   ) {
     const container = page.locator('#transform-container');
 
@@ -904,19 +918,21 @@ regressionTest.describe('dropdown transition visibility', () => {
         left: 0,
       };
 
-      switch (targetPlacement) {
-        case 'top-start':
+      const side = targetPlacement.split('-')[0];
+
+      switch (side) {
+        case 'top':
           scrollBy.top =
             triggerRect.bottom - (containerRect.bottom + clipOffset);
           break;
-        case 'bottom-start':
+        case 'bottom':
           scrollBy.top = triggerRect.top - (containerRect.top - clipOffset);
           break;
-        case 'left-start':
+        case 'left':
           scrollBy.left =
             triggerRect.right - (containerRect.right + clipOffset);
           break;
-        case 'right-start':
+        case 'right':
           scrollBy.left = triggerRect.left - (containerRect.left - clipOffset);
           break;
       }
@@ -969,9 +985,10 @@ regressionTest.describe('dropdown transition visibility', () => {
 
   async function expectPlacementAfterScroll(
     page: Page,
-    placement: 'bottom-start' | 'top-start' | 'left-start' | 'right-start'
+    placement: VisibilityTestPlacement
   ) {
     const dropdown = page.locator('#transform-dropdown');
+    const side = getPlacementSide(placement);
 
     await moveTriggerToPlacementEdge(page, placement);
 
@@ -981,21 +998,21 @@ regressionTest.describe('dropdown transition visibility', () => {
       expect(visibility.visibleWidth).toBeGreaterThan(8);
       expect(visibility.visibleHeight).toBeGreaterThan(8);
 
-      switch (placement) {
-        case 'top-start':
+      switch (side) {
+        case 'top':
           expect(visibility.triggerBottom).toBeGreaterThan(
             visibility.containerBottom
           );
           break;
-        case 'bottom-start':
+        case 'bottom':
           expect(visibility.triggerTop).toBeLessThan(visibility.containerTop);
           break;
-        case 'left-start':
+        case 'left':
           expect(visibility.triggerRight).toBeGreaterThan(
             visibility.containerRight
           );
           break;
-        case 'right-start':
+        case 'right':
           expect(visibility.triggerLeft).toBeLessThan(visibility.containerLeft);
           break;
       }
@@ -1020,17 +1037,14 @@ regressionTest.describe('dropdown transition visibility', () => {
         border: 1px solid #cbd5dc;
       }
 
-      .overflow-auto {
-        overflow: auto;
-      }
-
       .transform-scroll {
         overflow: auto;
       }
 
       .content {
         height: 500px;
-        padding-top: 140px;
+        min-width: 120rem;
+        padding: 40rem;
       }
 
       .manual-dropdown {
@@ -1041,7 +1055,7 @@ regressionTest.describe('dropdown transition visibility', () => {
       }
     </style>
     <div class="container transform-scroll" id="transform-container">
-      <div class="content" style="padding: 40rem; min-width: 120rem">
+      <div class="content">
         <ix-button id="transform-trigger" aria-label="Trigger">Hello</ix-button>
       </div>
 
@@ -1174,6 +1188,19 @@ regressionTest.describe('dropdown transition visibility', () => {
     'change placement to left-start for partial trigger visibility',
     async ({ page }) => {
       await expectPlacementAfterScroll(page, 'left-start');
+    }
+  );
+
+  regressionTest(
+    'preserve end alignment when changing placement for partial trigger visibility',
+    async ({ page }) => {
+      const dropdown = page.locator('#transform-dropdown');
+
+      await dropdown.evaluate(
+        (element: HTMLIxDropdownElement) => (element.placement = 'bottom-end')
+      );
+
+      await expectPlacementAfterScroll(page, 'top-end');
     }
   );
 });
