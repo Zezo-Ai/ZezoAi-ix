@@ -126,14 +126,7 @@
   }
 }
 
-:host(.no-backdrop) {
-  dialog::backdrop {
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-  }
-}
-
-/* Non-modal (`dialog.show()`): no dimmed overlay; guard if UA paints ::backdrop */
+:host(.no-backdrop),
 :host(.non-blocking) {
   dialog::backdrop {
     background-color: transparent !important;

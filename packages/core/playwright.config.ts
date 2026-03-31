@@ -61,6 +61,9 @@ const config: PlaywrightTestConfig = {
   webServer: {
     command: 'pnpm run host-root',
     port: 8080,
+    // Match framework test apps: reuse CT host on 8080 locally; always start fresh in CI.
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    reuseExistingServer: !process.env.CI,
   },
   retries: 3,
 };

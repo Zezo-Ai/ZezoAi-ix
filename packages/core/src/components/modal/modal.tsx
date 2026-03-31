@@ -20,6 +20,7 @@ import {
 import { animate } from 'animejs';
 import { A11yAttributes, a11yBoolean, a11yHostAttributes } from '../utils/a11y';
 import Animation from '../utils/animation';
+import { applyIxModalNonBlockingInitialFocus } from '../utils/modal/modal';
 import { OnListener } from '../utils/listener';
 import { waitForElement } from '../utils/waitForElement';
 import { IxModalSize } from './modal.types';
@@ -50,8 +51,8 @@ export class Modal {
   @Prop() hideBackdrop = false;
 
   /**
-   * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is
-   * `true` — use explicit actions, Escape (unless **`disableEscapeClose`**), or `dismissModal` / `closeModal` instead.
+   * Dismiss modal on backdrop click (outside the dialog panel).
+   * Ignored when **`isNonBlocking`** is `true`.
    */
   @Prop() closeOnBackdropClick = false;
 
@@ -74,12 +75,8 @@ export class Modal {
   @Prop() disableEscapeClose = false;
 
   /**
-   * Open as a non-modal dialog. Page stays interactive, no lightbox, no focus trap, and `aria-modal` is `false`.
-   *
-   * Set before calling `showModal()` on this element; changing while open is unsupported.
-   * **`closeOnBackdropClick`** has no effect. After open, initial focus moves into the panel (autofocus
-   * control, then header close, then first focusable, then the dialog). Use `aria-labelledby`,
-   * `aria-describedby`, host **`aria-label`**, and page landmarks so users can orient when focus moves outside.
+   * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`.
+   * Set before calling `showModal()`; changing while open is unsupported.
    */
   @Prop({ reflect: true }) isNonBlocking = false;
 
@@ -210,8 +207,12 @@ export class Modal {
       }
       this.slideInModal();
       if (this.isNonBlocking) {
+        // Double rAF: :host(.visible) and framework portals (e.g. React) may commit slotted children
+        // a frame after open.
         requestAnimationFrame(() => {
-          void this.focusNonBlockingInitial();
+          requestAnimationFrame(() => {
+            applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
+          });
         });
       }
     } catch {
@@ -219,100 +220,11 @@ export class Modal {
     }
   }
 
-  /**
-   * Non-blocking `show()` uses HTML `closedby` Auto → None, so Escape may not request close.
-   * Map explicitly to match blocking semantics; `none` when Escape must not dismiss.
-   */
   private closedbyForDialog(): 'closerequest' | 'none' | undefined {
     if (!this.isNonBlocking) {
       return undefined;
     }
     return this.disableEscapeClose ? 'none' : 'closerequest';
-  }
-
-  private focusNonBlockingInitial() {
-    if (!this.isNonBlocking || !this.modalVisible) {
-      return;
-    }
-
-    const host = this.hostElement;
-
-    const tryFocus = (el: Element | null | undefined): boolean => {
-      if (!el || !(el instanceof HTMLElement)) {
-        return false;
-      }
-      try {
-        el.focus({ preventScroll: true });
-        return true;
-      } catch {
-        return false;
-      }
-    };
-
-    /** Pre-order walk over light DOM + descendant shadow roots (modal children are in light DOM; close button and controls live in nested shadows). */
-    const findFirst = (
-      matcher: (el: Element) => boolean
-    ): HTMLElement | null => {
-      const visit = (el: Element): HTMLElement | null => {
-        if (matcher(el)) {
-          return el as HTMLElement;
-        }
-        if (el.shadowRoot) {
-          for (const c of Array.from(el.shadowRoot.children)) {
-            const hit = visit(c as Element);
-            if (hit) {
-              return hit;
-            }
-          }
-        }
-        for (const c of Array.from(el.children)) {
-          const hit = visit(c as Element);
-          if (hit) {
-            return hit;
-          }
-        }
-        return null;
-      };
-
-      for (const c of Array.from(host.children)) {
-        const hit = visit(c as Element);
-        if (hit) {
-          return hit;
-        }
-      }
-      return null;
-    };
-
-    const autofocusEl = findFirst((el) =>
-      el.matches('[autofocus], [auto-focus]')
-    );
-    if (tryFocus(autofocusEl)) {
-      return;
-    }
-
-    const header = host.querySelector('ix-modal-header');
-    const closeBtn = header?.shadowRoot?.querySelector<HTMLElement>(
-      'ix-icon-button.modal-close'
-    );
-    if (tryFocus(closeBtn)) {
-      return;
-    }
-
-    const focusableSelector =
-      'ix-button, ix-icon-button, ix-toggle, ix-dropdown, ix-select, ix-input, ix-textarea, ix-checkbox, ix-radio, ix-datetime-input, ix-number-input, button, a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])';
-
-    const firstFocusable = findFirst((el) => el.matches(focusableSelector));
-    if (tryFocus(firstFocusable)) {
-      return;
-    }
-
-    const dlg = this.dialog;
-    if (dlg) {
-      if (!dlg.hasAttribute('tabindex')) {
-        dlg.setAttribute('tabindex', '-1');
-      }
-      tryFocus(dlg);
-    }
   }
 
   /**

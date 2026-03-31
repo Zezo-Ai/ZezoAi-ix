@@ -9,6 +9,10 @@
 
 import type { IxModalSize } from '../../modal/modal.types';
 import { getCoreDelegate, resolveDelegate } from '../delegate';
+import {
+  tryFocusElement,
+  tryFocusFirstDescendantDeep,
+} from '../focus/focus-utilities';
 import { TypedEvent } from '../typed-event';
 
 /**
@@ -118,6 +122,59 @@ function getIxModal(element: Element) {
 }
 
 /**
+ * Focus order for non-modal `ix-modal` after `dialog.subtree` `[autofocus]` (usually only hits if
+ * focusables are real descendants of `<dialog>`), then `modalHost` deep `[autofocus]`, header close,
+ * first focusable in light/nested shadow DOM, then the `dialog` element.
+ * Call after two nested `requestAnimationFrame` ticks from `ix-modal.showModal()` so
+ * `:host(.visible)` and framework portals can commit slotted content before focusing.
+ */
+export const IX_MODAL_NON_BLOCKING_FOCUSABLE_SELECTOR =
+  'ix-button, ix-icon-button, ix-toggle, ix-dropdown, ix-select, ix-input, ix-textarea, ix-checkbox, ix-radio, ix-datetime-input, ix-number-input, button, a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])';
+
+export function applyIxModalNonBlockingInitialFocus(
+  modalHost: HTMLIxModalElement,
+  dialogElement: HTMLDialogElement | null | undefined
+): void {
+  if (!modalHost.isNonBlocking || !dialogElement?.open) {
+    return;
+  }
+
+  const noScroll = { preventScroll: true } as const;
+
+  if (
+    tryFocusFirstDescendantDeep(
+      modalHost,
+      '[autofocus], [auto-focus]',
+      noScroll
+    )
+  ) {
+    return;
+  }
+
+  const closeBtn = modalHost
+    .querySelector('ix-modal-header')
+    ?.shadowRoot?.querySelector<HTMLElement>('ix-icon-button.modal-close');
+  if (tryFocusElement(closeBtn, noScroll)) {
+    return;
+  }
+
+  if (
+    tryFocusFirstDescendantDeep(
+      modalHost,
+      IX_MODAL_NON_BLOCKING_FOCUSABLE_SELECTOR,
+      noScroll
+    )
+  ) {
+    return;
+  }
+
+  if (!dialogElement.hasAttribute('tabindex')) {
+    dialogElement.setAttribute('tabindex', '-1');
+  }
+  tryFocusElement(dialogElement, noScroll);
+}
+
+/**
  * Close closest ix-modal relative to a provided element
  */
 export function closeModal<TClose = any>(
@@ -188,7 +245,12 @@ export async function showModal<T>(
     }
   );
 
+  // Non-blocking: ix-modal.showModal() defers full focus via applyIxModalNonBlockingInitialFocus.
   requestAnimationFrame(() => {
+    if (dialogRef.isNonBlocking) {
+      return;
+    }
+
     const autofocusElement = dialogRef.querySelector(
       '[autofocus],[auto-focus]'
     );

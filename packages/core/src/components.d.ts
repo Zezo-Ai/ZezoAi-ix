@@ -2761,7 +2761,7 @@ export namespace Components {
          */
         "closeModal": <T = unknown>(reason: T) => Promise<void>;
         /**
-          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true` — use explicit actions, Escape (unless **`disableEscapeClose`**), or `dismissModal` / `closeModal` instead.
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true`.
           * @default false
          */
         "closeOnBackdropClick": boolean;
@@ -2785,7 +2785,7 @@ export namespace Components {
          */
         "hideBackdrop": boolean;
         /**
-          * Open as a non-modal dialog. Page stays interactive, no lightbox, no focus trap, and `aria-modal` is `false`.  Set before calling `showModal()` on this element; changing while open is unsupported. **`closeOnBackdropClick`** has no effect. After open, initial focus moves into the panel (autofocus control, then header close, then first focusable, then the dialog). Use `aria-labelledby`, `aria-describedby`, host **`aria-label`**, and page landmarks so users can orient when focus moves outside.
+          * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`. Set before calling `showModal()`; changing while open is unsupported.
           * @default false
          */
         "isNonBlocking": boolean;
@@ -9219,7 +9219,7 @@ declare namespace LocalJSX {
          */
         "centered"?: boolean;
         /**
-          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true` — use explicit actions, Escape (unless **`disableEscapeClose`**), or `dismissModal` / `closeModal` instead.
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true`.
           * @default false
          */
         "closeOnBackdropClick"?: boolean;
@@ -9239,7 +9239,7 @@ declare namespace LocalJSX {
          */
         "hideBackdrop"?: boolean;
         /**
-          * Open as a non-modal dialog. Page stays interactive, no lightbox, no focus trap, and `aria-modal` is `false`.  Set before calling `showModal()` on this element; changing while open is unsupported. **`closeOnBackdropClick`** has no effect. After open, initial focus moves into the panel (autofocus control, then header close, then first focusable, then the dialog). Use `aria-labelledby`, `aria-describedby`, host **`aria-label`**, and page landmarks so users can orient when focus moves outside.
+          * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`. Set before calling `showModal()`; changing while open is unsupported.
           * @default false
          */
         "isNonBlocking"?: boolean;
