@@ -44,7 +44,9 @@ describe('ThemeSwitcher', () => {
 
               const value = values[propertyName];
 
-              return value === undefined ? undefined : { toString: () => value };
+              return value === undefined
+                ? undefined
+                : { toString: () => value };
             }),
           }))
         : undefined,
@@ -135,7 +137,11 @@ describe('ThemeSwitcher', () => {
   it('falls back to getComputedStyle when Typed OM is unavailable', async () => {
     const { themeSwitcher } = await loadThemeSwitcher();
 
-    setComputedStyleValues({ colorSchema: 'dark', theme: 'brand', withTypedOm: false });
+    setComputedStyleValues({
+      colorSchema: 'dark',
+      theme: 'brand',
+      withTypedOm: false,
+    });
 
     expect(themeSwitcher.getComputedStyleColorSchema()).toBe('dark');
     expect(themeSwitcher.getComputedStyleTheme()).toBe('brand');
