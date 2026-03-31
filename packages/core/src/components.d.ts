@@ -394,11 +394,6 @@ export namespace Components {
          */
         "alignment": 'center' | 'start';
         /**
-          * ARIA label for the button Will be set as aria-label on the nested HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -2108,11 +2103,6 @@ export namespace Components {
     }
     interface IxIconButton {
         /**
-          * Accessibility label for the icon button Will be set as aria-label on the nested HTML button element
-          * @deprecated Set the native `aria-label` on the ix-icon-button host element. Will be removed in 5.0.0
-         */
-        "a11yLabel"?: string;
-        /**
           * Disabled
           * @default false
          */
@@ -2428,10 +2418,6 @@ export namespace Components {
          */
         "applicationName"?: string;
         /**
-          * @default false
-         */
-        "enableMapExpand": boolean;
-        /**
           * Show toggle between light and dark variant. Only if the provided theme have implemented both!
           * @default false
          */
@@ -2448,15 +2434,9 @@ export namespace Components {
         "i18nCollapse": string;
         /**
           * i18n label for 'Expand' button
-          * @default ' Expand'
+          * @default 'Expand'
          */
         "i18nExpand": string;
-        /**
-          * Accessibility i18n label for the burger menu of the sidebar
-          * @deprecated Since 4.2.0. Will be removed in 5.0.0. The expand button is now hidden from screen readers with aria-hidden="true".
-          * @default 'Expand sidebar'
-         */
-        "i18nExpandSidebar": string;
         /**
           * i18n label for 'About & legal information' button
           * @default 'About & legal information'
@@ -2648,11 +2628,15 @@ export namespace Components {
          */
         "expanded": boolean;
         /**
-          * Accessibility label for the menu expand icon
-          * @deprecated This prop is no longer used as the component is hidden from screen readers (aria-hidden="true"). Will be removed in 5.0.0
+          * i18n label for 'Collapse' button
+          * @default 'Collapse'
+         */
+        "i18nCollapse": string;
+        /**
+          * i18n label for 'Expand' button
           * @default 'Expand'
          */
-        "ixAriaLabel"?: string;
+        "i18nExpand": string;
         /**
           * Display as pinned
           * @default false
@@ -6697,11 +6681,6 @@ declare namespace LocalJSX {
          */
         "alignment"?: 'center' | 'start';
         /**
-          * ARIA label for the button Will be set as aria-label on the nested HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -8531,11 +8510,6 @@ declare namespace LocalJSX {
     }
     interface IxIconButton {
         /**
-          * Accessibility label for the icon button Will be set as aria-label on the nested HTML button element
-          * @deprecated Set the native `aria-label` on the ix-icon-button host element. Will be removed in 5.0.0
-         */
-        "a11yLabel"?: string;
-        /**
           * Disabled
           * @default false
          */
@@ -8858,10 +8832,6 @@ declare namespace LocalJSX {
          */
         "applicationName"?: string;
         /**
-          * @default false
-         */
-        "enableMapExpand"?: boolean;
-        /**
           * Show toggle between light and dark variant. Only if the provided theme have implemented both!
           * @default false
          */
@@ -8878,15 +8848,9 @@ declare namespace LocalJSX {
         "i18nCollapse"?: string;
         /**
           * i18n label for 'Expand' button
-          * @default ' Expand'
+          * @default 'Expand'
          */
         "i18nExpand"?: string;
-        /**
-          * Accessibility i18n label for the burger menu of the sidebar
-          * @deprecated Since 4.2.0. Will be removed in 5.0.0. The expand button is now hidden from screen readers with aria-hidden="true".
-          * @default 'Expand sidebar'
-         */
-        "i18nExpandSidebar"?: string;
         /**
           * i18n label for 'About & legal information' button
           * @default 'About & legal information'
@@ -9110,11 +9074,15 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Accessibility label for the menu expand icon
-          * @deprecated This prop is no longer used as the component is hidden from screen readers (aria-hidden="true"). Will be removed in 5.0.0
+          * i18n label for 'Collapse' button
+          * @default 'Collapse'
+         */
+        "i18nCollapse"?: string;
+        /**
+          * i18n label for 'Expand' button
           * @default 'Expand'
          */
-        "ixAriaLabel"?: string;
+        "i18nExpand"?: string;
         /**
           * Display as pinned
           * @default false
@@ -11199,7 +11167,6 @@ declare namespace LocalJSX {
         "isCurrentPage": boolean;
     }
     interface IxButtonAttributes {
-        "ariaLabelButton": string;
         "variant": ButtonVariant;
         "disabled": boolean;
         "type": 'button' | 'submit';
@@ -11588,7 +11555,6 @@ declare namespace LocalJSX {
         "warningText": string;
     }
     interface IxIconButtonAttributes {
-        "a11yLabel": string;
         "variant": IconButtonVariant;
         "oval": boolean;
         "icon": string;
@@ -11665,10 +11631,8 @@ declare namespace LocalJSX {
         "showSettings": boolean;
         "showAbout": boolean;
         "enableToggleTheme": boolean;
-        "enableMapExpand": boolean;
         "applicationName": string;
         "applicationDescription": string;
-        "i18nExpandSidebar": string;
         "expand": boolean;
         "startExpanded": boolean;
         "pinned": boolean;
@@ -11716,10 +11680,11 @@ declare namespace LocalJSX {
         "tooltipText": string;
     }
     interface IxMenuExpandIconAttributes {
+        "i18nExpand": string;
+        "i18nCollapse": string;
         "expanded": boolean;
         "breakpoint": Breakpoint;
         "pinned": boolean;
-        "ixAriaLabel": string;
     }
     interface IxMenuItemAttributes {
         "label": string;
