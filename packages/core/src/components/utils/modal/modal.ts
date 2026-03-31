@@ -48,7 +48,7 @@ export interface ModalConfig<TReason = any, CONTENT = any> {
    */
   backdrop?: boolean;
   /**
-   * Dismiss modal on backdrop click
+   * Dismiss modal on backdrop click (ignored when **`isNonBlocking`** is `true`)
    */
   closeOnBackdropClick?: boolean;
   /**
@@ -59,6 +59,17 @@ export interface ModalConfig<TReason = any, CONTENT = any> {
    * Center modal vertically
    */
   centered?: boolean;
+  /**
+   * Open as a non-modal dialog (no lightbox; page stays interactive). Same semantics as
+   * **`HTMLIxModalElement.isNonBlocking`**. Set before the imperative `showModal()` call on the
+   * element.
+   *
+   * Initial focus follows the core component (`[autofocus]`, header close, first control). There is
+   * no focus trap; the page stays keyboard-reachable. Escape dismisses unless **`disableEscapeClose`**
+   * is set on the modal. Prefer **`aria-labelledby`** / **`aria-describedby`** (or host **`aria-label`**)
+   * so assistive tech names the dialog when it opens.
+   */
+  isNonBlocking?: boolean;
   /**
    * Element to attach modal to
    *

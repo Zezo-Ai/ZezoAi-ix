@@ -1368,7 +1368,8 @@ export const IxModal: StencilReactComponent<IxModalElement, IxModalEvents> = /*@
         hideBackdrop: 'hide-backdrop',
         closeOnBackdropClick: 'close-on-backdrop-click',
         centered: 'centered',
-        disableEscapeClose: 'disable-escape-close'
+        disableEscapeClose: 'disable-escape-close',
+        isNonBlocking: 'is-non-blocking'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxModal as ReactWebComponent<IxModalElement, IxModalEvents>,

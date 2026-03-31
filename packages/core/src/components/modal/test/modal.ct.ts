@@ -285,6 +285,305 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
   );
 });
 
+regressionTest.describe('isNonBlocking', () => {
+  regressionTest(
+    'showModal config should set non-blocking mode',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await expect(page.locator('ix-modal')).toHaveClass(/non-blocking/);
+      await expect(page.locator('ix-modal dialog')).toHaveAttribute(
+        'aria-modal',
+        'false'
+      );
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should not close on backdrop click',
+    async ({ mount, page }) => {
+      await mount(`<ix-button>Background</ix-button>`);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          closeOnBackdropClick: true,
+          animation: false,
+        });
+      });
+
+      await page.waitForTimeout(300);
+      const dialog = page.locator('ix-modal dialog');
+      await expect(dialog).toBeVisible();
+
+      await page.mouse.click(20, 20);
+      await page.waitForTimeout(400);
+      await expect(dialog).toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should allow clicking content behind the dialog',
+    async ({ mount, page }) => {
+      await mount(`<ix-button id="bg">Behind</ix-button>`);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        document.getElementById('bg')?.addEventListener('click', () => {
+          (window as Window & { __nbBgClick?: boolean }).__nbBgClick = true;
+        });
+      });
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+      await page.locator('#bg').click();
+      expect(
+        await page.evaluate(
+          () => (window as Window & { __nbBgClick?: boolean }).__nbBgClick
+        )
+      ).toBe(true);
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should close when header close button is pressed',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      const dialog = page.locator('ix-modal dialog');
+      await expect(dialog).toBeVisible();
+      await page.locator('ix-icon-button').click();
+      await expect(dialog).not.toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should close when dismissModal is called',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      const dialog = page.locator('ix-modal dialog');
+      await expect(dialog).toBeVisible();
+
+      await page.evaluate(() => {
+        const modal = document.querySelector('ix-modal');
+        if (modal) {
+          window.dismissModal(modal);
+        }
+      });
+
+      await expect(dialog).not.toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should move initial focus inside the panel',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await page.waitForTimeout(250);
+      await expect(
+        page.locator('ix-modal ix-icon-button.modal-close')
+      ).toBeFocused();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should allow moving focus outside the dialog',
+    async ({ mount, page }) => {
+      await mount(`<ix-button id="behind">Behind</ix-button>`);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await page.waitForTimeout(250);
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+      await page.evaluate(() => {
+        document.getElementById('behind')?.focus();
+      });
+      await expect(page.locator('#behind')).toBeFocused();
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should close on Escape when focus is inside',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await page.waitForTimeout(250);
+      await page.locator('ix-modal ix-icon-button.modal-close').focus();
+      await page.keyboard.press('Escape');
+      await expect(page.locator('ix-modal dialog')).not.toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal should not close on Escape when disableEscapeClose is true',
+    async ({ mount, page }) => {
+      await mount(``);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.disableEscapeClose = true;
+        elm.innerHTML = `
+      <ix-modal-header>Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          isNonBlocking: true,
+          animation: false,
+        });
+      });
+
+      await page.waitForTimeout(250);
+      await page.locator('ix-modal ix-icon-button.modal-close').focus();
+      await page.keyboard.press('Escape');
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+    }
+  );
+
+  regressionTest(
+    'non-blocking modal accessibility',
+    async ({ mount, page, makeAxeBuilder }) => {
+      await mount(`<main></main>`);
+      await setupModalEnvironment(page);
+      await page.waitForTimeout(500);
+
+      await page.evaluate(() => {
+        const elm = document.createElement('ix-modal');
+        elm.isNonBlocking = true;
+        elm.setAttribute('aria-labelledby', 'nb-axe-title');
+        elm.innerHTML = `
+      <ix-modal-header id="nb-axe-title">Title</ix-modal-header>
+      <ix-modal-content>Content</ix-modal-content>
+    `;
+        window.showModal({
+          content: elm,
+          animation: false,
+        });
+      });
+
+      await expect(page.locator('ix-modal dialog')).toBeVisible();
+      await page.waitForTimeout(250);
+      const accessibilityScanResults = await makeAxeBuilder().analyze();
+      expect(accessibilityScanResults.violations).toEqual([]);
+    }
+  );
+});
+
 regressionTest('emits one event on close', async ({ mount, page }) => {
   await mount(``);
 

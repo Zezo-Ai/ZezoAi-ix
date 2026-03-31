@@ -1,0 +1,53 @@
+<!--
+SPDX-FileCopyrightText: 2024 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modal non-blocking example</title>
+  </head>
+  <body>
+    <main>
+      <p>Content behind the dialog</p>
+      <ix-button id="behind">Behind control</ix-button>
+    </main>
+    <ix-button id="open">Show non-blocking modal</ix-button>
+    <template id="modal-non-blocking-template">
+      <ix-modal-header>Message headline</ix-modal-header>
+      <ix-modal-content>Message text lorem ipsum</ix-modal-content>
+      <ix-modal-footer>
+        <ix-button variant="subtle-primary" data-cancel>Cancel</ix-button>
+        <ix-button data-okay>OK</ix-button>
+      </ix-modal-footer>
+    </template>
+
+    <script type="module">
+      import { showModal, closeModal, dismissModal } from '@siemens/ix';
+
+      document.getElementById('open').addEventListener('click', async () => {
+        const modal = document.createElement('ix-modal');
+        modal.isNonBlocking = true;
+        const template = document.getElementById(
+          'modal-non-blocking-template'
+        );
+        modal.appendChild(template.content.cloneNode(true));
+
+        const cancelButton = modal.querySelector('[data-cancel]');
+        const okayButton = modal.querySelector('[data-okay]');
+        cancelButton.addEventListener('click', () => dismissModal(modal));
+        okayButton.addEventListener('click', () => closeModal(modal, 'ok'));
+
+        await showModal({ content: modal });
+      });
+    </script>
+    <script type="module" src="./init.js"></script>
+  </body>
+</html>

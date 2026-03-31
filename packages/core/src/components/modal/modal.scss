@@ -133,6 +133,14 @@
   }
 }
 
+/* Non-modal (`dialog.show()`): no dimmed overlay; guard if UA paints ::backdrop */
+:host(.non-blocking) {
+  dialog::backdrop {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+  }
+}
+
 :host(.with-icon) {
   ::slotted(ix-modal-footer),
   ::slotted(ix-modal-content) {

@@ -2761,7 +2761,7 @@ export namespace Components {
          */
         "closeModal": <T = unknown>(reason: T) => Promise<void>;
         /**
-          * Dismiss modal on backdrop click
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true` — use explicit actions, Escape (unless **`disableEscapeClose`**), or `dismissModal` / `closeModal` instead.
           * @default false
          */
         "closeOnBackdropClick": boolean;
@@ -2784,6 +2784,11 @@ export namespace Components {
           * @default false
          */
         "hideBackdrop": boolean;
+        /**
+          * Open as a non-modal dialog. Page stays interactive, no lightbox, no focus trap, and `aria-modal` is `false`.  Set before calling `showModal()` on this element; changing while open is unsupported. **`closeOnBackdropClick`** has no effect. After open, initial focus moves into the panel (autofocus control, then header close, then first focusable, then the dialog). Use `aria-labelledby`, `aria-describedby`, host **`aria-label`**, and page landmarks so users can orient when focus moves outside.
+          * @default false
+         */
+        "isNonBlocking": boolean;
         /**
           * Show the dialog
          */
@@ -9214,7 +9219,7 @@ declare namespace LocalJSX {
          */
         "centered"?: boolean;
         /**
-          * Dismiss modal on backdrop click
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true` — use explicit actions, Escape (unless **`disableEscapeClose`**), or `dismissModal` / `closeModal` instead.
           * @default false
          */
         "closeOnBackdropClick"?: boolean;
@@ -9233,6 +9238,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "hideBackdrop"?: boolean;
+        /**
+          * Open as a non-modal dialog. Page stays interactive, no lightbox, no focus trap, and `aria-modal` is `false`.  Set before calling `showModal()` on this element; changing while open is unsupported. **`closeOnBackdropClick`** has no effect. After open, initial focus moves into the panel (autofocus control, then header close, then first focusable, then the dialog). Use `aria-labelledby`, `aria-describedby`, host **`aria-label`**, and page landmarks so users can orient when focus moves outside.
+          * @default false
+         */
+        "isNonBlocking"?: boolean;
         /**
           * Dialog close
          */
@@ -11704,6 +11714,7 @@ declare namespace LocalJSX {
         "closeOnBackdropClick": boolean;
         "centered": boolean;
         "disableEscapeClose": boolean;
+        "isNonBlocking": boolean;
     }
     interface IxModalHeaderAttributes {
         "hideClose": boolean;
