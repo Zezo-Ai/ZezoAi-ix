@@ -6,28 +6,48 @@ describe('ThemeSwitcher', () => {
   let mediaChangeListener: ((event: MediaQueryListEvent) => void) | undefined;
   let mutationCallback: MutationCallback | undefined;
   let disconnectMock: jest.Mock;
+  let removeEventListenerMock: jest.Mock;
 
   const setComputedStyleValues = ({
     colorSchema,
     theme,
+    withTypedOm = true,
   }: {
     colorSchema?: string;
     theme?: string;
+    withTypedOm?: boolean;
   } = {}) => {
-    Object.defineProperty(document.documentElement, 'computedStyleMap', {
+    Object.defineProperty(globalThis, 'getComputedStyle', {
       configurable: true,
+      writable: true,
       value: jest.fn(() => ({
-        get: jest.fn((propertyName: string) => {
+        getPropertyValue: jest.fn((propertyName: string) => {
           const values: Record<string, string | undefined> = {
             '--theme-color-schema': colorSchema,
             '--theme-name': theme,
           };
 
-          const value = values[propertyName];
-
-          return value === undefined ? undefined : { toString: () => value };
+          return values[propertyName] ?? '';
         }),
       })),
+    });
+
+    Object.defineProperty(document.documentElement, 'computedStyleMap', {
+      configurable: true,
+      value: withTypedOm
+        ? jest.fn(() => ({
+            get: jest.fn((propertyName: string) => {
+              const values: Record<string, string | undefined> = {
+                '--theme-color-schema': colorSchema,
+                '--theme-name': theme,
+              };
+
+              const value = values[propertyName];
+
+              return value === undefined ? undefined : { toString: () => value };
+            }),
+          }))
+        : undefined,
     });
   };
 
@@ -45,6 +65,7 @@ describe('ThemeSwitcher', () => {
     mediaChangeListener = undefined;
     mutationCallback = undefined;
     disconnectMock = jest.fn();
+    removeEventListenerMock = jest.fn();
 
     document.documentElement.removeAttribute('data-ix-theme');
     document.documentElement.removeAttribute('data-ix-color-schema');
@@ -85,9 +106,13 @@ describe('ThemeSwitcher', () => {
             }
           }
         ),
-        removeEventListener: jest.fn(),
+        removeEventListener: removeEventListenerMock,
       })),
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('returns the explicit color schema from the dataset', async () => {
@@ -103,7 +128,23 @@ describe('ThemeSwitcher', () => {
 
     setComputedStyleValues({ colorSchema: 'light' });
 
+    expect(themeSwitcher.getColorSchema()).toBe('light');
     expect(themeSwitcher.getMode()).toBe('light');
+  });
+
+  it('falls back to getComputedStyle when Typed OM is unavailable', async () => {
+    const { themeSwitcher } = await loadThemeSwitcher();
+
+    setComputedStyleValues({ colorSchema: 'dark', theme: 'brand', withTypedOm: false });
+
+    expect(themeSwitcher.getComputedStyleColorSchema()).toBe('dark');
+    expect(themeSwitcher.getComputedStyleTheme()).toBe('brand');
+  });
+
+  it('returns system as the configured schema when no dataset value is set', async () => {
+    const { themeSwitcher } = await loadThemeSwitcher();
+
+    expect(themeSwitcher.getColorSchema()).toBe('system');
   });
 
   it('falls back to the system appearance when no explicit or computed color schema exists', async () => {
@@ -156,15 +197,15 @@ describe('ThemeSwitcher', () => {
     expect(document.documentElement.dataset.ixColorSchema).toBe('dark');
   });
 
-  it('reuses the current mode when setting a theme without an explicit color schema', async () => {
+  it('preserves the configured color schema when setting a theme without an explicit color schema', async () => {
     const { themeSwitcher } = await loadThemeSwitcher();
 
-    setComputedStyleValues({ colorSchema: 'light' });
+    document.documentElement.dataset.ixColorSchema = 'system';
 
     themeSwitcher.setTheme('classic');
 
     expect(document.documentElement.dataset.ixTheme).toBe('classic');
-    expect(document.documentElement.dataset.ixColorSchema).toBe('light');
+    expect(document.documentElement.dataset.ixColorSchema).toBe('system');
   });
 
   it('toggles between explicit light and dark color schemas', async () => {
@@ -242,6 +283,60 @@ describe('ThemeSwitcher', () => {
     expect(listener).toHaveBeenLastCalledWith({
       theme: 'classic',
       colorSchema: 'dark',
+      mode: 'dark',
+      isMediaChange: false,
+    });
+  });
+
+  it('emits both configured schema and resolved mode for system color schema changes', async () => {
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: jest.fn(() => ({
+        matches: true,
+        addEventListener: jest.fn(
+          (
+            eventName: string,
+            listener: (event: MediaQueryListEvent) => void
+          ) => {
+            if (eventName === 'change') {
+              mediaChangeListener = listener;
+            }
+          }
+        ),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    const { themeSwitcher } = await loadThemeSwitcher();
+    const listener = jest.fn();
+
+    themeSwitcher.themeChanged.on(listener);
+
+    document.documentElement.dataset.ixTheme = 'classic';
+    document.documentElement.dataset.ixColorSchema = 'system';
+
+    mutationCallback?.(
+      [
+        {
+          addedNodes: [] as unknown as NodeList,
+          type: 'attributes',
+          attributeName: 'data-ix-color-schema',
+          attributeNamespace: null,
+          nextSibling: null,
+          oldValue: null,
+          previousSibling: null,
+          removedNodes: [] as unknown as NodeList,
+          target: document.documentElement,
+        } as unknown as MutationRecord,
+      ],
+      {} as MutationObserver
+    );
+
+    expect(listener).toHaveBeenLastCalledWith({
+      theme: 'classic',
+      colorSchema: 'system',
+      mode: 'dark',
       isMediaChange: false,
     });
   });
@@ -259,6 +354,7 @@ describe('ThemeSwitcher', () => {
     expect(listener).toHaveBeenCalledWith({
       theme: 'classic',
       colorSchema: 'dark',
+      mode: 'dark',
       isMediaChange: true,
     });
   });
@@ -269,5 +365,21 @@ describe('ThemeSwitcher', () => {
     themeSwitcher.destroy();
 
     expect(disconnectMock).toHaveBeenCalled();
+    expect(removeEventListenerMock).toHaveBeenCalledWith(
+      'change',
+      expect.any(Function)
+    );
+  });
+
+  it('falls back to light when matchMedia is unavailable', async () => {
+    const { getCurrentSystemAppearance } = await loadThemeSwitcher();
+
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: undefined,
+    });
+
+    expect(getCurrentSystemAppearance()).toBe('light');
   });
 });

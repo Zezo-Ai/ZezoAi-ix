@@ -10,38 +10,76 @@
 import { TypedEvent } from './typed-event';
 
 export type ThemeVariant = 'light' | 'dark' | 'system';
+export type ThemeMode = Exclude<ThemeVariant, 'system'>;
+export type ThemeChangeEventDetail = {
+  theme?: string;
+  colorSchema: ThemeVariant;
+  mode: ThemeMode;
+  isMediaChange?: boolean;
+};
 
 class ThemeSwitcher {
   private mutationObserver?: MutationObserver;
-  readonly themeChanged = new TypedEvent<{
-    theme?: string;
-    colorSchema: ThemeVariant;
-    isMediaChange?: boolean;
-  }>();
+  private mediaQueryList?: MediaQueryList;
+  private emitThemeChange(isMediaChange: boolean) {
+    this.themeChanged.emit({
+      theme: this.getTheme(),
+      colorSchema: this.getColorSchema(),
+      mode: this.getMode(),
+      isMediaChange,
+    });
+  }
+  private readonly handleMediaQueryChange = () => {
+    this.emitThemeChange(true);
+  };
+  readonly themeChanged = new TypedEvent<ThemeChangeEventDetail>();
 
   /**
    * Use `getMode` instead of this method to get the current color schema, as it also considers the system appearance if no explicit color schema is set.
    * @internal
    */
   public getComputedStyleColorSchema() {
-    return document.documentElement
-      .computedStyleMap()
-      .get('--theme-color-schema');
+    return this.getComputedStyleProperty('--theme-color-schema');
   }
 
   public getComputedStyleTheme() {
-    return document.documentElement.computedStyleMap().get('--theme-name');
+    return this.getComputedStyleProperty('--theme-name');
   }
 
-  public getMode(): ThemeVariant {
+  private getComputedStyleProperty(propertyName: string) {
+    const computedStyleValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(propertyName)
+      .trim();
+
+    return computedStyleValue || undefined;
+  }
+
+  public getColorSchema(): ThemeVariant {
     const colorSchema = document.documentElement.dataset.ixColorSchema;
 
-    if (!colorSchema) {
-      const fallbackColorSchema = this.getComputedStyleColorSchema();
-      if (fallbackColorSchema) {
-        return fallbackColorSchema.toString() as ThemeVariant;
-      }
+    if (
+      colorSchema === 'dark' ||
+      colorSchema === 'light' ||
+      colorSchema === 'system'
+    ) {
+      return colorSchema;
     }
+
+    const resolvedColorSchema = this.getComputedStyleColorSchema();
+
+    if (
+      resolvedColorSchema === 'dark' ||
+      resolvedColorSchema === 'light' ||
+      resolvedColorSchema === 'system'
+    ) {
+      return resolvedColorSchema;
+    }
+
+    return 'system';
+  }
+
+  public getMode(): ThemeMode {
+    const colorSchema = this.getColorSchema();
 
     if (colorSchema === 'dark' || colorSchema === 'light') {
       return colorSchema;
@@ -53,7 +91,7 @@ class ThemeSwitcher {
   public setTheme(themeName: string, colorSchema?: ThemeVariant) {
     document.documentElement.dataset.ixTheme = themeName;
     if (!colorSchema) {
-      this.setColorSchema(this.getMode());
+      this.setColorSchema(this.getColorSchema());
       return;
     }
 
@@ -80,7 +118,7 @@ class ThemeSwitcher {
     if (!currentTheme) {
       const fallbackTheme = this.getComputedStyleTheme();
       if (fallbackTheme) {
-        return fallbackTheme.toString();
+        return fallbackTheme;
       }
     }
 
@@ -92,7 +130,11 @@ class ThemeSwitcher {
   }
 
   public constructor() {
-    if (typeof window === 'undefined' || !window.MutationObserver) {
+    if (
+      typeof window === 'undefined' ||
+      !window.MutationObserver ||
+      !window.matchMedia
+    ) {
       // SSR or unsupported environment, do nothing
       return;
     }
@@ -100,31 +142,18 @@ class ThemeSwitcher {
     this.mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes') {
-          const target = mutation.target as HTMLElement;
           if (
             mutation.attributeName === 'data-ix-theme' ||
             mutation.attributeName === 'data-ix-color-schema'
           ) {
-            this.themeChanged.emit({
-              theme: target.dataset.ixTheme || '',
-              colorSchema:
-                (target.dataset.ixColorSchema as ThemeVariant) || 'system',
-              isMediaChange: false,
-            });
+            this.emitThemeChange(false);
           }
         }
       });
     });
 
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', () => {
-        this.themeChanged.emit({
-          theme: this.getTheme(),
-          colorSchema: this.getMode(),
-          isMediaChange: true,
-        });
-      });
+    this.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+    this.mediaQueryList.addEventListener('change', this.handleMediaQueryChange);
 
     this.mutationObserver.observe(document.documentElement, {
       attributes: true,
@@ -134,10 +163,18 @@ class ThemeSwitcher {
 
   public destroy() {
     this.mutationObserver?.disconnect();
+    this.mediaQueryList?.removeEventListener(
+      'change',
+      this.handleMediaQueryChange
+    );
   }
 }
 
-export const getCurrentSystemAppearance = (): ThemeVariant =>
-  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+export const getCurrentSystemAppearance = (): ThemeMode =>
+  typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+    : 'light';
 
 export const themeSwitcher = new ThemeSwitcher();
