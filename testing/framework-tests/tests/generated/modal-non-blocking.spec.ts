@@ -23,9 +23,11 @@ test('modal-non-blocking', async ({ page }) => {
   await page
     .getByRole('button', { name: 'Show non-blocking modal' })
     .click();
-  await expect(page.getByRole('dialog')).toBeVisible();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
 
-  await expect(page.locator('body')).toMatchAriaSnapshot({
+  // Snapshot the open dialog only so the tree matches across test apps (body layout differs).
+  await expect(dialog).toMatchAriaSnapshot({
     name: 'modal-non-blocking.aria-snapshot.yaml',
   });
 });

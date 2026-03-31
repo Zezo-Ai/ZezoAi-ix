@@ -122,12 +122,13 @@ function getIxModal(element: Element) {
 /**
  * Focus order for non-modal `ix-modal` after `dialog.subtree` `[autofocus]` (usually only hits if
  * focusables are real descendants of `<dialog>`), then `modalHost` deep `[autofocus]`, header close,
- * first focusable in light/nested shadow DOM, then the `dialog` element.
+ * first focusable in light/nested shadow DOM (IX controls, common natives, `contenteditable`,
+ * `summary`), then the `dialog` element.
  * Call after two nested `requestAnimationFrame` ticks from `ix-modal.showModal()` so
  * `:host(.visible)` and framework portals can commit slotted content before focusing.
  */
 export const IX_MODAL_NON_BLOCKING_FOCUSABLE_SELECTOR =
-  'ix-button, ix-icon-button, ix-toggle, ix-dropdown, ix-select, ix-input, ix-textarea, ix-checkbox, ix-radio, ix-datetime-input, ix-number-input, button, a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])';
+  'ix-button, ix-icon-button, ix-toggle, ix-dropdown, ix-select, ix-input, ix-textarea, ix-checkbox, ix-radio, ix-datetime-input, ix-number-input, button, a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]), summary';
 
 export function applyIxModalNonBlockingInitialFocus(
   modalHost: HTMLIxModalElement,

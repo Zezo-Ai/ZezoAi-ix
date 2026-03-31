@@ -8,7 +8,7 @@
  */
 import { expect, Page } from '@playwright/test';
 import { regressionTest } from '@utils/test';
-import { dismissModal, ModalInstance, showModal } from './../../utils/modal';
+import type { ModalInstance } from './../../utils/modal';
 import {
   iconError,
   iconInfo,
@@ -18,11 +18,12 @@ import {
 } from '@siemens/ix-icons/icons';
 
 declare global {
-  interface Window {
-    dismissModal: typeof dismissModal;
-    showModal: typeof showModal;
-    __counter: number;
-  }
+  // Test helpers attached in browser context (see setupModalEnvironment string and page.evaluate).
+  var showModal: typeof import('./../../utils/modal').showModal;
+  var dismissModal: typeof import('./../../utils/modal').dismissModal;
+  var showMessage: any;
+  var __counter: number;
+  var __nbBgClick: boolean | undefined;
 }
 
 async function setupModalEnvironment(page: Page) {
@@ -59,7 +60,7 @@ async function createToggleExample(page: Page) {
     }
 
     setTimeout(() => {
-      window.showModal({
+      globalThis.showModal({
         content: createModalExample(),
         closeOnBackdropClick: true,
       });
@@ -109,7 +110,7 @@ regressionTest('closes on Escape key down', async ({ mount, page }) => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-    window.showModal({
+    globalThis.showModal({
       content: elm,
     });
   });
@@ -299,7 +300,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -327,7 +328,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           closeOnBackdropClick: true,
@@ -354,7 +355,7 @@ regressionTest.describe('isNonBlocking', () => {
 
       await page.evaluate(() => {
         document.getElementById('bg')?.addEventListener('click', () => {
-          (window as Window & { __nbBgClick?: boolean }).__nbBgClick = true;
+          globalThis.__nbBgClick = true;
         });
       });
 
@@ -364,7 +365,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -373,11 +374,7 @@ regressionTest.describe('isNonBlocking', () => {
 
       await expect(page.locator('ix-modal dialog')).toBeVisible();
       await page.locator('#bg').click();
-      expect(
-        await page.evaluate(
-          () => (window as Window & { __nbBgClick?: boolean }).__nbBgClick
-        )
-      ).toBe(true);
+      expect(await page.evaluate(() => globalThis.__nbBgClick)).toBe(true);
       await expect(page.locator('ix-modal dialog')).toBeVisible();
     }
   );
@@ -395,7 +392,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -422,7 +419,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -435,7 +432,7 @@ regressionTest.describe('isNonBlocking', () => {
       await page.evaluate(() => {
         const modal = document.querySelector('ix-modal');
         if (modal) {
-          window.dismissModal(modal);
+          globalThis.dismissModal(modal);
         }
       });
 
@@ -456,7 +453,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -483,7 +480,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -513,7 +510,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -541,7 +538,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           isNonBlocking: true,
           animation: false,
@@ -570,7 +567,7 @@ regressionTest.describe('isNonBlocking', () => {
       <ix-modal-header id="nb-axe-title">Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
     `;
-        window.showModal({
+        globalThis.showModal({
           content: elm,
           animation: false,
         });
@@ -596,7 +593,7 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
       <ix-modal-content>Content</ix-modal-content>
     `;
 
-    window
+    globalThis
       .showModal({
         content: elm,
         // Disable animation to get the direct animation end callback
@@ -604,11 +601,11 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
       })
       .then((instance: ModalInstance<unknown>) => {
         instance.onDismiss.on(() => {
-          const counter = window.__counter;
+          const counter = globalThis.__counter;
           if (counter) {
-            window.__counter = counter + 1;
+            globalThis.__counter = counter + 1;
           } else {
-            window.__counter = 1;
+            globalThis.__counter = 1;
           }
         });
       });
@@ -620,7 +617,7 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
   await iconButton.click();
   await expect(dialog).not.toBeVisible();
 
-  expect(await page.evaluate(() => window.__counter)).toBe(1);
+  expect(await page.evaluate(() => globalThis.__counter)).toBe(1);
 });
 
 regressionTest('button receives focus on load', async ({ mount, page }) => {
@@ -636,12 +633,12 @@ regressionTest('button receives focus on load', async ({ mount, page }) => {
         <ix-button autofocus>OK</ix-button>
       </ix-modal-footer>
     `;
-    window.showModal({
+    globalThis.showModal({
       content: elm,
     });
     const okButton = elm.querySelector('ix-button');
     okButton?.addEventListener('click', () => {
-      window.dismissModal(elm);
+      globalThis.dismissModal(elm);
     });
   });
 
@@ -681,11 +678,7 @@ regressionTest.describe('message utils', () => {
       await setupModalEnvironment(page);
       await page.evaluate(
         ([functionName]) => {
-          (globalThis as any).showMessage[functionName](
-            'title',
-            'message',
-            'okay'
-          );
+          (globalThis.showMessage as any)[functionName]('title', 'message', 'okay');
         },
         [name]
       );
@@ -724,7 +717,7 @@ regressionTest(
       page.evaluate(() => {
         const elm = document.createElement('ix-modal');
         elm.innerHTML = `<div>hi</div>`;
-        (globalThis as typeof globalThis & Window).showModal({
+        globalThis.showModal({
           content: elm,
           centered: true,
         });
@@ -734,7 +727,7 @@ regressionTest(
       page.evaluate(() => {
         const modal = document.querySelector('ix-modal');
         if (modal) {
-          (globalThis as typeof globalThis & Window).dismissModal(modal);
+          globalThis.dismissModal(modal);
         }
       });
 

@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
     </main>
     <script>
       (async () => {
-        await window.customElements.whenDefined('ix-modal');
+        await globalThis.customElements.whenDefined('ix-modal');
         const modal = document.querySelector('ix-modal');
         modal.showModal();
       })();

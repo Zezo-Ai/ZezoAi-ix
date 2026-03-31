@@ -33,6 +33,8 @@ import { IxModalSize } from './modal.types';
 export class Modal {
   private ariaAttributes: A11yAttributes = {};
   private isMouseDownInsideDialog = false;
+  /** Avoid duplicate dismiss if both `cancel` and `keydown` handle Escape (e.g. Chromium + closedby). */
+  private dismissAnimationPending = false;
   @Element() hostElement!: HTMLIxModalElement;
 
   /**
@@ -232,7 +234,7 @@ export class Modal {
    */
   @Method()
   async dismissModal<T = unknown>(reason?: T) {
-    if (!this.modalVisible) {
+    if (!this.modalVisible || this.dismissAnimationPending) {
       return;
     }
 
@@ -246,6 +248,23 @@ export class Modal {
     }
 
     this.closeDialog('dismiss', reason, this.dialogDismiss);
+    //     this.dismissAnimationPending = true;
+    //     this.slideOutModal(() => {
+    //       this.modalVisible = false;
+    //       this.dismissAnimationPending = false;
+    //       this.dialog!.close(
+    //         JSON.stringify(
+    //           {
+    //             type: 'dismiss',
+    //             reason,
+    //           },
+    //           null,
+    //           2
+    //         )
+    //       );
+    //
+    //       this.dialogDismiss.emit(reason);
+    //     });
   }
 
   /**
@@ -289,6 +308,18 @@ export class Modal {
             onClose={() => this.dismissModal()}
             onMouseDown={(event) => this.onMouseDown(event)}
             onMouseUp={(event) => this.onMouseUp(event)}
+            onKeyDown={(e: KeyboardEvent) => {
+              // Non-modal dialogs (`show()`) do not reliably fire `cancel` for Escape;
+              // `closedby` is not universal. Handle Escape here for cross-browser non-blocking close.
+              if (
+                this.isNonBlocking &&
+                e.key === 'Escape' &&
+                !this.disableEscapeClose
+              ) {
+                e.preventDefault();
+                void this.dismissModal();
+              }
+            }}
             onCancel={(e) => {
               e.preventDefault();
               if (!this.disableEscapeClose) {
