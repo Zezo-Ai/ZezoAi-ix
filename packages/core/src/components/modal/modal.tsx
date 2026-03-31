@@ -33,8 +33,6 @@ import { IxModalSize } from './modal.types';
 export class Modal {
   private ariaAttributes: A11yAttributes = {};
   private isMouseDownInsideDialog = false;
-  /** Avoid duplicate dismiss if both `cancel` and `keydown` handle Escape (e.g. Chromium + closedby). */
-  private dismissAnimationPending = false;
   @Element() hostElement!: HTMLIxModalElement;
 
   /**
@@ -222,19 +220,12 @@ export class Modal {
     }
   }
 
-  private closedbyForDialog(): 'closerequest' | 'none' | undefined {
-    if (!this.isNonBlocking) {
-      return undefined;
-    }
-    return this.disableEscapeClose ? 'none' : 'closerequest';
-  }
-
   /**
    * Dismiss the dialog
    */
   @Method()
   async dismissModal<T = unknown>(reason?: T) {
-    if (!this.modalVisible || this.dismissAnimationPending) {
+    if (!this.modalVisible) {
       return;
     }
 
@@ -248,23 +239,6 @@ export class Modal {
     }
 
     this.closeDialog('dismiss', reason, this.dialogDismiss);
-    //     this.dismissAnimationPending = true;
-    //     this.slideOutModal(() => {
-    //       this.modalVisible = false;
-    //       this.dismissAnimationPending = false;
-    //       this.dialog!.close(
-    //         JSON.stringify(
-    //           {
-    //             type: 'dismiss',
-    //             reason,
-    //           },
-    //           null,
-    //           2
-    //         )
-    //       );
-    //
-    //       this.dialogDismiss.emit(reason);
-    //     });
   }
 
   /**
@@ -298,9 +272,6 @@ export class Modal {
             aria-modal={a11yBoolean(!this.isNonBlocking)}
             aria-describedby={this.ariaAttributes['aria-describedby']}
             aria-labelledby={this.ariaAttributes['aria-labelledby']}
-            aria-label={this.ariaAttributes['aria-label']}
-            // @ts-expect-error `closedby` on HTMLDialogElement; Stencil DOM typings may lag.
-            closedby={this.closedbyForDialog()}
             class={{
               modal: true,
               [`modal-size-${this.size}`]: true,
@@ -309,8 +280,6 @@ export class Modal {
             onMouseDown={(event) => this.onMouseDown(event)}
             onMouseUp={(event) => this.onMouseUp(event)}
             onKeyDown={(e: KeyboardEvent) => {
-              // Non-modal dialogs (`show()`) do not reliably fire `cancel` for Escape;
-              // `closedby` is not universal. Handle Escape here for cross-browser non-blocking close.
               if (
                 this.isNonBlocking &&
                 e.key === 'Escape' &&
@@ -322,9 +291,7 @@ export class Modal {
             }}
             onCancel={(e) => {
               e.preventDefault();
-              if (!this.disableEscapeClose) {
-                void this.dismissModal();
-              }
+              void this.dismissModal();
             }}
           >
             <slot></slot>
