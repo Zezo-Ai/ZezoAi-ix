@@ -53,6 +53,6 @@
     "@siemens/ix": "^4.4.0"
   },
   "peerDependencies": {
-    "ag-grid-community": "^33"
+    "ag-grid-community": ">=33"
   }
 }
