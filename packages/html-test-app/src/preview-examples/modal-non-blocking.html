@@ -24,14 +24,6 @@ LICENSE file in the root directory of this source tree.
       </div>
       <ix-button id="open">Show non-blocking modal</ix-button>
     </div>
-    <template id="modal-non-blocking-template">
-      <ix-modal-header>Message headline</ix-modal-header>
-      <ix-modal-content>Message text lorem ipsum</ix-modal-content>
-      <ix-modal-footer>
-        <ix-button variant="subtle-primary" data-cancel>Cancel</ix-button>
-        <ix-button data-okay autofocus>OK</ix-button>
-      </ix-modal-footer>
-    </template>
 
     <script type="module">
       import { showModal, closeModal, dismissModal } from '@siemens/ix';
@@ -39,10 +31,19 @@ LICENSE file in the root directory of this source tree.
       document.getElementById('open').addEventListener('click', async () => {
         const modal = document.createElement('ix-modal');
         modal.isNonBlocking = true;
-        const template = document.getElementById(
-          'modal-non-blocking-template'
+        modal.innerHTML = `
+      <ix-modal-header>Message headline</ix-modal-header>
+      <ix-modal-content>Message text lorem ipsum</ix-modal-content>
+      <ix-modal-footer>
+        <ix-button variant="subtle-primary" data-cancel>Cancel</ix-button>
+        <ix-button data-okay autofocus>OK</ix-button>
+      </ix-modal-footer>
+    `;
+
+        const header = modal.querySelector('ix-modal-header');
+        header.addEventListener('closeClick', () =>
+          dismissModal(header, 'dismiss payload')
         );
-        modal.appendChild(template.content.cloneNode(true));
 
         const cancelButton = modal.querySelector('[data-cancel]');
         const okayButton = modal.querySelector('[data-okay]');

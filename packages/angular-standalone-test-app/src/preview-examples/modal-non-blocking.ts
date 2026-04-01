@@ -7,10 +7,41 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Component } from '@angular/core';
-import { IxButton, IxTypography, ModalService } from '@siemens/ix-angular/standalone';
+import { Component, inject } from '@angular/core';
+import {
+  IxActiveModal,
+  IxButton,
+  IxModalContent,
+  IxModalFooter,
+  IxModalHeader,
+  IxTypography,
+  ModalService,
+} from '@siemens/ix-angular/standalone';
 
-import ModalNonBlockingContent from './modal-non-blocking-content';
+@Component({
+  selector: 'app-modal-non-blocking-content',
+  imports: [IxModalHeader, IxModalContent, IxModalFooter, IxButton],
+  template: `
+    <ix-modal-header (closeClick)="activeModal.dismiss('dismiss payload')">
+      Message headline
+    </ix-modal-header>
+    <ix-modal-content>Message text lorem ipsum</ix-modal-content>
+    <ix-modal-footer>
+      <ix-button
+        variant="subtle-primary"
+        (click)="activeModal.dismiss('dismiss payload')"
+      >
+        Cancel
+      </ix-button>
+      <ix-button autofocus (click)="activeModal.close('close payload!')">
+        OK
+      </ix-button>
+    </ix-modal-footer>
+  `,
+})
+export class ModalNonBlockingContent {
+  readonly activeModal: IxActiveModal = inject(IxActiveModal);
+}
 
 @Component({
   selector: 'app-example',
