@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IxModalHeader,
   IxModalContent,
@@ -20,26 +20,23 @@ import {
   selector: 'app-modal-non-blocking-content',
   imports: [IxModalHeader, IxModalContent, IxModalFooter, IxButton],
   template: `
-    <ix-modal-header> Message headline </ix-modal-header>
-    <ix-modal-content> Message text lorem ipsum </ix-modal-content>
+    <ix-modal-header (closeClick)="activeModal.dismiss('dismiss payload')">
+      Message headline
+    </ix-modal-header>
+    <ix-modal-content>Message text lorem ipsum</ix-modal-content>
     <ix-modal-footer>
       <ix-button
         variant="subtle-primary"
-        class="dismiss-modal"
-        (click)="activeModal.dismiss('dismiss')"
+        (click)="activeModal.dismiss('dismiss payload')"
       >
         Cancel
       </ix-button>
-      <ix-button
-        autofocus
-        class="close-modal"
-        (click)="activeModal.close('okay')"
-      >
+      <ix-button autofocus (click)="activeModal.close('close payload!')">
         OK
       </ix-button>
     </ix-modal-footer>
   `,
 })
 export default class ModalNonBlockingContent {
-  constructor(@Inject(IxActiveModal) readonly activeModal: IxActiveModal) {}
+  readonly activeModal: IxActiveModal = inject(IxActiveModal);
 }

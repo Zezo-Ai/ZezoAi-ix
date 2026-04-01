@@ -15,17 +15,21 @@ LICENSE file in the root directory of this source tree.
     <title>Modal non-blocking example</title>
   </head>
   <body>
-    <main>
-      <p>Content behind the dialog</p>
-      <ix-button id="behind">Behind control</ix-button>
-    </main>
-    <ix-button id="open">Show non-blocking modal</ix-button>
+    <div>
+      <div style="padding: 1rem">
+        <ix-typography format="body" text-color="std">
+          Content behind the dialog
+        </ix-typography>
+        <ix-button id="behind">Behind control</ix-button>
+      </div>
+      <ix-button id="open">Show non-blocking modal</ix-button>
+    </div>
     <template id="modal-non-blocking-template">
       <ix-modal-header>Message headline</ix-modal-header>
       <ix-modal-content>Message text lorem ipsum</ix-modal-content>
       <ix-modal-footer>
         <ix-button variant="subtle-primary" data-cancel>Cancel</ix-button>
-        <ix-button data-okay>OK</ix-button>
+        <ix-button data-okay autofocus>OK</ix-button>
       </ix-modal-footer>
     </template>
 
@@ -42,8 +46,12 @@ LICENSE file in the root directory of this source tree.
 
         const cancelButton = modal.querySelector('[data-cancel]');
         const okayButton = modal.querySelector('[data-okay]');
-        cancelButton.addEventListener('click', () => dismissModal(modal));
-        okayButton.addEventListener('click', () => closeModal(modal, 'ok'));
+        cancelButton.addEventListener('click', () =>
+          dismissModal(cancelButton, 'dismiss payload')
+        );
+        okayButton.addEventListener('click', () =>
+          closeModal(okayButton, 'close payload!')
+        );
 
         await showModal({ content: modal });
       });

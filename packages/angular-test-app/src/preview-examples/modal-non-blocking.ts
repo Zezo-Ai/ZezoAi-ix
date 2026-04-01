@@ -15,13 +15,15 @@ import ModalNonBlockingContent from './modal-non-blocking-content';
   standalone: false,
   selector: 'app-example',
   template: `
-    <div style="padding: 1rem">
-      <ix-typography format="body" text-color="std">
-        Content behind the dialog
-      </ix-typography>
-      <ix-button>Behind control</ix-button>
+    <div>
+      <div style="padding: 1rem">
+        <ix-typography format="body" text-color="std">
+          Content behind the dialog
+        </ix-typography>
+        <ix-button id="behind">Behind control</ix-button>
+      </div>
+      <ix-button (click)="openModal()">Show non-blocking modal</ix-button>
     </div>
-    <ix-button (click)="openModal()">Show non-blocking modal</ix-button>
   `,
 })
 export default class ModalNonBlocking {
