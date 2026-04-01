@@ -99,15 +99,7 @@ class ThemeSwitcher {
   }
 
   public toggleMode() {
-    const currentColorSchema = document.documentElement.dataset.ixColorSchema;
-    if (currentColorSchema) {
-      document.documentElement.dataset.ixColorSchema =
-        currentColorSchema === 'dark' ? 'light' : 'dark';
-      return;
-    }
-
-    const newMode: ThemeVariant =
-      currentColorSchema === 'dark' ? 'light' : 'dark';
+    const newMode: ThemeMode = this.getMode() === 'dark' ? 'light' : 'dark';
 
     document.documentElement.dataset.ixColorSchema = newMode;
   }

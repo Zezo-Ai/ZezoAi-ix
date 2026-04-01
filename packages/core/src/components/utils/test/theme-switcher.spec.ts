@@ -225,6 +225,45 @@ describe('ThemeSwitcher', () => {
     expect(document.documentElement.dataset.ixColorSchema).toBe('dark');
   });
 
+  it('toggles from system-dark to explicit light', async () => {
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: jest.fn(() => ({
+        matches: true,
+        addEventListener: jest.fn(
+          (
+            eventName: string,
+            listener: (event: MediaQueryListEvent) => void
+          ) => {
+            if (eventName === 'change') {
+              mediaChangeListener = listener;
+            }
+          }
+        ),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    const { themeSwitcher } = await loadThemeSwitcher();
+
+    document.documentElement.dataset.ixColorSchema = 'system';
+
+    themeSwitcher.toggleMode();
+
+    expect(document.documentElement.dataset.ixColorSchema).toBe('light');
+  });
+
+  it('toggles from system-light to explicit dark', async () => {
+    const { themeSwitcher } = await loadThemeSwitcher();
+
+    document.documentElement.dataset.ixColorSchema = 'system';
+
+    themeSwitcher.toggleMode();
+
+    expect(document.documentElement.dataset.ixColorSchema).toBe('dark');
+  });
+
   it('sets dark as the first toggled mode when no color schema is present', async () => {
     const { themeSwitcher } = await loadThemeSwitcher();
 
