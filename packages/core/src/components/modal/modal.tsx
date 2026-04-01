@@ -213,8 +213,8 @@ export class Modal {
         // Two nested `requestAnimationFrame` ticks: `:host(.visible)` after `slideInModal`, and
         // framework portals (e.g. React) need a frame to commit slotted children before focus.
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
+          requestAnimationFrame(async () => {
+            await applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
           });
         });
       }

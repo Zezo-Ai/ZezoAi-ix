@@ -130,13 +130,13 @@ function tryFocusIxModalHostAutofocusLightDom(
 
 /**
  * Moves focus for a non-blocking modal (`dialog.show()` does not do this). Tries in order: light-DOM
- * `[autofocus]` / `[auto-focus]`, header close (`ix-icon-button.modal-close`), then the inner
- * `<dialog>` with `tabindex="-1"`.
+ * `[autofocus]` / `[auto-focus]`, `ix-modal-header.focusCloseButton()`, then the inner `<dialog>` with
+ * `tabindex="-1"`.
  */
-export function applyIxModalNonBlockingInitialFocus(
+export async function applyIxModalNonBlockingInitialFocus(
   modalHost: HTMLIxModalElement,
   dialogElement: HTMLDialogElement | null | undefined
-): void {
+): Promise<void> {
   if (!modalHost.isNonBlocking || !dialogElement?.open) {
     return;
   }
@@ -147,11 +147,14 @@ export function applyIxModalNonBlockingInitialFocus(
     return;
   }
 
-  const closeBtn = modalHost
-    .querySelector('ix-modal-header')
-    ?.shadowRoot?.querySelector<HTMLElement>('ix-icon-button.modal-close');
-  if (tryFocusElement(closeBtn, noScroll)) {
-    return;
+  const headerEl = modalHost.querySelector('ix-modal-header') as
+    | (HTMLElement & { focusCloseButton?: () => Promise<boolean> })
+    | null;
+  if (headerEl?.focusCloseButton) {
+    const focused = await headerEl.focusCloseButton();
+    if (focused) {
+      return;
+    }
   }
 
   if (!dialogElement.hasAttribute('tabindex')) {

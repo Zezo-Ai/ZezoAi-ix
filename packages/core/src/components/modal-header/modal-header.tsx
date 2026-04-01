@@ -14,9 +14,11 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
   Watch,
 } from '@stencil/core';
+import { tryFocusElement } from '../utils/focus/focus-utilities';
 import { closestPassShadow } from '../utils/shadow-dom';
 import { iconClose } from '@siemens/ix-icons/icons';
 
@@ -90,6 +92,22 @@ export class ModalHeader {
     }
 
     this.parentDialog.dismissModal();
+  }
+
+  /**
+   * Moves focus to the header close control when it is shown (e.g. initial focus for non-blocking modals).
+   *
+   * @returns true if focus was applied
+   */
+  @Method()
+  async focusCloseButton(): Promise<boolean> {
+    if (this.hideClose) {
+      return false;
+    }
+    const closeBtn = this.hostElement.shadowRoot?.querySelector<HTMLElement>(
+      'ix-icon-button.modal-close'
+    );
+    return tryFocusElement(closeBtn, { preventScroll: true });
   }
 
   render() {

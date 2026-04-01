@@ -2815,6 +2815,11 @@ export namespace Components {
          */
         "ariaLabelIcon"?: string;
         /**
+          * Moves focus to the header close control when it is shown (e.g. initial focus for non-blocking modals).
+          * @returns true if focus was applied
+         */
+        "focusCloseButton": () => Promise<boolean>;
+        /**
           * Hide the close button
           * @default false
          */
