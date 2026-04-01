@@ -117,33 +117,12 @@ function getIxModal(element: Element) {
 
 const IX_MODAL_HOST_AUTOFOCUS_SELECTOR = '[autofocus],[auto-focus]';
 
-/**
- * Light DOM only: `[autofocus]` / `[auto-focus]` on descendants of `ix-modal` (not nested shadow).
- */
-function tryFocusIxModalHostAutofocusLightDom(
+function tryFocusAutofocusLightDomOrCloseButton(
   modalHost: HTMLIxModalElement,
   focusOptions?: DomFocusOptions
-): boolean {
+) {
   const el = modalHost.querySelector(IX_MODAL_HOST_AUTOFOCUS_SELECTOR);
-  return tryFocusElement(el, focusOptions);
-}
-
-/**
- * Moves focus for a non-blocking modal (`dialog.show()` does not do this). Tries in order: light-DOM
- * `[autofocus]` / `[auto-focus]`, `ix-modal-header.focusCloseButton()`, then the inner `<dialog>` with
- * `tabindex="-1"`.
- */
-export async function applyIxModalNonBlockingInitialFocus(
-  modalHost: HTMLIxModalElement,
-  dialogElement: HTMLDialogElement | null | undefined
-): Promise<void> {
-  if (!modalHost.isNonBlocking || !dialogElement?.open) {
-    return;
-  }
-
-  const noScroll = { preventScroll: true } as const;
-
-  if (tryFocusIxModalHostAutofocusLightDom(modalHost, noScroll)) {
+  if (tryFocusElement(el, focusOptions)) {
     return;
   }
 
@@ -151,16 +130,8 @@ export async function applyIxModalNonBlockingInitialFocus(
     | (HTMLElement & { focusCloseButton?: () => Promise<boolean> })
     | null;
   if (headerEl?.focusCloseButton) {
-    const focused = await headerEl.focusCloseButton();
-    if (focused) {
-      return;
-    }
+    void headerEl.focusCloseButton();
   }
-
-  if (!dialogElement.hasAttribute('tabindex')) {
-    dialogElement.setAttribute('tabindex', '-1');
-  }
-  tryFocusElement(dialogElement, noScroll);
 }
 
 /**
@@ -235,11 +206,7 @@ export async function showModal<T>(
   );
 
   requestAnimationFrame(() => {
-    // focus will be handled by applyIxModalNonBlockingInitialFocus function
-    if (dialogRef.isNonBlocking) {
-      return;
-    }
-    tryFocusIxModalHostAutofocusLightDom(dialogRef);
+    tryFocusAutofocusLightDomOrCloseButton(dialogRef);
   });
 
   return {

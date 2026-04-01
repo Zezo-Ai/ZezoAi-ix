@@ -20,7 +20,6 @@ import {
 import { animate } from 'animejs';
 import { A11yAttributes, a11yBoolean, a11yHostAttributes } from '../utils/a11y';
 import Animation from '../utils/animation';
-import { applyIxModalNonBlockingInitialFocus } from '../utils/modal/modal';
 import { OnListener } from '../utils/listener';
 import { waitForElement } from '../utils/waitForElement';
 import { IxModalSize } from './modal.types';
@@ -116,24 +115,6 @@ export class Modal {
     });
   }
 
-  /**
-   * **Why two nested `requestAnimationFrame` calls?**
-   * - **First frame:** layout/paint runs so `:host(.visible)` and `slideInModal` updates apply.
-   * - **Second frame:** pragmatic buffer for framework reconcilers (e.g. React 18) that may commit
-   *   slotted/portal children in the tick after the modal host re-renders; without it, autofocus
-   *   and header queries can run before children are in the DOM.
-   *
-   * This is a **best-effort integration workaround**, not a proof that all async work has finished;
-   * {@link applyIxModalNonBlockingInitialFocus} still uses fallbacks if focus cannot land.
-   */
-  private scheduleNonBlockingInitialFocus(dialog: HTMLDialogElement): void {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(async () => {
-        await applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
-      });
-    });
-  }
-
   private slideOutModal(completeCallback: Function) {
     const duration = this.disableAnimation ? 0 : Animation.mediumTime;
     const translateY = this.centered ? ['-50%', '-90%'] : [40, 0];
@@ -226,10 +207,6 @@ export class Modal {
       }
 
       this.slideInModal();
-
-      if (this.isNonBlocking) {
-        this.scheduleNonBlockingInitialFocus(dialog);
-      }
     } catch {
       console.error('HTMLDialogElement not existing');
     }
