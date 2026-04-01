@@ -11,7 +11,7 @@ import type { IxModalSize } from '../../modal/modal.types';
 import { getCoreDelegate, resolveDelegate } from '../delegate';
 import {
   tryFocusElement,
-  tryFocusFirstDescendantDeep,
+  type DomFocusOptions,
 } from '../focus/focus-utilities';
 import { TypedEvent } from '../typed-event';
 
@@ -119,17 +119,24 @@ function getIxModal(element: Element) {
   return element.closest('ix-modal');
 }
 
-/**
- * Focus order for non-modal `ix-modal` after `dialog.subtree` `[autofocus]` (usually only hits if
- * focusables are real descendants of `<dialog>`), then `modalHost` deep `[autofocus]`, header close,
- * first focusable in light/nested shadow DOM (IX controls, common natives, `contenteditable`,
- * `summary`), then the `dialog` element.
- * Call after two nested `requestAnimationFrame` ticks from `ix-modal.showModal()` so
- * `:host(.visible)` and framework portals can commit slotted content before focusing.
- */
-export const IX_MODAL_NON_BLOCKING_FOCUSABLE_SELECTOR =
-  'ix-button, ix-icon-button, ix-toggle, ix-dropdown, ix-select, ix-input, ix-textarea, ix-checkbox, ix-radio, ix-datetime-input, ix-number-input, button, a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]), summary';
+const IX_MODAL_HOST_AUTOFOCUS_SELECTOR = '[autofocus],[auto-focus]';
 
+/**
+ * Light DOM only: `[autofocus]` / `[auto-focus]` on descendants of `ix-modal` (not nested shadow).
+ */
+function tryFocusIxModalHostAutofocusLightDom(
+  modalHost: HTMLIxModalElement,
+  focusOptions?: DomFocusOptions
+): boolean {
+  const el = modalHost.querySelector(IX_MODAL_HOST_AUTOFOCUS_SELECTOR);
+  return tryFocusElement(el, focusOptions);
+}
+
+/**
+ * Non-blocking initial focus: light-DOM `[autofocus]` / `[auto-focus]`, then header close, then the
+ * inner `<dialog>` with `tabindex="-1"`. Call from `ix-modal.showModal()` after two nested
+ * `requestAnimationFrame` ticks so portals / slotted content can commit.
+ */
 export function applyIxModalNonBlockingInitialFocus(
   modalHost: HTMLIxModalElement,
   dialogElement: HTMLDialogElement | null | undefined
@@ -140,13 +147,7 @@ export function applyIxModalNonBlockingInitialFocus(
 
   const noScroll = { preventScroll: true } as const;
 
-  if (
-    tryFocusFirstDescendantDeep(
-      modalHost,
-      '[autofocus], [auto-focus]',
-      noScroll
-    )
-  ) {
+  if (tryFocusIxModalHostAutofocusLightDom(modalHost, noScroll)) {
     return;
   }
 
@@ -154,16 +155,6 @@ export function applyIxModalNonBlockingInitialFocus(
     .querySelector('ix-modal-header')
     ?.shadowRoot?.querySelector<HTMLElement>('ix-icon-button.modal-close');
   if (tryFocusElement(closeBtn, noScroll)) {
-    return;
-  }
-
-  if (
-    tryFocusFirstDescendantDeep(
-      modalHost,
-      IX_MODAL_NON_BLOCKING_FOCUSABLE_SELECTOR,
-      noScroll
-    )
-  ) {
     return;
   }
 
@@ -244,19 +235,12 @@ export async function showModal<T>(
     }
   );
 
-  // Non-blocking: ix-modal.showModal() defers full focus via applyIxModalNonBlockingInitialFocus.
   requestAnimationFrame(() => {
+    // focus will be handled by applyIxModalNonBlockingInitialFocus function
     if (dialogRef.isNonBlocking) {
       return;
     }
-
-    const autofocusElement = dialogRef.querySelector(
-      '[autofocus],[auto-focus]'
-    );
-
-    if (autofocusElement) {
-      (autofocusElement as HTMLIxButtonElement).focus();
-    }
+    tryFocusIxModalHostAutofocusLightDom(dialogRef);
   });
 
   return {

@@ -202,19 +202,15 @@ export class Modal {
       this.modalVisible = true;
       if (this.isNonBlocking) {
         dialog.show();
-      } else {
-        dialog.showModal();
-      }
-      this.slideInModal();
-      if (this.isNonBlocking) {
-        // Double rAF: :host(.visible) and framework portals (e.g. React) may commit slotted children
-        // a frame after open.
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
           });
         });
+      } else {
+        dialog.showModal();
       }
+      this.slideInModal();
     } catch {
       console.error('HTMLDialogElement not existing');
     }

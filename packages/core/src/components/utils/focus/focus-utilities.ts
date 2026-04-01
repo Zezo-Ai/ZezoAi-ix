@@ -63,39 +63,6 @@ export function queryElements(
   return items;
 }
 
-/**
- * Depth-first, pre-order search under each direct child of `host`, entering open shadow roots.
- * Use when targets sit in nested web components (`querySelector` does not cross shadow boundaries).
- */
-export function findFirstDescendantDeep(
-  host: HTMLElement,
-  test: (el: Element) => boolean
-): HTMLElement | null {
-  const visit = (el: Element): HTMLElement | null => {
-    if (test(el)) {
-      return el as HTMLElement;
-    }
-    const childList: Element[] = el.shadowRoot
-      ? [...Array.from(el.shadowRoot.children), ...Array.from(el.children)]
-      : Array.from(el.children);
-    for (const c of childList) {
-      const hit = visit(c);
-      if (hit) {
-        return hit;
-      }
-    }
-    return null;
-  };
-
-  for (const c of Array.from(host.children)) {
-    const hit = visit(c);
-    if (hit) {
-      return hit;
-    }
-  }
-  return null;
-}
-
 /** Options for `HTMLElement.focus()` (DOM).
  * Distinct from {@link FocusOptions} (`focusCheckedItem`).
  * */
@@ -114,15 +81,6 @@ export function tryFocusElement(
   } catch {
     return false;
   }
-}
-
-export function tryFocusFirstDescendantDeep(
-  host: HTMLElement,
-  selector: string,
-  options?: DomFocusOptions
-): boolean {
-  const el = findFirstDescendantDeep(host, (e) => e.matches(selector));
-  return tryFocusElement(el, options);
 }
 
 export type FocusVisibleConfig = {
