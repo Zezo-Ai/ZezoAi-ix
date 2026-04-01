@@ -200,17 +200,24 @@ export class Modal {
         this.hostElement.shadowRoot
       );
       this.modalVisible = true;
+
       if (this.isNonBlocking) {
         dialog.show();
+      } else {
+        dialog.showModal();
+      }
+
+      this.slideInModal();
+
+      if (this.isNonBlocking) {
+        // Two nested `requestAnimationFrame` ticks: `:host(.visible)` after `slideInModal`, and
+        // framework portals (e.g. React) need a frame to commit slotted children before focus.
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             applyIxModalNonBlockingInitialFocus(this.hostElement, dialog);
           });
         });
-      } else {
-        dialog.showModal();
       }
-      this.slideInModal();
     } catch {
       console.error('HTMLDialogElement not existing');
     }

@@ -133,9 +133,9 @@ function tryFocusIxModalHostAutofocusLightDom(
 }
 
 /**
- * Non-blocking initial focus: light-DOM `[autofocus]` / `[auto-focus]`, then header close, then the
- * inner `<dialog>` with `tabindex="-1"`. Call from `ix-modal.showModal()` after two nested
- * `requestAnimationFrame` ticks so portals / slotted content can commit.
+ * Moves focus for a non-blocking modal (`dialog.show()` does not do this). Tries in order: light-DOM
+ * `[autofocus]` / `[auto-focus]`, header close (`ix-icon-button.modal-close`), then the inner
+ * `<dialog>` with `tabindex="-1"`.
  */
 export function applyIxModalNonBlockingInitialFocus(
   modalHost: HTMLIxModalElement,
