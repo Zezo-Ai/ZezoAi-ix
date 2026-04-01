@@ -10,7 +10,6 @@
 import { Component } from '@angular/core';
 import { IxActiveModal } from '@siemens/ix-angular';
 
-/** Modal body for `modal-non-blocking` preview only — matches HTML/React copy for shared aria snapshots. */
 @Component({
   standalone: false,
   selector: 'app-modal-non-blocking-content',
@@ -25,7 +24,11 @@ import { IxActiveModal } from '@siemens/ix-angular';
       >
         Cancel
       </ix-button>
-      <ix-button autofocus class="close-modal" (click)="activeModal.close('okay')">
+      <ix-button
+        autofocus
+        class="close-modal"
+        (click)="activeModal.close('okay')"
+      >
         OK
       </ix-button>
     </ix-modal-footer>

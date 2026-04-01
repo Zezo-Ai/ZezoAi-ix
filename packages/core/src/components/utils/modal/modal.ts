@@ -66,10 +66,6 @@ export interface ModalConfig<TReason = any, CONTENT = any> {
   /**
    * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`.
    * Set before calling `showModal()`; changing while open is unsupported.
-   *
-   * Same semantics as **`HTMLIxModalElement.isNonBlocking`**. Initial focus and Escape are handled
-   * by the component; prefer **`aria-labelledby`** / **`aria-describedby`** (or **`aria-label`**) for
-   * an accessible name.
    */
   isNonBlocking?: boolean;
   /**

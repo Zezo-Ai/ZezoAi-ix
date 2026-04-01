@@ -63,9 +63,6 @@ export function queryElements(
   return items;
 }
 
-/** Options for `HTMLElement.focus()` (DOM).
- * Distinct from {@link FocusOptions} (`focusCheckedItem`).
- * */
 export type DomFocusOptions = Parameters<HTMLElement['focus']>[0];
 
 export function tryFocusElement(
