@@ -185,7 +185,7 @@ export class Modal {
       !this.isMouseDownInsideDialog &&
       !isMouseUpInsideDialog
     ) {
-      this.dismissModal();
+      void this.dismissModal();
     }
   }
 
@@ -294,7 +294,9 @@ export class Modal {
             }}
             onCancel={(e) => {
               e.preventDefault();
-              void this.dismissModal();
+              if (!this.disableEscapeClose) {
+                void this.dismissModal();
+              }
             }}
           >
             <slot></slot>

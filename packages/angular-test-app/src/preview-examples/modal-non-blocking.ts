@@ -8,8 +8,7 @@
  */
 
 import { Component } from '@angular/core';
-import { IxActiveModal } from '@siemens/ix-angular';
-import { ModalService } from '@siemens/ix-angular';
+import { IxActiveModal, ModalService } from '@siemens/ix-angular';
 
 @Component({
   standalone: false,

@@ -47,7 +47,20 @@ async function setupModalEnvironment(page: Page) {
     });
   });
 
-  await page.waitForTimeout(500);
+  await page.waitForFunction(
+    () =>
+      typeof globalThis.showModal === 'function' &&
+      typeof globalThis.dismissModal === 'function' &&
+      globalThis.showMessage != null,
+    { timeout: 15_000 }
+  );
+}
+
+/** Modal open animation settled (visible + opaque). */
+async function waitForModalDialogOpen(page: Page) {
+  const dialog = page.locator('ix-modal dialog');
+  await expect(dialog).toBeVisible({ timeout: 5000 });
+  await expect(dialog).toHaveCSS('opacity', '1');
 }
 
 async function createToggleExample(page: Page) {
@@ -102,7 +115,6 @@ async function createSelectOverflowExample(page: Page) {
 regressionTest('closes on Escape key down', async ({ mount, page }) => {
   await mount(``);
   await setupModalEnvironment(page);
-  await page.waitForTimeout(1000);
 
   await page.evaluate(() => {
     const elm = document.createElement('ix-modal');
@@ -115,7 +127,7 @@ regressionTest('closes on Escape key down', async ({ mount, page }) => {
     });
   });
   const dialog = page.locator('ix-modal dialog');
-  await expect(dialog).toBeVisible();
+  await waitForModalDialogOpen(page);
   await page.locator('ix-modal-content').click();
   await page.keyboard.down('Escape');
 
@@ -133,16 +145,12 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await setupModalEnvironment(page);
       await createToggleExample(page);
 
-      // needed to skip fade out / in animation
-      await page.waitForTimeout(500);
-
       const toggle = page.locator('#toggle');
       await expect(toggle).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       await page.mouse.click(20, 20);
 
-      // needed to skip fade out / in animation
-      await page.waitForTimeout(500);
       await expect(page.locator('ix-modal dialog')).not.toBeVisible();
     }
   );
@@ -155,12 +163,10 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await setupModalEnvironment(page);
       await createToggleExample(page);
 
-      // Wait for modal to appear
-      await page.waitForTimeout(500);
-
       const modalDialog = page.locator('ix-modal dialog');
       const toggle = page.locator('#toggle');
       await expect(toggle).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       // Get bounding box of the modal to find a point inside it
       const box = await modalDialog.boundingBox();
@@ -177,9 +183,6 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await page.mouse.move(20, 20);
       await page.mouse.up();
 
-      // Wait for any animations
-      await page.waitForTimeout(500);
-
       // Modal should still be visible
       await expect(modalDialog).toBeVisible();
     }
@@ -193,11 +196,8 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await setupModalEnvironment(page);
       await createToggleExample(page);
 
-      // Wait for modal to appear
-      await page.waitForTimeout(500);
-
       const modalDialog = page.locator('ix-modal dialog');
-      await expect(modalDialog).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       // Get bounding box of the modal to find a point inside it
       const box = await modalDialog.boundingBox();
@@ -214,9 +214,6 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await page.mouse.move(insideX, insideY);
       await page.mouse.up();
 
-      // Wait for any animations
-      await page.waitForTimeout(500);
-
       // Modal should still be visible
       await expect(modalDialog).toBeVisible();
     }
@@ -232,16 +229,12 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await setupModalEnvironment(page);
       await createToggleExample(page);
 
-      // needed to skip fade out / in animation
-      await page.waitForTimeout(500);
-
       const toggle = page.locator('#toggle');
       await expect(toggle).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       await toggle.locator('input').press('Space');
 
-      // needed to skip fade out / in animation
-      await page.waitForTimeout(500);
       await expect(page.locator('ix-modal dialog')).toBeVisible();
     }
   );
@@ -254,10 +247,8 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await setupModalEnvironment(page);
       await createSelectOverflowExample(page);
 
-      await page.waitForTimeout(100);
-
       const modalDialog = page.locator('ix-modal dialog');
-      await expect(modalDialog).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       await page.locator('[data-select-dropdown]').click();
 
@@ -280,7 +271,6 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
 
       await dropdownItem.click();
 
-      await page.waitForTimeout(100);
       await expect(modalDialog).toBeVisible();
     }
   );
@@ -292,7 +282,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -307,6 +296,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
+      await waitForModalDialogOpen(page);
       await expect(page.locator('ix-modal')).toHaveClass(/non-blocking/);
       await expect(page.locator('ix-modal dialog')).toHaveAttribute(
         'aria-modal',
@@ -320,7 +310,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(`<ix-button>Background</ix-button>`);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -336,12 +325,10 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await page.waitForTimeout(300);
       const dialog = page.locator('ix-modal dialog');
-      await expect(dialog).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       await page.mouse.click(20, 20);
-      await page.waitForTimeout(400);
       await expect(dialog).toBeVisible();
     }
   );
@@ -351,7 +338,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(`<ix-button id="bg">Behind</ix-button>`);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         document.getElementById('bg')?.addEventListener('click', () => {
@@ -372,7 +358,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await expect(page.locator('ix-modal dialog')).toBeVisible();
+      await waitForModalDialogOpen(page);
       await page.locator('#bg').click();
       expect(await page.evaluate(() => globalThis.__nbBgClick)).toBe(true);
       await expect(page.locator('ix-modal dialog')).toBeVisible();
@@ -384,7 +370,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -400,7 +385,7 @@ regressionTest.describe('isNonBlocking', () => {
       });
 
       const dialog = page.locator('ix-modal dialog');
-      await expect(dialog).toBeVisible();
+      await waitForModalDialogOpen(page);
       await page.locator('ix-icon-button').click();
       await expect(dialog).not.toBeVisible();
     }
@@ -411,7 +396,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -427,7 +411,7 @@ regressionTest.describe('isNonBlocking', () => {
       });
 
       const dialog = page.locator('ix-modal dialog');
-      await expect(dialog).toBeVisible();
+      await waitForModalDialogOpen(page);
 
       await page.evaluate(() => {
         const modal = document.querySelector('ix-modal');
@@ -445,7 +429,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -460,10 +443,10 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await page.waitForTimeout(250);
+      await waitForModalDialogOpen(page);
       await expect(
         page.locator('ix-modal ix-icon-button.modal-close')
-      ).toBeFocused();
+      ).toBeFocused({ timeout: 5000 });
     }
   );
 
@@ -472,7 +455,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(`<ix-button id="behind">Behind</ix-button>`);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -487,8 +469,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await page.waitForTimeout(250);
-      await expect(page.locator('ix-modal dialog')).toBeVisible();
+      await waitForModalDialogOpen(page);
       await page.evaluate(() => {
         document.getElementById('behind')?.focus();
       });
@@ -502,7 +483,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -517,7 +497,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await page.waitForTimeout(250);
+      await waitForModalDialogOpen(page);
       await page.locator('ix-modal ix-icon-button.modal-close').focus();
       await page.keyboard.press('Escape');
       await expect(page.locator('ix-modal dialog')).not.toBeVisible();
@@ -529,7 +509,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page }) => {
       await mount(``);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -545,7 +524,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await page.waitForTimeout(250);
+      await waitForModalDialogOpen(page);
       await page.locator('ix-modal ix-icon-button.modal-close').focus();
       await page.keyboard.press('Escape');
       await expect(page.locator('ix-modal dialog')).toBeVisible();
@@ -557,7 +536,6 @@ regressionTest.describe('isNonBlocking', () => {
     async ({ mount, page, makeAxeBuilder }) => {
       await mount(`<main></main>`);
       await setupModalEnvironment(page);
-      await page.waitForTimeout(500);
 
       await page.evaluate(() => {
         const elm = document.createElement('ix-modal');
@@ -573,8 +551,7 @@ regressionTest.describe('isNonBlocking', () => {
         });
       });
 
-      await expect(page.locator('ix-modal dialog')).toBeVisible();
-      await page.waitForTimeout(250);
+      await waitForModalDialogOpen(page);
       const accessibilityScanResults = await makeAxeBuilder().analyze();
       expect(accessibilityScanResults.violations).toEqual([]);
     }
@@ -585,7 +562,6 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
   await mount(``);
 
   await setupModalEnvironment(page);
-  await page.waitForTimeout(1000);
   await page.evaluate(() => {
     const elm = document.createElement('ix-modal');
     elm.innerHTML = `
@@ -611,7 +587,7 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
       });
   });
   const dialog = page.locator('ix-modal dialog');
-  await expect(dialog).toBeVisible();
+  await waitForModalDialogOpen(page);
   const iconButton = page.locator('ix-icon-button');
 
   await iconButton.click();
@@ -623,7 +599,6 @@ regressionTest('emits one event on close', async ({ mount, page }) => {
 regressionTest('button receives focus on load', async ({ mount, page }) => {
   await mount('');
   await setupModalEnvironment(page);
-  await page.waitForTimeout(100);
 
   await page.evaluate(() => {
     const elm = document.createElement('ix-modal');
@@ -642,9 +617,11 @@ regressionTest('button receives focus on load', async ({ mount, page }) => {
     });
   });
 
-  await page.waitForTimeout(250);
   const dialog = page.locator('ix-modal dialog');
-  await expect(dialog).toBeVisible();
+  await waitForModalDialogOpen(page);
+  await expect(page.locator('ix-modal-footer ix-button')).toBeFocused({
+    timeout: 5000,
+  });
 
   await page.keyboard.press('Enter');
 
@@ -684,14 +661,12 @@ regressionTest.describe('message utils', () => {
       );
 
       const dialog = page.locator('ix-modal-header');
-      await page.waitForTimeout(500);
       await expect(dialog).toBeVisible();
 
       const icon = dialog.locator('ix-icon').first();
       await expect(icon).toBeVisible();
 
       await expect(page.getByTestId('test-icon')).toBeVisible();
-      await page.waitForTimeout(500);
 
       const expectedIconText = await page
         .getByTestId('test-icon')
