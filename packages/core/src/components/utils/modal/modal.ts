@@ -9,10 +9,7 @@
 
 import type { IxModalSize } from '../../modal/modal.types';
 import { getCoreDelegate, resolveDelegate } from '../delegate';
-import {
-  tryFocusElement,
-  type DomFocusOptions,
-} from '../focus/focus-utilities';
+import { tryFocusElement } from '../focus/focus-utilities';
 import { TypedEvent } from '../typed-event';
 
 /**
@@ -117,23 +114,6 @@ function getIxModal(element: Element) {
 
 const IX_MODAL_HOST_AUTOFOCUS_SELECTOR = '[autofocus],[auto-focus]';
 
-function tryFocusAutofocusLightDomOrCloseButton(
-  modalHost: HTMLIxModalElement,
-  focusOptions?: DomFocusOptions
-) {
-  const el = modalHost.querySelector(IX_MODAL_HOST_AUTOFOCUS_SELECTOR);
-  if (tryFocusElement(el, focusOptions)) {
-    return;
-  }
-
-  const headerEl = modalHost.querySelector('ix-modal-header') as
-    | (HTMLElement & { focusCloseButton?: () => Promise<boolean> })
-    | null;
-  if (headerEl?.focusCloseButton) {
-    void headerEl.focusCloseButton();
-  }
-}
-
 /**
  * Close closest ix-modal relative to a provided element
  */
@@ -206,7 +186,10 @@ export async function showModal<T>(
   );
 
   requestAnimationFrame(() => {
-    tryFocusAutofocusLightDomOrCloseButton(dialogRef);
+    const autofocusElement = dialogRef.querySelector(
+      IX_MODAL_HOST_AUTOFOCUS_SELECTOR
+    );
+    tryFocusElement(autofocusElement);
   });
 
   return {
