@@ -985,9 +985,8 @@ export class Select
           anchor={this.dropdownAnchorRef.waitForCurrent()}
           trigger={this.dropdownWrapperRef.waitForCurrent()}
           onShowChange={(event) => {
-            if (this.disabled || this.readonly) {
+            if ((this.disabled || this.readonly) && event.detail) {
               event.preventDefault();
-              return;
             }
           }}
           onShowChanged={(e) => this.dropdownVisibilityChanged(e)}
