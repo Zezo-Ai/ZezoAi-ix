@@ -984,6 +984,12 @@ export class Select
           hidden={this.disabled || this.readonly}
           anchor={this.dropdownAnchorRef.waitForCurrent()}
           trigger={this.dropdownWrapperRef.waitForCurrent()}
+          onShowChange={(event) => {
+            if (this.disabled || this.readonly) {
+              event.preventDefault();
+              return;
+            }
+          }}
           onShowChanged={(e) => this.dropdownVisibilityChanged(e)}
           placement="bottom-start"
           enableTopLayer={this.enableTopLayer}
