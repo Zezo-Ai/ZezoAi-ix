@@ -7,9 +7,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Component, Element, h, Host, Prop, State } from '@stencil/core';
+import { Component, Element, h, Host, Mixin, Prop, State } from '@stencil/core';
 import { IxComponentInterface } from '../utils/internal';
-import { a11yHostAttributes } from '../utils/a11y';
+import { DefaultMixins } from '../utils/internal/component';
+import {
+  InheritAriaAttributesMixin,
+  InheritAriaAttributesMixinContract,
+} from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import { makeRef } from '../utils/make-ref';
 
 @Component({
@@ -17,8 +21,11 @@ import { makeRef } from '../utils/make-ref';
   styleUrl: 'pill.scss',
   shadow: true,
 })
-export class Pill implements IxComponentInterface {
-  @Element() hostElement!: HTMLIxPillElement;
+export class Pill
+  extends Mixin(...DefaultMixins, InheritAriaAttributesMixin)
+  implements IxComponentInterface, InheritAriaAttributesMixinContract
+{
+  @Element() override hostElement!: HTMLIxPillElement;
 
   /**
    * Pill variant
@@ -76,10 +83,8 @@ export class Pill implements IxComponentInterface {
 
   private readonly containerElementRef = makeRef<HTMLElement>();
 
-  private a11yAttributes: A11yAttributes = {};
-
-  componentWillLoad() {
-    this.a11yAttributes = a11yHostAttributes(this.hostElement);
+  override componentWillLoad() {
+    super.componentWillLoad();
     this.checkIfContentAvailable();
   }
 
@@ -107,7 +112,7 @@ export class Pill implements IxComponentInterface {
     );
   }
 
-  render() {
+  override render() {
     let customStyle = {};
 
     if (this.variant === 'custom') {
@@ -118,11 +123,12 @@ export class Pill implements IxComponentInterface {
     }
 
     const hasAccessibleName = Boolean(
-      this.a11yAttributes['aria-label'] ||
-        this.a11yAttributes['aria-labelledby']
+      this.inheritAriaAttributes['aria-label'] ||
+        this.inheritAriaAttributes['aria-labelledby']
     );
     const containerRole =
-      this.a11yAttributes['role'] || (hasAccessibleName ? 'group' : undefined);
+      this.inheritAriaAttributes['role'] ||
+      (hasAccessibleName ? 'group' : undefined);
 
     return (
       <Host
@@ -138,7 +144,7 @@ export class Pill implements IxComponentInterface {
         }}
       >
         <div
-          {...this.a11yAttributes}
+          {...this.inheritAriaAttributes}
           role={containerRole}
           ref={this.containerElementRef}
           style={{ ...customStyle }}
