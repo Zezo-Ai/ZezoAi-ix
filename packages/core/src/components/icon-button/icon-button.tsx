@@ -17,12 +17,6 @@ import {
   InheritAriaAttributesMixinContract,
 } from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import type { IconButtonVariant } from './icon-button.types';
-  A11yAttributes,
-  a11yHostAttributes,
-  getFallbackLabelFromIconName,
-} from '../utils/a11y';
-import { DefaultMixins } from '../utils/internal/component';
-import type { IconButtonVariant } from './icon-button.types';
 
 @Component({
   tag: 'ix-icon-button',
@@ -83,12 +77,6 @@ export class IconButton
    */
   submitButtonElement!: HTMLButtonElement;
 
-  private inheritAriaAttributes: A11yAttributes = {};
-
-  override componentWillLoad(): Promise<void> | void {
-    this.inheritAriaAttributes = a11yHostAttributes(this.hostElement);
-  }
-
   override componentDidLoad() {
     if (this.type === 'submit') {
       const submitButton = document.createElement('button');
@@ -124,11 +112,6 @@ export class IconButton
         ...ariaAttributes,
         'aria-label': fallbackAriaLabel,
       };
-    let ariaAttributes: A11yAttributes = { ...this.inheritAriaAttributes };
-    const ariaHidden = this.inheritAriaAttributes['aria-hidden'];
-
-    if (ariaHidden !== 'true') {
-      ariaAttributes['aria-label'] = ariaLabel;
     }
 
     const baseButtonProps: BaseButtonProps = {

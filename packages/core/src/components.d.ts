@@ -626,7 +626,7 @@ export namespace Components {
         "uniqueCategories": boolean;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxCheckbox {
         /**
@@ -667,7 +667,7 @@ export namespace Components {
         "value": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxCheckboxGroup {
         /**
@@ -954,7 +954,7 @@ export namespace Components {
         "weekStartIndex": number;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxDateInput {
         /**
@@ -1227,7 +1227,7 @@ export namespace Components {
     }
     /**
      * @since 5.0.0
-     * @form-ready
+     * @form-ready 
      */
     interface IxDatetimeInput {
         /**
@@ -2149,6 +2149,7 @@ export namespace Components {
     interface IxIconToggleButton {
         /**
           * ARIA label for the icon button Will be set for the native HTML button element
+          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in a future major version.
           * @since 3.2.0
          */
         "ariaLabelIconButton"?: string;
@@ -2199,7 +2200,7 @@ export namespace Components {
         "variant": ButtonVariant1;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxInput {
         /**
@@ -2831,7 +2832,7 @@ export namespace Components {
     interface IxModalLoading {
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxNumberInput {
         /**
@@ -3235,7 +3236,7 @@ export namespace Components {
         "variant": PushCardVariant;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxRadio {
         /**
@@ -3271,7 +3272,7 @@ export namespace Components {
         "value"?: string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxRadioGroup {
         /**
@@ -3334,7 +3335,7 @@ export namespace Components {
     interface IxRow {
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxSelect {
         /**
@@ -3515,7 +3516,7 @@ export namespace Components {
         "value": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxSlider {
         /**
@@ -3760,7 +3761,7 @@ export namespace Components {
         "small": boolean;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxTextarea {
         /**
@@ -3872,7 +3873,7 @@ export namespace Components {
     }
     /**
      * @since 3.2.0
-     * @form-ready
+     * @form-ready 
      */
     interface IxTimeInput {
         /**
@@ -4189,7 +4190,7 @@ export namespace Components {
         "showToast": (config: ToastConfig) => Promise<ShowToastResult>;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxToggle {
         /**
@@ -4248,6 +4249,7 @@ export namespace Components {
     interface IxToggleButton {
         /**
           * ARIA label that will be set on the native HTML button element
+          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
           * @since 3.2.0
          */
         "ariaLabelButton"?: string;
@@ -4964,7 +4966,7 @@ declare global {
         "ixBlur": void;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxCheckboxElement extends Components.IxCheckbox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxCheckboxElementEventMap>(type: K, listener: (this: HTMLIxCheckboxElement, ev: IxCheckboxCustomEvent<HTMLIxCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4981,7 +4983,7 @@ declare global {
         new (): HTMLIxCheckboxElement;
     };
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxCheckboxGroupElement extends Components.IxCheckboxGroup, HTMLStencilElement {
     }
@@ -5078,7 +5080,7 @@ declare global {
         "ixChange": string | undefined;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxDateInputElement extends Components.IxDateInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxDateInputElementEventMap>(type: K, listener: (this: HTMLIxDateInputElement, ev: IxDateInputCustomEvent<HTMLIxDateInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5128,7 +5130,7 @@ declare global {
     }
     /**
      * @since 5.0.0
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxDatetimeInputElement extends Components.IxDatetimeInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxDatetimeInputElementEventMap>(type: K, listener: (this: HTMLIxDatetimeInputElement, ev: IxDatetimeInputCustomEvent<HTMLIxDatetimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5446,7 +5448,7 @@ declare global {
         "ixChange": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxInputElement extends Components.IxInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxInputElementEventMap>(type: K, listener: (this: HTMLIxInputElement, ev: IxInputCustomEvent<HTMLIxInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5759,7 +5761,7 @@ declare global {
         "ixChange": number;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxNumberInputElement extends Components.IxNumberInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxNumberInputElementEventMap>(type: K, listener: (this: HTMLIxNumberInputElement, ev: IxNumberInputCustomEvent<HTMLIxNumberInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5847,7 +5849,7 @@ declare global {
         "ixBlur": void;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxRadioElement extends Components.IxRadio, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxRadioElementEventMap>(type: K, listener: (this: HTMLIxRadioElement, ev: IxRadioCustomEvent<HTMLIxRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5867,7 +5869,7 @@ declare global {
         "valueChange": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxRadioGroupElement extends Components.IxRadioGroup, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxRadioGroupElementEventMap>(type: K, listener: (this: HTMLIxRadioGroupElement, ev: IxRadioGroupCustomEvent<HTMLIxRadioGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5902,7 +5904,7 @@ declare global {
         "ixBlur": void;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxSelectElement extends Components.IxSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxSelectElementEventMap>(type: K, listener: (this: HTMLIxSelectElement, ev: IxSelectCustomEvent<HTMLIxSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5939,7 +5941,7 @@ declare global {
         "valueChange": number;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxSliderElement extends Components.IxSlider, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxSliderElementEventMap>(type: K, listener: (this: HTMLIxSliderElement, ev: IxSliderCustomEvent<HTMLIxSliderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6019,7 +6021,7 @@ declare global {
         "ixChange": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxTextareaElement extends Components.IxTextarea, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTextareaElementEventMap>(type: K, listener: (this: HTMLIxTextareaElement, ev: IxTextareaCustomEvent<HTMLIxTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6050,7 +6052,7 @@ declare global {
     }
     /**
      * @since 3.2.0
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxTimeInputElement extends Components.IxTimeInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTimeInputElementEventMap>(type: K, listener: (this: HTMLIxTimeInputElement, ev: IxTimeInputCustomEvent<HTMLIxTimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6113,7 +6115,7 @@ declare global {
         "ixBlur": void;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface HTMLIxToggleElement extends Components.IxToggle, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxToggleElementEventMap>(type: K, listener: (this: HTMLIxToggleElement, ev: IxToggleCustomEvent<HTMLIxToggleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6946,7 +6948,7 @@ declare namespace LocalJSX {
         "uniqueCategories"?: boolean;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxCheckbox {
         /**
@@ -7000,7 +7002,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxCheckboxGroup {
         /**
@@ -7293,7 +7295,7 @@ declare namespace LocalJSX {
         "weekStartIndex"?: number;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxDateInput {
         /**
@@ -7571,7 +7573,7 @@ declare namespace LocalJSX {
     }
     /**
      * @since 5.0.0
-     * @form-ready
+     * @form-ready 
      */
     interface IxDatetimeInput {
         /**
@@ -8556,6 +8558,7 @@ declare namespace LocalJSX {
     interface IxIconToggleButton {
         /**
           * ARIA label for the icon button Will be set for the native HTML button element
+          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in a future major version.
           * @since 3.2.0
          */
         "ariaLabelIconButton"?: string;
@@ -8610,7 +8613,7 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariant1;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxInput {
         /**
@@ -9298,7 +9301,7 @@ declare namespace LocalJSX {
     interface IxModalLoading {
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxNumberInput {
         /**
@@ -9731,7 +9734,7 @@ declare namespace LocalJSX {
         "variant"?: PushCardVariant;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxRadio {
         /**
@@ -9780,7 +9783,7 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxRadioGroup {
         /**
@@ -9844,7 +9847,7 @@ declare namespace LocalJSX {
     interface IxRow {
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxSelect {
         /**
@@ -10034,7 +10037,7 @@ declare namespace LocalJSX {
         "value": string;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxSlider {
         /**
@@ -10301,7 +10304,7 @@ declare namespace LocalJSX {
         "small"?: boolean;
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxTextarea {
         /**
@@ -10420,7 +10423,7 @@ declare namespace LocalJSX {
     }
     /**
      * @since 3.2.0
-     * @form-ready
+     * @form-ready 
      */
     interface IxTimeInput {
         /**
@@ -10731,7 +10734,7 @@ declare namespace LocalJSX {
         "position"?: 'bottom-right' | 'top-right';
     }
     /**
-     * @form-ready
+     * @form-ready 
      */
     interface IxToggle {
         /**
@@ -10800,6 +10803,7 @@ declare namespace LocalJSX {
     interface IxToggleButton {
         /**
           * ARIA label that will be set on the native HTML button element
+          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
           * @since 3.2.0
          */
         "ariaLabelButton"?: string;
@@ -12253,11 +12257,11 @@ declare module "@stencil/core" {
             "ix-card-title": LocalJSX.IntrinsicElements["ix-card-title"] & JSXBase.HTMLAttributes<HTMLIxCardTitleElement>;
             "ix-category-filter": LocalJSX.IntrinsicElements["ix-category-filter"] & JSXBase.HTMLAttributes<HTMLIxCategoryFilterElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-checkbox": LocalJSX.IntrinsicElements["ix-checkbox"] & JSXBase.HTMLAttributes<HTMLIxCheckboxElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-checkbox-group": LocalJSX.IntrinsicElements["ix-checkbox-group"] & JSXBase.HTMLAttributes<HTMLIxCheckboxGroupElement>;
             "ix-chip": LocalJSX.IntrinsicElements["ix-chip"] & JSXBase.HTMLAttributes<HTMLIxChipElement>;
@@ -12269,14 +12273,14 @@ declare module "@stencil/core" {
             "ix-custom-field": LocalJSX.IntrinsicElements["ix-custom-field"] & JSXBase.HTMLAttributes<HTMLIxCustomFieldElement>;
             "ix-date-dropdown": LocalJSX.IntrinsicElements["ix-date-dropdown"] & JSXBase.HTMLAttributes<HTMLIxDateDropdownElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-date-input": LocalJSX.IntrinsicElements["ix-date-input"] & JSXBase.HTMLAttributes<HTMLIxDateInputElement>;
             "ix-date-picker": LocalJSX.IntrinsicElements["ix-date-picker"] & JSXBase.HTMLAttributes<HTMLIxDatePickerElement>;
             "ix-date-time-card": LocalJSX.IntrinsicElements["ix-date-time-card"] & JSXBase.HTMLAttributes<HTMLIxDateTimeCardElement>;
             /**
              * @since 5.0.0
-             * @form-ready
+             * @form-ready 
              */
             "ix-datetime-input": LocalJSX.IntrinsicElements["ix-datetime-input"] & JSXBase.HTMLAttributes<HTMLIxDatetimeInputElement>;
             "ix-datetime-picker": LocalJSX.IntrinsicElements["ix-datetime-picker"] & JSXBase.HTMLAttributes<HTMLIxDatetimePickerElement>;
@@ -12306,7 +12310,7 @@ declare module "@stencil/core" {
             "ix-icon-button": LocalJSX.IntrinsicElements["ix-icon-button"] & JSXBase.HTMLAttributes<HTMLIxIconButtonElement>;
             "ix-icon-toggle-button": LocalJSX.IntrinsicElements["ix-icon-toggle-button"] & JSXBase.HTMLAttributes<HTMLIxIconToggleButtonElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-input": LocalJSX.IntrinsicElements["ix-input"] & JSXBase.HTMLAttributes<HTMLIxInputElement>;
             /**
@@ -12339,7 +12343,7 @@ declare module "@stencil/core" {
             "ix-modal-header": LocalJSX.IntrinsicElements["ix-modal-header"] & JSXBase.HTMLAttributes<HTMLIxModalHeaderElement>;
             "ix-modal-loading": LocalJSX.IntrinsicElements["ix-modal-loading"] & JSXBase.HTMLAttributes<HTMLIxModalLoadingElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-number-input": LocalJSX.IntrinsicElements["ix-number-input"] & JSXBase.HTMLAttributes<HTMLIxNumberInputElement>;
             "ix-pagination": LocalJSX.IntrinsicElements["ix-pagination"] & JSXBase.HTMLAttributes<HTMLIxPaginationElement>;
@@ -12352,22 +12356,22 @@ declare module "@stencil/core" {
             "ix-progress-indicator": LocalJSX.IntrinsicElements["ix-progress-indicator"] & JSXBase.HTMLAttributes<HTMLIxProgressIndicatorElement>;
             "ix-push-card": LocalJSX.IntrinsicElements["ix-push-card"] & JSXBase.HTMLAttributes<HTMLIxPushCardElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-radio": LocalJSX.IntrinsicElements["ix-radio"] & JSXBase.HTMLAttributes<HTMLIxRadioElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-radio-group": LocalJSX.IntrinsicElements["ix-radio-group"] & JSXBase.HTMLAttributes<HTMLIxRadioGroupElement>;
             "ix-range-field": LocalJSX.IntrinsicElements["ix-range-field"] & JSXBase.HTMLAttributes<HTMLIxRangeFieldElement>;
             "ix-row": LocalJSX.IntrinsicElements["ix-row"] & JSXBase.HTMLAttributes<HTMLIxRowElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-select": LocalJSX.IntrinsicElements["ix-select"] & JSXBase.HTMLAttributes<HTMLIxSelectElement>;
             "ix-select-item": LocalJSX.IntrinsicElements["ix-select-item"] & JSXBase.HTMLAttributes<HTMLIxSelectItemElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-slider": LocalJSX.IntrinsicElements["ix-slider"] & JSXBase.HTMLAttributes<HTMLIxSliderElement>;
             "ix-spinner": LocalJSX.IntrinsicElements["ix-spinner"] & JSXBase.HTMLAttributes<HTMLIxSpinnerElement>;
@@ -12375,20 +12379,20 @@ declare module "@stencil/core" {
             "ix-tab-item": LocalJSX.IntrinsicElements["ix-tab-item"] & JSXBase.HTMLAttributes<HTMLIxTabItemElement>;
             "ix-tabs": LocalJSX.IntrinsicElements["ix-tabs"] & JSXBase.HTMLAttributes<HTMLIxTabsElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-textarea": LocalJSX.IntrinsicElements["ix-textarea"] & JSXBase.HTMLAttributes<HTMLIxTextareaElement>;
             "ix-tile": LocalJSX.IntrinsicElements["ix-tile"] & JSXBase.HTMLAttributes<HTMLIxTileElement>;
             /**
              * @since 3.2.0
-             * @form-ready
+             * @form-ready 
              */
             "ix-time-input": LocalJSX.IntrinsicElements["ix-time-input"] & JSXBase.HTMLAttributes<HTMLIxTimeInputElement>;
             "ix-time-picker": LocalJSX.IntrinsicElements["ix-time-picker"] & JSXBase.HTMLAttributes<HTMLIxTimePickerElement>;
             "ix-toast": LocalJSX.IntrinsicElements["ix-toast"] & JSXBase.HTMLAttributes<HTMLIxToastElement>;
             "ix-toast-container": LocalJSX.IntrinsicElements["ix-toast-container"] & JSXBase.HTMLAttributes<HTMLIxToastContainerElement>;
             /**
-             * @form-ready
+             * @form-ready 
              */
             "ix-toggle": LocalJSX.IntrinsicElements["ix-toggle"] & JSXBase.HTMLAttributes<HTMLIxToggleElement>;
             "ix-toggle-button": LocalJSX.IntrinsicElements["ix-toggle-button"] & JSXBase.HTMLAttributes<HTMLIxToggleButtonElement>;

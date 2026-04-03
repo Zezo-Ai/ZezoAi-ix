@@ -13,12 +13,10 @@ import {
   h,
   Host,
   Listen,
-  Mixin,
   Prop,
   Watch,
+  Mixin,
 } from '@stencil/core';
-import { a11yHostAttributes } from '../utils/a11y';
-import { DefaultMixins } from '../utils/internal/component';
 import { BaseButton, BaseButtonProps } from './base-button';
 import { BaseButtonStyle, BaseButtonVariant } from './base-button.types';
 import { IxButtonComponent } from './button-component';
@@ -116,12 +114,6 @@ export class Button
    */
   submitButtonElement?: HTMLButtonElement;
 
-  private a11yAttributes: Record<string, string> = {};
-
-  override componentWillLoad() {
-    this.a11yAttributes = a11yHostAttributes(this.hostElement);
-  }
-
   @Listen('click', { capture: true })
   handleClick(event: Event) {
     if (this.disabled || this.loading) {
@@ -200,14 +192,6 @@ export class Button
       type: this.type,
       alignment: this.alignment,
       ariaAttributes: this.inheritAriaAttributes,
-      //       ariaAttributes: {
-      //         'aria-label': a11y['aria-label'] ?? this.ariaLabelButton,
-      //         'aria-describedby': a11y['aria-describedby'],
-      //       },
-      ariaAttributes: {
-        ...this.a11yAttributes,
-        'aria-label': this.a11yAttributes['aria-label'] ?? this.ariaLabelButton,
-      },
       href: this.href,
       target: this.target,
       rel: this.rel,
