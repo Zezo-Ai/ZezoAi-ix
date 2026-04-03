@@ -16,10 +16,16 @@ import {
   h,
   Host,
   Method,
+  Mixin,
   Prop,
   Watch,
 } from '@stencil/core';
-import { A11yAttributes, a11yBoolean, a11yHostAttributes } from '../utils/a11y';
+import { a11yBoolean } from '../utils/a11y';
+import { DefaultMixins } from '../utils/internal/component';
+import {
+  InheritAriaAttributesMixin,
+  InheritAriaAttributesMixinContract,
+} from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import { HookValidationLifecycle, IxFormComponent } from '../utils/input';
 
 const DEFAULT_TEXT_ON = 'On';
@@ -35,10 +41,13 @@ const DEFAULT_TEXT_INDETERMINATE = 'Mixed';
   shadow: true,
   formAssociated: true,
 })
-export class Toggle implements IxFormComponent<string> {
+export class Toggle
+  extends Mixin(...DefaultMixins, InheritAriaAttributesMixin)
+  implements IxFormComponent<string>, InheritAriaAttributesMixinContract
+{
   @AttachInternals() formInternals!: ElementInternals;
 
-  @Element() hostElement!: HTMLIxToggleElement;
+  @Element() override hostElement!: HTMLIxToggleElement;
 
   /**
    * Name of the checkbox component
@@ -107,8 +116,6 @@ export class Toggle implements IxFormComponent<string> {
 
   private touched = false;
 
-  private hostA11y: A11yAttributes = {};
-
   onCheckedChange(newChecked: boolean) {
     if (this.disabled) {
       return;
@@ -131,8 +138,8 @@ export class Toggle implements IxFormComponent<string> {
     }
   }
 
-  componentWillLoad() {
-    this.hostA11y = a11yHostAttributes(this.hostElement);
+  override componentWillLoad() {
+    super.componentWillLoad();
     this.updateFormInternalValue();
   }
 
@@ -173,7 +180,7 @@ export class Toggle implements IxFormComponent<string> {
     /** This function is intentionally empty */
   }
 
-  render() {
+  override render() {
     let toggleText = this.textOff;
 
     if (this.checked) {
@@ -190,12 +197,12 @@ export class Toggle implements IxFormComponent<string> {
       this.textIndeterminate === DEFAULT_TEXT_INDETERMINATE;
     const useToggleTextAsLabel = this.hideText || isDefaultLabels;
     const ariaLabel =
-      this.hostA11y['aria-label'] ??
+      this.inheritAriaAttributes['aria-label'] ??
       (useToggleTextAsLabel ? toggleText : undefined);
 
     return (
       <Host
-        {...this.hostA11y}
+        {...this.inheritAriaAttributes}
         role="switch"
         tabindex={this.disabled ? -1 : 0}
         aria-label={ariaLabel}
