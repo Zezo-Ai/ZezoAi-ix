@@ -19,11 +19,7 @@ import {
 import { BaseButtonProps } from '../button/base-button';
 import { ButtonVariant } from '../button/button';
 import { BaseIconButton } from '../icon-button/base-icon-button';
-import {
-  a11yBoolean,
-  a11yHostAttributes,
-  getFallbackLabelFromIconName,
-} from '../utils/a11y';
+import { a11yBoolean, a11yHostAttributes, getFallbackLabelFromIconName } from '../utils/a11y';
 
 @Component({
   tag: 'ix-icon-toggle-button',
