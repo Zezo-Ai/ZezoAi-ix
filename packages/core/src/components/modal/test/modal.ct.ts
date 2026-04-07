@@ -447,9 +447,9 @@ regressionTest.describe('isNonBlocking', () => {
       });
 
       await waitForModalDialogOpen(page);
-      await expect(
-        page.locator('ix-modal ix-button[autofocus]')
-      ).toBeFocused({ timeout: 5000 });
+      await expect(page.locator('ix-modal ix-button[autofocus]')).toBeFocused({
+        timeout: 5000,
+      });
     }
   );
 
