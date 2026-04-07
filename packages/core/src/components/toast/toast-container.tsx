@@ -32,6 +32,73 @@ export class ToastContainer {
 
   private readonly PREFIX_POSITION_CLASS = 'toast-container--';
 
+  private get announcerId() {
+    return `${this.containerId}-announcer`;
+  }
+
+  private getScreenReaderAnnouncement(config: ToastConfig): string | undefined {
+    const messageText =
+      typeof config.message === 'string'
+        ? config.message
+        : (config.message?.textContent ?? '');
+
+    const announcement = [config.title ?? '', messageText]
+      .map((part) => part.trim())
+      .filter((part) => part.length > 0)
+      .join('. ');
+
+    return announcement.length > 0 ? announcement : undefined;
+  }
+
+  private createAnnouncer() {
+    const announcer = document.createElement('div');
+    announcer.id = this.announcerId;
+    announcer.setAttribute('role', 'status');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+
+    // Keep announcer in light DOM so VoiceOver reliably picks updates.
+    announcer.style.position = 'fixed';
+    announcer.style.width = '1px';
+    announcer.style.height = '1px';
+    announcer.style.padding = '0';
+    announcer.style.margin = '-1px';
+    announcer.style.overflow = 'hidden';
+    announcer.style.clip = 'rect(0, 0, 0, 0)';
+    announcer.style.whiteSpace = 'nowrap';
+    announcer.style.border = '0';
+
+    document.body.appendChild(announcer);
+    return announcer;
+  }
+
+  private ensureScreenReaderAnnouncer() {
+    const existingAnnouncer = document.getElementById(this.announcerId);
+    if (existingAnnouncer) {
+      return existingAnnouncer;
+    }
+
+    return this.createAnnouncer();
+  }
+
+  private announceForScreenReader(message?: string) {
+    if (!message) {
+      return;
+    }
+
+    const existingAnnouncer = document.getElementById(this.announcerId);
+    if (existingAnnouncer) {
+      existingAnnouncer.remove();
+    }
+
+    const announcer = this.createAnnouncer();
+    announcer.textContent = '';
+
+    window.setTimeout(() => {
+      announcer.textContent = message;
+    }, 50);
+  }
+
   get hostContainer() {
     return new Promise<HTMLElement>((resolve) => {
       const interval = setInterval(() => {
@@ -54,6 +121,8 @@ export class ToastContainer {
       );
       document.body.appendChild(toastContainer);
     }
+
+    this.ensureScreenReaderAnnouncer();
   }
 
   @Watch('position')
@@ -90,6 +159,9 @@ export class ToastContainer {
     toast.icon = config.icon;
     toast.iconColor = config.iconColor;
     toast.hideIcon = config.hideIcon ?? false;
+
+    const screenReaderAnnouncement = this.getScreenReaderAnnouncement(config);
+
     toast.addEventListener(
       'closeToast',
       (event: CustomEvent<any | undefined>) => {
@@ -112,6 +184,7 @@ export class ToastContainer {
     }
 
     (await this.hostContainer).appendChild(toast);
+    this.announceForScreenReader(screenReaderAnnouncement);
 
     return {
       onClose,
