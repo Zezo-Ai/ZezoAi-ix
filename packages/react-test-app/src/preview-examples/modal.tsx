@@ -35,7 +35,7 @@ function CustomModal() {
       </IxModalHeader>
       <IxModalContent>Message text lorem ipsum</IxModalContent>
       <IxModalFooter>
-        <IxButton variant="subtle-primary" onClick={() => dismiss()}>
+        <IxButton variant="subtle-primary" onClick={() => dismiss()} autoFocus>
           Cancel
         </IxButton>
         <IxButton onClick={() => close()}>OK</IxButton>

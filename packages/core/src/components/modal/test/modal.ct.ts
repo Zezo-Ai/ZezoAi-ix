@@ -435,6 +435,9 @@ regressionTest.describe('isNonBlocking', () => {
         elm.innerHTML = `
       <ix-modal-header>Title</ix-modal-header>
       <ix-modal-content>Content</ix-modal-content>
+      <ix-modal-footer>
+        <ix-button autofocus>OK</ix-button>
+      </ix-modal-footer>
     `;
         globalThis.showModal({
           content: elm,
@@ -445,7 +448,7 @@ regressionTest.describe('isNonBlocking', () => {
 
       await waitForModalDialogOpen(page);
       await expect(
-        page.locator('ix-modal ix-icon-button.modal-close')
+        page.locator('ix-modal ix-button[autofocus]')
       ).toBeFocused({ timeout: 5000 });
     }
   );
