@@ -35,7 +35,6 @@ class ThemeSwitcher {
   readonly themeChanged = new TypedEvent<ThemeChangeEventDetail>();
 
   /**
-   * Use `getMode` instead of this method to get the current color schema, as it also considers the system appearance if no explicit color schema is set.
    * @internal
    */
   public getComputedStyleColorSchema() {
