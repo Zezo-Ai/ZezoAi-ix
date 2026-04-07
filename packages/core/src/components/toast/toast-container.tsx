@@ -72,15 +72,6 @@ export class ToastContainer {
     return announcer;
   }
 
-  private ensureScreenReaderAnnouncer() {
-    const existingAnnouncer = document.getElementById(this.announcerId);
-    if (existingAnnouncer) {
-      return existingAnnouncer;
-    }
-
-    return this.createAnnouncer();
-  }
-
   private announceForScreenReader(message?: string) {
     if (!message) {
       return;
@@ -92,7 +83,6 @@ export class ToastContainer {
     }
 
     const announcer = this.createAnnouncer();
-    announcer.textContent = '';
 
     window.setTimeout(() => {
       announcer.textContent = message;
@@ -121,8 +111,6 @@ export class ToastContainer {
       );
       document.body.appendChild(toastContainer);
     }
-
-    this.ensureScreenReaderAnnouncer();
   }
 
   @Watch('position')
