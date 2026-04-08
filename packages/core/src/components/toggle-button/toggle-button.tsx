@@ -75,14 +75,6 @@ export class ToggleButton
   @Prop() pressed = false;
 
   /**
-   * ARIA label that will be set on the native HTML button element
-   *
-   * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
-   * @since 3.2.0
-   */
-  @Prop() ariaLabelButton?: string;
-
-  /**
    * Pressed change event
    */
   @Event() pressedChange!: EventEmitter<boolean>;
@@ -108,7 +100,6 @@ export class ToggleButton
         'aria-pressed': a11yBoolean(this.pressed),
         'aria-label':
           this.inheritAriaAttributes['aria-label'] ??
-          this.ariaLabelButton ??
           getFallbackLabelFromIconName(this.icon),
       },
     };

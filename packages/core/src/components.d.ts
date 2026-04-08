@@ -1620,12 +1620,6 @@ export namespace Components {
          */
         "suppressOverflowBehavior": boolean;
         /**
-          * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
-          * @since 5.0.0
-          * @default false
-         */
-        "suppressTriggerVisibilityCheck": boolean;
-        /**
           * Define an element that triggers the dropdown. A trigger can either be a string that will be interpreted as id attribute or a DOM element.
          */
         "trigger"?: ElementReference;
@@ -2147,12 +2141,6 @@ export namespace Components {
         "variant": IconButtonVariant;
     }
     interface IxIconToggleButton {
-        /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in a future major version.
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
         /**
           * Disable the button
           * @default false
@@ -4247,12 +4235,6 @@ export namespace Components {
         "value": string;
     }
     interface IxToggleButton {
-        /**
-          * ARIA label that will be set on the native HTML button element
-          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
         /**
           * Disable the button
           * @default false
@@ -7992,12 +7974,6 @@ declare namespace LocalJSX {
          */
         "suppressOverflowBehavior"?: boolean;
         /**
-          * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
-          * @since 5.0.0
-          * @default false
-         */
-        "suppressTriggerVisibilityCheck"?: boolean;
-        /**
           * Define an element that triggers the dropdown. A trigger can either be a string that will be interpreted as id attribute or a DOM element.
          */
         "trigger"?: ElementReference;
@@ -8556,12 +8532,6 @@ declare namespace LocalJSX {
         "variant"?: IconButtonVariant;
     }
     interface IxIconToggleButton {
-        /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-icon-toggle-button host element. Will be removed in a future major version.
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
         /**
           * Disable the button
           * @default false
@@ -10802,12 +10772,6 @@ declare namespace LocalJSX {
     }
     interface IxToggleButton {
         /**
-          * ARIA label that will be set on the native HTML button element
-          * @deprecated Since 5.1.0. Set the native `aria-label` on the ix-toggle-button host element. Will be removed in a future major version.
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -11426,7 +11390,6 @@ declare namespace LocalJSX {
         "placement": AlignedPlacement;
         "positioningStrategy": 'absolute' | 'fixed';
         "header": string;
-        "suppressTriggerVisibilityCheck": boolean;
         "disableFocusHandling": boolean;
         "disableFocusTrap": boolean;
         "enableTopLayer": boolean;
@@ -11577,7 +11540,6 @@ declare namespace LocalJSX {
         "size": '24' | '16' | '12';
         "disabled": boolean;
         "loading": boolean;
-        "ariaLabelIconButton": string;
     }
     interface IxInputAttributes {
         "type": 'text' | 'email' | 'password' | 'tel' | 'url';
@@ -12063,7 +12025,6 @@ declare namespace LocalJSX {
         "icon": string;
         "iconRight": string;
         "pressed": boolean;
-        "ariaLabelButton": string;
     }
     interface IxTooltipAttributes {
         "for": ElementReference | ElementReference[];

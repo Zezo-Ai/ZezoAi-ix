@@ -579,7 +579,6 @@ export const IxDropdown: StencilVueComponent<JSX.IxDropdown> = /*@__PURE__*/ def
   'placement',
   'positioningStrategy',
   'header',
-  'suppressTriggerVisibilityCheck',
   'disableFocusHandling',
   'disableFocusTrap',
   'enableTopLayer',
@@ -804,7 +803,6 @@ export const IxIconToggleButton: StencilVueComponent<JSX.IxIconToggleButton> = /
   'size',
   'disabled',
   'loading',
-  'ariaLabelIconButton',
   'pressedChange'
 ], [
   'pressedChange'
@@ -1536,7 +1534,6 @@ export const IxToggleButton: StencilVueComponent<JSX.IxToggleButton> = /*@__PURE
   'icon',
   'iconRight',
   'pressed',
-  'ariaLabelButton',
   'pressedChange'
 ], [
   'pressedChange'
