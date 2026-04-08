@@ -21,8 +21,7 @@
     "inlineSources": true,
     "sourceMap": true,
     "target": "es2017",
-    "skipLibCheck": true,
-    "baseUrl": "."
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"],

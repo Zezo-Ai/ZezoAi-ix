@@ -28,7 +28,7 @@ const gridOptions = {
   },
   suppressCellFocus: true,
   theme: theme,
-};
+} satisfies agGridCommunity34.GridOptions;
 
 const myGridElement = document.querySelector('#testGrid') as HTMLElement;
 createGrid(myGridElement, gridOptions);
