@@ -5,9 +5,9 @@
 '@siemens/ix-vue': major
 ---
 
-- The `toast` function now appends directly to the host element, which also receives the `toast-container` class instead of using a separate container.
+- The `toast` function now appends directly to the `ix-toast-container` host element instead of using a separate container element.
 
 ## Removed properties
 
-- `containerClass` - The class name for the toast container is now fixed as `toast-container`.
+- `containerClass` - Set `class` on the `ix-toast-container` element itself if needed.
 - `containerId` - Just use `id` on the `ix-toast-container` element if needed.
