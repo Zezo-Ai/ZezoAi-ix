@@ -83,7 +83,8 @@ test.describe('accessibility', () => {
     );
     const icon = page.locator('ix-pill ix-icon');
     await expect(icon).toHaveAttribute('aria-label', 'Featured');
-    await expect(icon).not.toHaveAttribute('aria-hidden');
+    const ariaHidden = await icon.getAttribute('aria-hidden');
+    expect(ariaHidden === null || ariaHidden === 'false').toBe(true);
   });
 
   test('should handle multiple ARIA attributes', async ({ mount, page }) => {

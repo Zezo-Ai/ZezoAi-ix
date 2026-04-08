@@ -134,6 +134,8 @@ export class Pill
       this.inheritAriaAttributes['role'] ||
       (hasAccessibleName ? 'group' : undefined);
 
+    const iconIsDecorative = !this.ariaLabelIcon?.trim();
+
     return (
       <Host
         style={
@@ -177,7 +179,7 @@ export class Pill
               name={this.icon}
               size={'16'}
               aria-label={this.ariaLabelIcon}
-              aria-hidden={a11yBoolean(!this.ariaLabelIcon?.trim())}
+              aria-hidden={a11yBoolean(iconIsDecorative)}
             />
           )}
           <span class="slot-container">
