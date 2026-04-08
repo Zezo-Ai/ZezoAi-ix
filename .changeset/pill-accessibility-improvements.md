@@ -2,4 +2,4 @@
 '@siemens/ix': patch
 ---
 
-Improve **ix-pill** accessibility with ARIA attribute inheritance on the pill surface and additional automated accessibility tests.
+**ix-pill:** `aria-label`, `aria-labelledby`, and other ARIA attributes set on the host are now exposed on the pill for assistive technologies. Icons are treated as decorative by default; use **`aria-label-icon`** when the icon carries meaning screen readers should hear.
