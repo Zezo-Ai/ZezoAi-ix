@@ -26,7 +26,7 @@ async function extendPageFixture(page: Page, testInfo: TestInfo) {
       `http://localhost:5173/tests/${url}?theme=${theme}&colorSchema=${colorSchema}`,
       options
     );
-    // Inital timeout for webKit to render Web Components
+    // Initial timeout for webKit to render Web Components
     await page.waitForTimeout(1000);
     return response;
   };
