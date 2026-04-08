@@ -168,12 +168,6 @@
       outline: 1px solid var(--theme-color-focus-bdr);
       outline-offset: var(--theme-btn--focus--outline-offset);
     }
-
-    /* Programmatic focus matches :focus but not :focus-visible */
-    .btn:focus:not(:focus-visible) {
-      outline: 1px solid var(--theme-color-focus-bdr);
-      outline-offset: var(--theme-btn--focus--outline-offset);
-    }
   }
 }
 

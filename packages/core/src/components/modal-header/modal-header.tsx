@@ -107,7 +107,10 @@ export class ModalHeader {
     const closeBtn = this.hostElement.shadowRoot?.querySelector<HTMLElement>(
       'ix-icon-button.modal-close'
     );
-    return tryFocusElement(closeBtn, { preventScroll: true });
+    return tryFocusElement(closeBtn, {
+      preventScroll: true,
+      focusVisible: true,
+    });
   }
 
   render() {

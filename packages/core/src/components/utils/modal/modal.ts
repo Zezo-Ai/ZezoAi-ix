@@ -189,7 +189,7 @@ export async function showModal<T>(
     const autofocusElement = dialogRef.querySelector(
       IX_MODAL_HOST_AUTOFOCUS_SELECTOR
     );
-    tryFocusElement(autofocusElement);
+    tryFocusElement(autofocusElement, { focusVisible: true });
   });
 
   return {

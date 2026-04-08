@@ -65,15 +65,18 @@ export function queryElements(
 
 export type DomFocusOptions = Parameters<HTMLElement['focus']>[0];
 
+/** `focusVisible` is supported in Firefox 104+; omitted from some TypeScript DOM typings. */
+export type IxFocusOptions = DomFocusOptions & { focusVisible?: boolean };
+
 export function tryFocusElement(
   element: Element | HTMLElement | null | undefined,
-  options?: DomFocusOptions
+  options?: IxFocusOptions
 ): boolean {
   if (!element || !(element instanceof HTMLElement)) {
     return false;
   }
   try {
-    element.focus(options);
+    element.focus(options as DomFocusOptions);
     return true;
   } catch {
     return false;
