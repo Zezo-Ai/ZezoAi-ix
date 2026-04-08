@@ -14,6 +14,7 @@ import {
   InheritAriaAttributesMixin,
   InheritAriaAttributesMixinContract,
 } from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
+import { a11yBoolean } from '../utils/a11y';
 import { makeRef } from '../utils/make-ref';
 
 @Component({
@@ -176,7 +177,7 @@ export class Pill
               name={this.icon}
               size={'16'}
               aria-label={this.ariaLabelIcon}
-              aria-hidden={this.ariaLabelIcon ? undefined : 'true'}
+              aria-hidden={a11yBoolean(!this.ariaLabelIcon?.trim())}
             />
           )}
           <span class="slot-container">
