@@ -12,112 +12,48 @@ import './pill-variants.scoped.css';
 
 import { IxCol, IxLayoutGrid, IxPill, IxRow } from '@siemens/ix-react';
 
+const PILL_VARIANTS = [
+  { variant: 'primary' as const, label: 'Primary' },
+  { variant: 'alarm' as const, label: 'Alarm' },
+  { variant: 'critical' as const, label: 'Critical' },
+  { variant: 'warning' as const, label: 'Warning' },
+  { variant: 'info' as const, label: 'Info' },
+  { variant: 'neutral' as const, label: 'Neutral' },
+  { variant: 'success' as const, label: 'Success' },
+];
+
+const CUSTOM_PILL_PROPS = {
+  variant: 'custom' as const,
+  pillColor: 'white',
+  background: 'purple',
+  icon: iconInfo,
+};
+
 export default () => {
   return (
     <>
       <IxLayoutGrid>
-        <IxRow>
-          <IxCol>
-            <IxPill icon={iconInfo}>Primary</IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="subtle-primary" icon={iconInfo}>
-              Primary
-            </IxPill>
-          </IxCol>
-        </IxRow>
+        {PILL_VARIANTS.map(({ variant, label }) => (
+          <IxRow key={variant}>
+            <IxCol>
+              <IxPill variant={variant} icon={iconInfo}>
+                {label}
+              </IxPill>
+            </IxCol>
+            <IxCol>
+              <IxPill variant={variant} outline icon={iconInfo}>
+                {label}
+              </IxPill>
+            </IxCol>
+          </IxRow>
+        ))}
 
         <IxRow>
           <IxCol>
-            <IxPill variant="alarm" icon={iconInfo}>
-              Alarm
-            </IxPill>
+            <IxPill {...CUSTOM_PILL_PROPS}>Custom</IxPill>
           </IxCol>
           <IxCol>
-            <IxPill variant="alarm" icon={iconInfo}>
-              Alarm
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill variant="critical" icon={iconInfo}>
-              Critical
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="critical" icon={iconInfo}>
-              Critical
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill variant="warning" icon={iconInfo}>
-              Warning
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="warning" icon={iconInfo}>
-              Warning
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill variant="success" icon={iconInfo}>
-              Success
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="success" icon={iconInfo}>
-              Success
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill variant="info" icon={iconInfo}>
-              Info
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="info" icon={iconInfo}>
-              Info
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill variant="neutral" icon={iconInfo}>
-              Neutral
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="neutral" icon={iconInfo}>
-              Neutral
-            </IxPill>
-          </IxCol>
-        </IxRow>
-
-        <IxRow>
-          <IxCol>
-            <IxPill
-              variant="custom"
-              color="color-soft-text"
-              background="purple"
-              icon={iconInfo}
-            >
-              Custom
-            </IxPill>
-          </IxCol>
-          <IxCol>
-            <IxPill variant="custom" color="color-soft-text" background="purple" icon={iconInfo}>
+            <IxPill {...CUSTOM_PILL_PROPS} outline>
               Custom
             </IxPill>
           </IxCol>

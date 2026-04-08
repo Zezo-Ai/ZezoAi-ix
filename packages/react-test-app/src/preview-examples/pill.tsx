@@ -15,12 +15,12 @@ import { IxPill } from '@siemens/ix-react';
 export default () => {
   return (
     <>
-      <IxPill variant="custom" color="white" background="purple">
+      <IxPill variant="custom" pillColor="white" background="purple">
         Label
       </IxPill>
 
       <IxPill tooltipText="Custom tooltip text">Label</IxPill>
-      <IxPill variant="subtle-primary" tooltipText>
+      <IxPill variant="primary" outline tooltipText>
         Label
       </IxPill>
       <IxPill className="styled">Label</IxPill>
@@ -31,7 +31,8 @@ export default () => {
         Label
       </IxPill>
       <IxPill
-        variant="subtle-primary"
+        variant="primary"
+        outline
         alignLeft
         icon={iconStar}
         className="styled"
@@ -39,7 +40,6 @@ export default () => {
         Label
       </IxPill>
 
-      <IxPill variant="alarm">Label</IxPill>
       <IxPill variant="alarm">Label</IxPill>
       <IxPill variant="alarm" className="styled">
         Label
@@ -59,14 +59,15 @@ export default () => {
         Label
       </IxPill>
       <IxPill
-        variant="subtle-primary"
+        variant="primary"
+        outline
         icon={iconStar}
         className="styled-ellipsis-4"
       >
         Label
       </IxPill>
       <IxPill className="styled-ellipsis-3">Label</IxPill>
-      <IxPill variant="subtle-primary" className="styled-ellipsis-3">
+      <IxPill variant="primary" outline className="styled-ellipsis-3">
         Label
       </IxPill>
     </>
