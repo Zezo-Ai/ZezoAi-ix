@@ -2059,8 +2059,7 @@ export declare interface IxModalFooter extends Components.IxModalFooter {}
 
 
 @ProxyCmp({
-  inputs: ['ariaLabelCloseIconButton', 'ariaLabelIcon', 'hideClose', 'icon', 'iconColor'],
-  methods: ['focusCloseButton']
+  inputs: ['ariaLabelCloseIconButton', 'ariaLabelIcon', 'hideClose', 'icon', 'iconColor']
 })
 @Component({
   selector: 'ix-modal-header',

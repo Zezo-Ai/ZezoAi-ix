@@ -21,6 +21,8 @@ import { animate } from 'animejs';
 import { A11yAttributes, a11yBoolean, a11yHostAttributes } from '../utils/a11y';
 import Animation from '../utils/animation';
 import { OnListener } from '../utils/listener';
+import { tryFocusElement } from '../utils/focus/focus-utilities';
+import { IX_MODAL_AUTOFOCUS_SELECTOR } from '../utils/modal/modal';
 import { waitForElement } from '../utils/waitForElement';
 import { IxModalSize } from './modal.types';
 
@@ -188,6 +190,16 @@ export class Modal {
     }
   }
 
+  private async scheduleInitialAutofocus() {
+    await Promise.resolve();
+    requestAnimationFrame(() => {
+      const direct = this.hostElement.querySelector<HTMLElement>(
+        IX_MODAL_AUTOFOCUS_SELECTOR
+      );
+      tryFocusElement(direct, { focusVisible: true });
+    });
+  }
+
   /**
    * Show the dialog
    */
@@ -207,6 +219,8 @@ export class Modal {
       }
 
       this.slideInModal();
+
+      await this.scheduleInitialAutofocus();
     } catch {
       console.error('HTMLDialogElement not existing');
     }

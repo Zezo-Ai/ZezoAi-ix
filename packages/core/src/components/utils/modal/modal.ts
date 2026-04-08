@@ -9,9 +9,9 @@
 
 import type { IxModalSize } from '../../modal/modal.types';
 import { getCoreDelegate, resolveDelegate } from '../delegate';
-import { tryFocusElement } from '../focus/focus-utilities';
 import { TypedEvent } from '../typed-event';
 
+export const IX_MODAL_AUTOFOCUS_SELECTOR = '[autofocus],[auto-focus]';
 /**
  * Set accessibility attributes on modal element
  */
@@ -112,8 +112,6 @@ function getIxModal(element: Element) {
   return element.closest('ix-modal');
 }
 
-const IX_MODAL_HOST_AUTOFOCUS_SELECTOR = '[autofocus],[auto-focus]';
-
 /**
  * Close closest ix-modal relative to a provided element
  */
@@ -184,13 +182,6 @@ export async function showModal<T>(
       await delegate.removeView(dialogRef);
     }
   );
-
-  requestAnimationFrame(() => {
-    const autofocusElement = dialogRef.querySelector(
-      IX_MODAL_HOST_AUTOFOCUS_SELECTOR
-    );
-    tryFocusElement(autofocusElement, { focusVisible: true });
-  });
 
   return {
     htmlElement: dialogRef,
