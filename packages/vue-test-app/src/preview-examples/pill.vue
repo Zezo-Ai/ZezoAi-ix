@@ -15,7 +15,11 @@ import { IxPill } from '@siemens/ix-vue';
 <style scoped src="./pill.css"></style>
 
 <template>
-  <IxPill variant="custom" pill-color="white" background="purple">Label</IxPill>
+  <IxPill
+    variant="custom"
+    pill-color="var(--theme-color-inv-std-text)"
+    background="var(--theme-color-dynamic)"
+    >Label</IxPill>
 
   <IxPill tooltip-text="Custom tooltip text">Label</IxPill>
   <IxPill class="styled">Label</IxPill>

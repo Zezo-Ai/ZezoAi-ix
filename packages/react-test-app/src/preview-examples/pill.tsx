@@ -15,7 +15,11 @@ import { IxPill } from '@siemens/ix-react';
 export default () => {
   return (
     <>
-      <IxPill variant="custom" pillColor="white" background="purple">
+      <IxPill
+        variant="custom"
+        pillColor="var(--theme-color-inv-std-text)"
+        background="var(--theme-color-dynamic)"
+      >
         Label
       </IxPill>
 

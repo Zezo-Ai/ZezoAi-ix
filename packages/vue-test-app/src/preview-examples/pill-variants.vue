@@ -10,30 +10,72 @@
 <script setup lang="ts">
 import { iconInfo } from '@siemens/ix-icons/icons';
 import { IxCol, IxLayoutGrid, IxPill, IxRow } from '@siemens/ix-vue';
-
-const pillVariants = [
-  { variant: 'primary' as const, label: 'Primary' },
-  { variant: 'alarm' as const, label: 'Alarm' },
-  { variant: 'critical' as const, label: 'Critical' },
-  { variant: 'warning' as const, label: 'Warning' },
-  { variant: 'info' as const, label: 'Info' },
-  { variant: 'neutral' as const, label: 'Neutral' },
-  { variant: 'success' as const, label: 'Success' },
-];
 </script>
 
 <style scoped src="./pill-variants.css"></style>
 
 <template>
   <IxLayoutGrid>
-    <IxRow v-for="row in pillVariants" :key="row.variant">
+    <IxRow>
       <IxCol>
-        <IxPill :variant="row.variant" :icon="iconInfo">{{ row.label }}</IxPill>
+        <IxPill variant="primary" :icon="iconInfo">Primary</IxPill>
       </IxCol>
       <IxCol>
-        <IxPill :variant="row.variant" outline :icon="iconInfo">
-          {{ row.label }}
-        </IxPill>
+        <IxPill variant="primary" outline :icon="iconInfo">Primary</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="alarm" :icon="iconInfo">Alarm</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="alarm" outline :icon="iconInfo">Alarm</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="critical" :icon="iconInfo">Critical</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="critical" outline :icon="iconInfo">Critical</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="warning" :icon="iconInfo">Warning</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="warning" outline :icon="iconInfo">Warning</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="info" :icon="iconInfo">Info</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="info" outline :icon="iconInfo">Info</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="neutral" :icon="iconInfo">Neutral</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="neutral" outline :icon="iconInfo">Neutral</IxPill>
+      </IxCol>
+    </IxRow>
+
+    <IxRow>
+      <IxCol>
+        <IxPill variant="success" :icon="iconInfo">Success</IxPill>
+      </IxCol>
+      <IxCol>
+        <IxPill variant="success" outline :icon="iconInfo">Success</IxPill>
       </IxCol>
     </IxRow>
 
@@ -41,8 +83,8 @@ const pillVariants = [
       <IxCol>
         <IxPill
           variant="custom"
-          pill-color="white"
-          background="purple"
+          pill-color="var(--theme-color-inv-std-text)"
+          background="var(--theme-color-dynamic)"
           :icon="iconInfo"
         >
           Custom
@@ -52,8 +94,8 @@ const pillVariants = [
         <IxPill
           variant="custom"
           outline
-          pill-color="white"
-          background="purple"
+          pill-color="var(--theme-color-dynamic)"
+          background="var(--theme-color-dynamic)"
           :icon="iconInfo"
         >
           Custom

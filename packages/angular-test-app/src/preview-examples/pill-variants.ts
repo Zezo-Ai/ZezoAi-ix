@@ -15,28 +15,75 @@ import { Component } from '@angular/core';
   styleUrls: ['./pill-variants.css'],
   template: `
     <ix-layout-grid>
-      @for (row of pillVariants; track row.variant) {
-        <ix-row>
-          <ix-col>
-            <ix-pill [attr.variant]="row.variant" icon="info">{{
-              row.label
-            }}</ix-pill>
-          </ix-col>
-          <ix-col>
-            <ix-pill
-              [attr.variant]="row.variant"
-              outline
-              icon="info"
-            >{{ row.label }}</ix-pill>
-          </ix-col>
-        </ix-row>
-      }
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="primary" icon="info">Primary</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="primary" outline icon="info">Primary</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="alarm" icon="info">Alarm</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="alarm" outline icon="info">Alarm</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="critical" icon="info">Critical</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="critical" outline icon="info">Critical</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="warning" icon="info">Warning</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="warning" outline icon="info">Warning</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="info" icon="info">Info</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="info" outline icon="info">Info</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="neutral" icon="info">Neutral</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="neutral" outline icon="info">Neutral</ix-pill>
+        </ix-col>
+      </ix-row>
+
+      <ix-row>
+        <ix-col>
+          <ix-pill variant="success" icon="info">Success</ix-pill>
+        </ix-col>
+        <ix-col>
+          <ix-pill variant="success" outline icon="info">Success</ix-pill>
+        </ix-col>
+      </ix-row>
+
       <ix-row>
         <ix-col>
           <ix-pill
             variant="custom"
-            pill-color="white"
-            background="purple"
+            pill-color="var(--theme-color-inv-std-text)"
+            background="var(--theme-color-dynamic)"
             icon="info"
           >Custom</ix-pill>
         </ix-col>
@@ -44,8 +91,8 @@ import { Component } from '@angular/core';
           <ix-pill
             variant="custom"
             outline
-            pill-color="white"
-            background="purple"
+            pill-color="var(--theme-color-dynamic)"
+            background="var(--theme-color-dynamic)"
             icon="info"
           >Custom</ix-pill>
         </ix-col>
@@ -53,14 +100,4 @@ import { Component } from '@angular/core';
     </ix-layout-grid>
   `,
 })
-export default class Pill {
-  protected readonly pillVariants = [
-    { variant: 'primary', label: 'Primary' },
-    { variant: 'alarm', label: 'Alarm' },
-    { variant: 'critical', label: 'Critical' },
-    { variant: 'warning', label: 'Warning' },
-    { variant: 'info', label: 'Info' },
-    { variant: 'neutral', label: 'Neutral' },
-    { variant: 'success', label: 'Success' },
-  ] as const;
-}
+export default class Pill {}
