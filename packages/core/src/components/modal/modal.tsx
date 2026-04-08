@@ -26,6 +26,12 @@ import { IX_MODAL_AUTOFOCUS_SELECTOR } from '../utils/modal/modal';
 import { waitForElement } from '../utils/waitForElement';
 import { IxModalSize } from './modal.types';
 
+/** One microtask so slotted / framework children exist
+ * before we request an animation frame and query `[autofocus]`. */
+function deferToNextMicrotask(): Promise<void> {
+  return new Promise((resolve) => queueMicrotask(resolve));
+}
+
 @Component({
   tag: 'ix-modal',
   styleUrl: 'modal.scss',
@@ -191,7 +197,7 @@ export class Modal {
   }
 
   private async scheduleInitialAutofocus() {
-    await Promise.resolve();
+    await deferToNextMicrotask();
     requestAnimationFrame(() => {
       const direct = this.hostElement.querySelector<HTMLElement>(
         IX_MODAL_AUTOFOCUS_SELECTOR

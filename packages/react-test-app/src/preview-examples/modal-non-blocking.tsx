@@ -30,7 +30,7 @@ function CustomModal() {
   };
 
   return (
-    <Modal ref={modalRef} isNonBlocking disableEscapeClose={false}>
+    <Modal ref={modalRef} isNonBlocking>
       <IxModalHeader onCloseClick={() => dismiss()}>
         Message headline
       </IxModalHeader>

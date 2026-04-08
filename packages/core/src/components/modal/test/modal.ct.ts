@@ -18,7 +18,6 @@ import {
 } from '@siemens/ix-icons/icons';
 
 declare global {
-  // Test helpers attached in browser context (see setupModalEnvironment string and page.evaluate).
   var showModal: typeof import('./../../utils/modal').showModal;
   var dismissModal: typeof import('./../../utils/modal').dismissModal;
   var showMessage: any;
@@ -56,7 +55,6 @@ async function setupModalEnvironment(page: Page) {
   );
 }
 
-/** Modal open animation settled (visible + opaque). */
 async function waitForModalDialogOpen(page: Page) {
   const dialog = page.locator('ix-modal dialog');
   await expect(dialog).toBeVisible({ timeout: 5000 });
