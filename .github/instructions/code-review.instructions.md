@@ -5,6 +5,34 @@ excludeAgent: 'cloud-agent'
 
 # GitHub Copilot Code Review Rules
 
+## Pull Request title and description
+
+## Title
+
+Follow the rule `<type>[optional <scope>]: <description>`
+
+Examples are:
+
+- `fix(core): correct button color in dark theme`
+- `feat(core/select): add feature X to component select`
+
+### Commit message with ! to draw attention to breaking change
+
+- `feat!: correct button color in dark theme`
+- `feat(core/select)!: add feature X to component select`
+
+### Allowed types without scope
+
+- `chore`
+- `docs`
+- `refactor`
+- `test`
+
+## Description
+
+- Check that the pull request description explains the user-facing impact, motivation, and important implementation details.
+- If the description is insufficient for reviewers or future maintainers to understand the effect of the change, request that it be expanded.
+
 ## Changesets
 
 - Treat a missing changeset as a review issue when a pull request includes user-facing or consumer-relevant changes.
@@ -45,7 +73,3 @@ regressionTest('accessibility', async ({ mount, makeAxeBuilder }) => {
 ## Requirement linking
 
 - Ensure that GitHub issue or Jira link (pattern `IX-<issue-number>`) is included in the pull request description or commit message.
-
-## PR description
-
-- Ensure that the pull request description clearly explains the user-facing impact of the change, including any relevant context, motivation, and details about the change. If the description is insufficient, request that the author expand it to provide a clear understanding of the change for reviewers and future maintainers.

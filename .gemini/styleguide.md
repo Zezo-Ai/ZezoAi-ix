@@ -2,6 +2,34 @@
 
 Use this style guide when reviewing pull requests for additional checks. These checks are in addition to the standard code review guidelines and are focused on ensuring that changes are properly documented, accessible, and aligned with release management practices.
 
+## Pull Request title and description
+
+## Title
+
+Follow the rule `<type>[optional <scope>]: <description>`
+
+Examples are:
+
+- `fix(core): correct button color in dark theme`
+- `feat(core/select): add feature X to component select`
+
+### Commit message with ! to draw attention to breaking change
+
+- `feat!: correct button color in dark theme`
+- `feat(core/select)!: add feature X to component select`
+
+### Allowed types without scope
+
+- `chore`
+- `docs`
+- `refactor`
+- `test`
+
+## Description
+
+- Check that the pull request description explains the user-facing impact, motivation, and important implementation details.
+- If the description is insufficient for reviewers or future maintainers to understand the effect of the change, request that it be expanded.
+
 ## Changesets
 
 - Treat a missing changeset as a review issue when a pull request includes user-facing or consumer-relevant changes.
@@ -25,11 +53,6 @@ Use this style guide when reviewing pull requests for additional checks. These c
 ## Requirement Linking
 
 - Check that the pull request description or commit message includes a GitHub issue reference or Jira reference matching `IX-<issue-number>` when the work is tied to a tracked requirement.
-
-## Pull Request Description
-
-- Check that the pull request description explains the user-facing impact, motivation, and important implementation details.
-- If the description is insufficient for reviewers or future maintainers to understand the effect of the change, request that it be expanded.
 
 ## Review Priorities
 
