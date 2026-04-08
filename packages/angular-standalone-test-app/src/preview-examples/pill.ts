@@ -18,7 +18,6 @@ import { IxPill } from '@siemens/ix-angular/standalone';
     <ix-pill variant="custom" pill-color="white" background="purple">Label</ix-pill>
 
     <ix-pill tooltip-text="Custom tooltip text">Label</ix-pill>
-    <ix-pill variant="primary" outline tooltip-text>Label</ix-pill>
     <ix-pill class="styled">Label</ix-pill>
 
     <ix-pill icon="star">Label</ix-pill>

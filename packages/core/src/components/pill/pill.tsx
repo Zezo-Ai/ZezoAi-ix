@@ -106,7 +106,10 @@ export class Pill
         : this.hostElement.textContent?.trim();
 
     return (
-      <ix-tooltip for={this.containerElementRef.waitForCurrent()}>
+      <ix-tooltip
+        for={this.containerElementRef.waitForCurrent()}
+        aria-label={text || undefined}
+      >
         {text}
       </ix-tooltip>
     );

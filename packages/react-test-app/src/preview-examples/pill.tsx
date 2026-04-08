@@ -20,9 +20,6 @@ export default () => {
       </IxPill>
 
       <IxPill tooltipText="Custom tooltip text">Label</IxPill>
-      <IxPill variant="primary" outline tooltipText>
-        Label
-      </IxPill>
       <IxPill className="styled">Label</IxPill>
 
       <IxPill icon={iconStar}>Label</IxPill>

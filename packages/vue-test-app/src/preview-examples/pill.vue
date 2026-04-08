@@ -18,7 +18,6 @@ import { IxPill } from '@siemens/ix-vue';
   <IxPill variant="custom" pill-color="white" background="purple">Label</IxPill>
 
   <IxPill tooltip-text="Custom tooltip text">Label</IxPill>
-  <IxPill variant="primary" outline tooltip-text>Label</IxPill>
   <IxPill class="styled">Label</IxPill>
 
   <IxPill :icon="iconStar">Label</IxPill>
