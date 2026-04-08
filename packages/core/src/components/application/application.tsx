@@ -113,8 +113,6 @@ export class Application {
     if (this.forceBreakpoint) {
       this.forceLayoutChange(this.forceBreakpoint);
     }
-
-    this.changeTheme();
   }
 
   disconnectedCallback() {
@@ -122,25 +120,19 @@ export class Application {
   }
 
   @Watch('theme')
-  @Watch('colorSchema')
-  private changeTheme() {
+  changeTheme() {
     if (!this.theme) {
-      const defaultTheme = themeSwitcher.getTheme();
-      const defaultMode = themeSwitcher.getMode();
-
-      if (!defaultTheme) {
-        return;
-      }
-
-      if (!defaultMode) {
-        return;
-      }
-
-      themeSwitcher.setTheme(defaultTheme, defaultMode);
       return;
     }
+    themeSwitcher.setTheme(this.theme);
+  }
 
-    themeSwitcher.setTheme(this.theme, this.colorSchema);
+  @Watch('colorSchema')
+  changeColorSchema() {
+    if (!this.colorSchema) {
+      return;
+    }
+    themeSwitcher.setColorSchema(this.colorSchema);
   }
 
   @Watch('appSwitchConfig')
