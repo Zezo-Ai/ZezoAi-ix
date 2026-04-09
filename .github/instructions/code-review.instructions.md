@@ -73,3 +73,9 @@ regressionTest('accessibility', async ({ mount, makeAxeBuilder }) => {
 ## Requirement linking
 
 - Ensure that GitHub issue or Jira link (pattern `IX-<issue-number>`) is included in the pull request description or commit message.
+
+## Component changes
+
+### Adding new component, new property, new method or new event
+
+- Ensure that each new component, property, method, or event has a JSDocs which contains a `@since` tag with the version number of the release in which it was added. For example, if a new component is added in version 4.2.0, the JSDocs should include `@since 4.2.0`.

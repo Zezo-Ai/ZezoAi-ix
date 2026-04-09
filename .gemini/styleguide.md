@@ -59,3 +59,9 @@ Examples are:
 - Focus first on correctness, regressions, accessibility, release impact, and missing validation.
 - Prefer review comments that are concrete and actionable.
 - When a rule does not apply because the change is internal-only, state that explicitly rather than assuming it.
+
+## Component changes
+
+### Adding new component, new property, new method or new event
+
+- Ensure that each new component, property, method, or event has a JSDocs which contains a `@since` tag with the version number of the release in which it was added. For example, if a new component is added in version 4.2.0, the JSDocs should include `@since 4.2.0`.
