@@ -31,7 +31,7 @@ regressionTest('renders', async ({ mount, page }) => {
 });
 
 regressionTest(
-  'announces message through aria-live region',
+  'sets live-region attributes for screen reader announcements',
   async ({ mount, page }) => {
     await mount('');
 
@@ -44,49 +44,11 @@ regressionTest(
 
     const toast = page.locator('ix-toast');
     await expect(toast).toHaveClass(/hydrated/);
-    await expect(toast).not.toHaveAttribute('role', 'status');
-    await expect(toast).not.toHaveAttribute('aria-live', 'polite');
-    await expect(toast).not.toHaveAttribute('aria-atomic', 'true');
-
-    const liveAnnouncer = page.locator('#toast-container-announcer');
-    await expect(liveAnnouncer).toHaveAttribute('role', 'status');
-    await expect(liveAnnouncer).toHaveAttribute('aria-live', 'polite');
-    await expect(liveAnnouncer).toHaveAttribute('aria-atomic', 'true');
-    await expect(liveAnnouncer).toContainText('Info. Toast announcement');
-  }
-);
-
-regressionTest(
-  're-announces repeated toast messages',
-  async ({ mount, page }) => {
-    await mount('');
-
-    await page.evaluate(() => {
-      window.toast({
-        title: 'Repeat',
-        message: 'Same message',
-      });
-    });
-
-    const liveAnnouncer = page.locator('#toast-container-announcer');
-    await expect(liveAnnouncer).toContainText('Repeat. Same message');
-
-    const firstAnnouncerHandle = await liveAnnouncer.elementHandle();
-    expect(firstAnnouncerHandle).toBeTruthy();
-
-    await page.evaluate(() => {
-      window.toast({
-        title: 'Repeat',
-        message: 'Same message',
-      });
-    });
-
-    await expect(liveAnnouncer).toContainText('Repeat. Same message');
-
-    const firstAnnouncerWasReplaced = await firstAnnouncerHandle!.evaluate(
-      (element) => !element.isConnected
-    );
-    expect(firstAnnouncerWasReplaced).toBe(true);
+    await expect(toast).toHaveAttribute('role', 'alert');
+    await expect(toast).toHaveAttribute('aria-live', 'polite');
+    await expect(toast).toHaveAttribute('aria-atomic', 'true');
+    await expect(toast).toContainText('Info');
+    await expect(toast).toContainText('Toast announcement');
   }
 );
 
