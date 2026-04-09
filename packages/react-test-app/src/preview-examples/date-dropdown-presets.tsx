@@ -59,7 +59,7 @@ export default () => {
   return (
     <IxDateDropdown
       dateRangeOptions={dateRangeOptions}
-      date-range-id="last-7"
+      dateRangeId="last-7"
       format="yyyy/LL/dd"
     />
   );
