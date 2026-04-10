@@ -1,8 +1,5 @@
 ---
-'@siemens/ix-angular': major
-'@siemens/ix-react': major
 '@siemens/ix': major
-'@siemens/ix-vue': major
 ---
 
 - The `toast` function now appends directly to the `ix-toast-container` host element instead of using a separate container element.
