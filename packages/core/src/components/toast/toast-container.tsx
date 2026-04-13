@@ -46,6 +46,7 @@ export class ToastContainer {
     toast.icon = config.icon;
     toast.iconColor = config.iconColor;
     toast.hideIcon = config.hideIcon ?? false;
+
     toast.addEventListener(
       'closeToast',
       (event: CustomEvent<any | undefined>) => {

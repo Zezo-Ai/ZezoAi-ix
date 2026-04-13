@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 Siemens AG
+ * SPDX-FileCopyrightText: 2026 Siemens AG
  *
  * SPDX-License-Identifier: MIT
  *
@@ -10,15 +10,15 @@ import {
   AllCommunityModule,
   createGrid,
   ModuleRegistry,
-} from 'ag-grid-community-34';
+} from 'ag-grid-community-35';
 import '@siemens/ix/dist/siemens-ix/siemens-ix.css';
 import { getIxTheme } from '@siemens/ix-aggrid';
-import { COLUMN_DEFS, ROW_DATA } from '../utils/test/basic.const';
-import * as agGridCommunity34 from 'ag-grid-community-34';
+import { COLUMN_DEFS, ROW_DATA } from '../../utils/test/basic.const';
+import * as agGridCommunity35 from 'ag-grid-community-35';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-const theme = getIxTheme(agGridCommunity34);
+const theme = getIxTheme(agGridCommunity35);
 
 const gridOptions = {
   columnDefs: COLUMN_DEFS,
@@ -28,7 +28,7 @@ const gridOptions = {
   },
   suppressCellFocus: true,
   theme: theme,
-} satisfies agGridCommunity34.GridOptions;
+};
 
 const myGridElement = document.querySelector('#testGrid') as HTMLElement;
 createGrid(myGridElement, gridOptions);
