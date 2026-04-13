@@ -2771,11 +2771,6 @@ export namespace Components {
          */
         "disableAnimation": boolean;
         /**
-          * If set to true the modal cannot be closed by pressing the Escape key
-          * @default false
-         */
-        "disableEscapeClose": boolean;
-        /**
           * Dismiss the dialog
          */
         "dismissModal": <T = unknown>(reason?: T) => Promise<void>;
@@ -9229,11 +9224,6 @@ declare namespace LocalJSX {
          */
         "disableAnimation"?: boolean;
         /**
-          * If set to true the modal cannot be closed by pressing the Escape key
-          * @default false
-         */
-        "disableEscapeClose"?: boolean;
-        /**
           * Hide the backdrop behind the modal dialog
           * @default false
          */
@@ -11713,7 +11703,6 @@ declare namespace LocalJSX {
         "hideBackdrop": boolean;
         "closeOnBackdropClick": boolean;
         "centered": boolean;
-        "disableEscapeClose": boolean;
         "isNonBlocking": boolean;
     }
     interface IxModalHeaderAttributes {

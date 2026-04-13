@@ -20,17 +20,10 @@ import {
 import { animate } from 'animejs';
 import { A11yAttributes, a11yBoolean, a11yHostAttributes } from '../utils/a11y';
 import Animation from '../utils/animation';
-import { OnListener } from '../utils/listener';
 import { tryFocusElement } from '../utils/focus/focus-utilities';
 import { IX_MODAL_AUTOFOCUS_SELECTOR } from '../utils/modal/modal';
 import { waitForElement } from '../utils/waitForElement';
 import { IxModalSize } from './modal.types';
-
-/** One microtask so slotted / framework children exist
- * before we request an animation frame and query `[autofocus]`. */
-function deferToNextMicrotask(): Promise<void> {
-  return new Promise((resolve) => queueMicrotask(resolve));
-}
 
 @Component({
   tag: 'ix-modal',
@@ -77,11 +70,6 @@ export class Modal {
   @Prop() centered = false;
 
   /**
-   * If set to true the modal cannot be closed by pressing the Escape key
-   */
-  @Prop() disableEscapeClose = false;
-
-  /**
    * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`.
    * Set before calling `showModal()`; changing while open is unsupported.
    */
@@ -99,35 +87,40 @@ export class Modal {
 
   @State() modalVisible = false;
 
-  @OnListener<Modal>('keydown', (self) => self.disableEscapeClose)
-  onKey(e: KeyboardEvent) {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-    }
-  }
-
   get dialog() {
     return this.hostElement.shadowRoot!.querySelector('dialog');
   }
 
   private slideInModal() {
+    const dialog = this.dialog!;
+    dialog.classList.remove('modal-open-settled');
     const duration = this.disableAnimation ? 0 : Animation.mediumTime;
     const translateY = this.centered ? ['-90%', '-50%'] : [0, 40];
 
-    animate(this.dialog!, {
+    const markEntranceSettled = () =>
+      dialog.classList.add('modal-open-settled');
+
+    animate(dialog, {
       duration,
       opacity: [0, 1],
       translateY,
       translateX: ['-50%', '-50%'],
       easing: 'easeOutSine',
+      complete: markEntranceSettled,
     });
+
+    if (duration === 0) {
+      markEntranceSettled();
+    }
   }
 
   private slideOutModal(completeCallback: Function) {
+    const dialog = this.dialog!;
+    dialog.classList.remove('modal-open-settled');
     const duration = this.disableAnimation ? 0 : Animation.mediumTime;
     const translateY = this.centered ? ['-50%', '-90%'] : [40, 0];
 
-    animate(this.dialog!, {
+    animate(dialog, {
       duration,
       opacity: [1, 0],
       translateY,
@@ -197,12 +190,18 @@ export class Modal {
   }
 
   private async scheduleInitialAutofocus() {
-    await deferToNextMicrotask();
-    requestAnimationFrame(() => {
-      const direct = this.hostElement.querySelector<HTMLElement>(
-        IX_MODAL_AUTOFOCUS_SELECTOR
-      );
-      tryFocusElement(direct, { focusVisible: true });
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const direct = this.hostElement.querySelector<HTMLElement>(
+            IX_MODAL_AUTOFOCUS_SELECTOR
+          );
+          if (direct) {
+            tryFocusElement(direct, { focusVisible: true });
+          }
+          resolve();
+        });
+      });
     });
   }
 
@@ -292,20 +291,15 @@ export class Modal {
             onMouseDown={(event) => this.onMouseDown(event)}
             onMouseUp={(event) => this.onMouseUp(event)}
             onKeyDown={(e: KeyboardEvent) => {
-              if (
-                this.isNonBlocking &&
-                e.key === 'Escape' &&
-                !this.disableEscapeClose
-              ) {
+              // Non-blocking uses dialog.show(); Escape is not guaranteed to fire cancel like showModal().
+              if (this.isNonBlocking && e.key === 'Escape') {
                 e.preventDefault();
                 void this.dismissModal();
               }
             }}
             onCancel={(e) => {
               e.preventDefault();
-              if (!this.disableEscapeClose) {
-                void this.dismissModal();
-              }
+              void this.dismissModal();
             }}
           >
             <slot></slot>

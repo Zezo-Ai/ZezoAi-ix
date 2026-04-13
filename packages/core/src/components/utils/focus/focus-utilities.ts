@@ -69,18 +69,15 @@ export type DomFocusOptions = Parameters<HTMLElement['focus']>[0];
 export type IxFocusOptions = DomFocusOptions & { focusVisible?: boolean };
 
 export function tryFocusElement(
-  element: Element | HTMLElement | null | undefined,
+  element: Element | HTMLElement,
   options?: IxFocusOptions
-): boolean {
-  if (!element || !(element instanceof HTMLElement)) {
-    return false;
+) {
+  if (!(element instanceof HTMLElement)) {
+    return;
   }
   try {
     element.focus(options as DomFocusOptions);
-    return true;
-  } catch {
-    return false;
-  }
+  } catch {}
 }
 
 export type FocusVisibleConfig = {
