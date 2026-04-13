@@ -144,7 +144,9 @@ regressionTest(
     await expect(host).toHaveJSProperty('checked', false);
     await sw.click();
     await expect(host).toHaveJSProperty('checked', true);
-    await expect(page.getByRole('switch', { name: 'Notifications' })).toBeVisible();
+    await expect(
+      page.getByRole('switch', { name: 'Notifications' })
+    ).toBeVisible();
   }
 );
 

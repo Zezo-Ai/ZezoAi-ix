@@ -20,7 +20,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
-import { a11yBoolean, type A11yAttributeName } from '../utils/a11y';
+import { a11yBoolean } from '../utils/a11y';
 import { DefaultMixins } from '../utils/internal/component';
 import {
   InheritAriaAttributesMixin,
@@ -112,13 +112,6 @@ export class Toggle
 
   private touched = false;
 
-  /** Host `aria-label` captured at load; omitted from {@link InheritAriaAttributesMixin} sync (`getIgnoredAriaAttributes`). */
-  private authorProvidedAriaLabel?: string;
-
-  override getIgnoredAriaAttributes(): A11yAttributeName[] {
-    return ['aria-label'];
-  }
-
   onCheckedChange(newChecked: boolean) {
     if (this.disabled) {
       return;
@@ -142,10 +135,6 @@ export class Toggle
   }
 
   override componentWillLoad() {
-    if (this.hostElement.hasAttribute('aria-label')) {
-      this.authorProvidedAriaLabel =
-        this.hostElement.getAttribute('aria-label') ?? '';
-    }
     super.componentWillLoad();
     this.updateFormInternalValue();
   }
@@ -187,14 +176,11 @@ export class Toggle
     /** This function is intentionally empty */
   }
 
-  private getStableAriaLabel(): string | undefined {
+  private resolveAriaLabel(): string | undefined {
     if (this.inheritAriaAttributes['aria-labelledby']) {
       return undefined;
     }
-    if (this.authorProvidedAriaLabel !== undefined) {
-      return this.authorProvidedAriaLabel;
-    }
-    return undefined;
+    return this.inheritAriaAttributes['aria-label'];
   }
 
   override render() {
@@ -208,7 +194,7 @@ export class Toggle
       toggleText = this.textIndeterminate;
     }
 
-    const stableAriaLabel = this.getStableAriaLabel();
+    const ariaLabel = this.resolveAriaLabel();
 
     const ariaChecked = this.indeterminate
       ? 'mixed'
@@ -219,7 +205,7 @@ export class Toggle
         {...this.inheritAriaAttributes}
         role="switch"
         tabindex={this.disabled ? -1 : 0}
-        aria-label={stableAriaLabel}
+        aria-label={ariaLabel}
         aria-checked={ariaChecked}
         aria-disabled={a11yBoolean(this.disabled)}
         aria-required={a11yBoolean(this.required)}
