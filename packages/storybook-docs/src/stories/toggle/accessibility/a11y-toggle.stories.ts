@@ -38,10 +38,17 @@ export default meta;
 type Story = StoryObj<Element>;
 
 /**
- * Basic toggle with visible On/Off label (default).
- * Screen readers announce state via aria-checked (e.g. "off, switch").
+ * Basic toggle: visible On/Off is decorative; stable name via host `aria-label` (APG).
  */
 export const BasicUsage: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Notifications"
+      text-on=${args.textOn}
+      text-off=${args.textOff}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+    ></ix-toggle>`,
   args: {
     checked: false,
     disabled: false,
@@ -90,6 +97,14 @@ export const WithDescription: Story = {
  * Disabled toggle – not focusable, reduced opacity.
  */
 export const DisabledState: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Notifications"
+      text-on=${args.textOn}
+      text-off=${args.textOff}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+    ></ix-toggle>`,
   args: {
     checked: false,
     disabled: true,
@@ -102,6 +117,14 @@ export const DisabledState: Story = {
  * Checked (on) state.
  */
 export const CheckedState: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Notifications"
+      text-on=${args.textOn}
+      text-off=${args.textOff}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+    ></ix-toggle>`,
   args: {
     checked: true,
     disabled: false,
@@ -114,6 +137,16 @@ export const CheckedState: Story = {
  * Indeterminate (mixed) state – e.g. for "select all" scenarios.
  */
 export const IndeterminateState: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Select all rows"
+      text-on=${args.textOn}
+      text-off=${args.textOff}
+      text-indeterminate=${args.textIndeterminate}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+      ?indeterminate=${args.indeterminate}
+    ></ix-toggle>`,
   args: {
     checked: false,
     disabled: false,
@@ -128,6 +161,14 @@ export const IndeterminateState: Story = {
  * Custom on/off labels.
  */
 export const CustomLabels: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Newsletter subscription"
+      text-on=${args.textOn}
+      text-off=${args.textOff}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+    ></ix-toggle>`,
   args: {
     checked: false,
     disabled: false,

@@ -4211,6 +4211,10 @@ export namespace Components {
         "indeterminate": boolean;
         "isTouched": () => Promise<boolean>;
         /**
+          * Accessible name for the switch. Per the APG switch pattern, this must stay the same when the on/off state changes; state is conveyed only via `aria-checked`. Prefer this or a host `aria-label` / `aria-labelledby` over using visible on/off text as a name.
+         */
+        "label"?: string;
+        /**
           * Name of the checkbox component
          */
         "name"?: string;
@@ -10744,6 +10748,10 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
+          * Accessible name for the switch. Per the APG switch pattern, this must stay the same when the on/off state changes; state is conveyed only via `aria-checked`. Prefer this or a host `aria-label` / `aria-labelledby` over using visible on/off text as a name.
+         */
+        "label"?: string;
+        /**
           * Name of the checkbox component
          */
         "name"?: string;
@@ -12029,6 +12037,7 @@ declare namespace LocalJSX {
         "textOff": string;
         "textIndeterminate": string;
         "hideText": boolean;
+        "label": string;
         "required": boolean;
     }
     interface IxToggleButtonAttributes {

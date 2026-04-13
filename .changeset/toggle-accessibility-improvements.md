@@ -2,4 +2,4 @@
 '@siemens/ix': patch
 ---
 
-**ix-toggle:** Exposes correct **switch** semantics for assistive technologies (`role`, `aria-checked`, `aria-disabled`), supports expected **keyboard** interaction, and applies **`aria-label` / `aria-labelledby` and related host ARIA** on the control so screen readers get an accurate name.
+**ix-toggle:** Exposes correct **switch** semantics (`role`, `aria-checked`, `aria-disabled`), keyboard interaction (**Space** / **Enter**), and a **stable accessible name** aligned with the [APG switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/) (set **`aria-label`** or **`aria-labelledby`** on the host; name does not change with state; state is conveyed via `aria-checked`). Visible on/off copy is **not** used as the accessible name.

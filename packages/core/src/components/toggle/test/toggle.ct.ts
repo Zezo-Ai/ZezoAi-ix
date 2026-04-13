@@ -63,14 +63,22 @@ regressionTest('should not toggle if disabled', async ({ mount, page }) => {
 regressionTest(
   'should be toggled ON after indeterminate',
   async ({ mount, page }) => {
-    await mount(`<ix-toggle indeterminate></ix-toggle>`);
+    await mount(
+      `<ix-toggle indeterminate aria-label="Test switch"></ix-toggle>`
+    );
     const toggle = page.locator('ix-toggle');
     await expect(toggle).toHaveClass(/hydrated/);
+    await expect(toggle).toHaveJSProperty('indeterminate', true);
     await expect(toggle).toHaveJSProperty('checked', false);
+    await expect(toggle).toHaveAttribute('aria-checked', 'mixed');
+    await expect(toggle).toHaveAttribute('aria-label', 'Test switch');
 
     await toggle.click();
 
     await expect(toggle).toHaveJSProperty('checked', true);
+    await expect(toggle).toHaveJSProperty('indeterminate', false);
+    await expect(toggle).toHaveAttribute('aria-checked', 'true');
+    await expect(toggle).toHaveAttribute('aria-label', 'Test switch');
   }
 );
 
@@ -114,12 +122,12 @@ regressionTest(`form-ready default active`, async ({ mount, page }) => {
 });
 
 regressionTest(
-  'should expose label via aria-label for accessible queries',
+  'should expose stable name via aria-label for accessible queries',
   async ({ mount, page }) => {
     await mount(
-      `<ix-toggle text-on="Enabled" text-off="Disabled"></ix-toggle>`
+      `<ix-toggle text-on="Enabled" text-off="Disabled" aria-label="Power"></ix-toggle>`
     );
-    const toggleByRole = page.getByRole('switch', { name: 'Disabled' });
+    const toggleByRole = page.getByRole('switch', { name: 'Power' });
     await expect(toggleByRole).toBeVisible();
   }
 );
@@ -127,37 +135,41 @@ regressionTest(
 regressionTest(
   'should be directly clickable via host element with accessible query',
   async ({ mount, page }) => {
-    await mount(`<ix-toggle text-on="On" text-off="Off"></ix-toggle>`);
+    await mount(
+      `<ix-toggle text-on="On" text-off="Off" aria-label="Notifications"></ix-toggle>`
+    );
     const host = page.locator('ix-toggle');
-    const switchOff = page.getByRole('switch', { name: 'Off' });
-    await expect(switchOff).toBeVisible();
+    const sw = page.getByRole('switch', { name: 'Notifications' });
+    await expect(sw).toBeVisible();
     await expect(host).toHaveJSProperty('checked', false);
-    await switchOff.click();
+    await sw.click();
     await expect(host).toHaveJSProperty('checked', true);
-    await expect(page.getByRole('switch', { name: 'On' })).toBeVisible();
+    await expect(page.getByRole('switch', { name: 'Notifications' })).toBeVisible();
   }
 );
 
 regressionTest(
-  'should keep aria-label in sync with checked state for default labels',
+  'should keep a stable accessible name; state only in aria-checked (APG switch)',
   async ({ mount, page }) => {
-    await mount(`<ix-toggle></ix-toggle>`);
+    await mount(`<ix-toggle aria-label="Wi-Fi"></ix-toggle>`);
     const host = page.locator('ix-toggle');
-    await expect(host).toHaveAttribute('aria-label', 'Off');
+    await expect(host).toHaveAttribute('aria-label', 'Wi-Fi');
     await expect(host).toHaveAttribute('aria-checked', 'false');
 
     await host.click();
 
     await expect(host).toHaveAttribute('aria-checked', 'true');
-    await expect(host).toHaveAttribute('aria-label', 'On');
+    await expect(host).toHaveAttribute('aria-label', 'Wi-Fi');
   }
 );
 
 regressionTest(
   'should respect disabled state when clicking via accessible query',
   async ({ mount, page }) => {
-    await mount(`<ix-toggle text-on="On" text-off="Off" disabled></ix-toggle>`);
-    const toggle = page.getByRole('switch', { name: 'Off' });
+    await mount(
+      `<ix-toggle text-on="On" text-off="Off" disabled aria-label="Option"></ix-toggle>`
+    );
+    const toggle = page.getByRole('switch', { name: 'Option' });
     await toggle.click({ force: true });
     await expect(toggle).toHaveJSProperty('checked', false);
   }

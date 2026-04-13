@@ -54,7 +54,7 @@ async function createToggleExample(page: Page) {
     function createModalExample() {
       const el = document.createElement('DIV');
       el.style.display = 'contents';
-      el.innerHTML = `<ix-toggle id="toggle"></ix-toggle>`;
+      el.innerHTML = `<ix-toggle id="toggle" aria-label="Toggle"></ix-toggle>`;
       return el;
     }
 

@@ -113,10 +113,9 @@ export class Toggle
   private touched = false;
 
   /**
-   * Initial `aria-label` from the host, if the author set one.
-   * `aria-label` is excluded from {@link InheritAriaAttributesMixin} sync because Stencil
-   * reflects the rendered host `aria-label` back onto the element, which would otherwise
-   * fire the mixin watcher and freeze the label (e.g. "Off") while `aria-checked` updates.
+   * Initial host `aria-label` (APG switch: stable name; do not derive from on/off text).
+   * Excluded from {@link InheritAriaAttributesMixin} live sync so reflected updates do not
+   * overwrite state-driven naming bugs.
    */
   private authorProvidedAriaLabel?: string;
 
@@ -192,6 +191,19 @@ export class Toggle
     /** This function is intentionally empty */
   }
 
+  /**
+   * APG: the switch name must not change with state — never derive this from on/off copy.
+   */
+  private getStableAriaLabel(): string | undefined {
+    if (this.inheritAriaAttributes['aria-labelledby']) {
+      return undefined;
+    }
+    if (this.authorProvidedAriaLabel !== undefined) {
+      return this.authorProvidedAriaLabel;
+    }
+    return undefined;
+  }
+
   override render() {
     let toggleText = this.textOff;
 
@@ -203,22 +215,19 @@ export class Toggle
       toggleText = this.textIndeterminate;
     }
 
-    const isDefaultLabels =
-      this.textOn === 'On' &&
-      this.textOff === 'Off' &&
-      this.textIndeterminate === 'Mixed';
-    const useToggleTextAsLabel = this.hideText || isDefaultLabels;
-    const ariaLabel =
-      this.authorProvidedAriaLabel ??
-      (useToggleTextAsLabel ? toggleText : undefined);
+    const stableAriaLabel = this.getStableAriaLabel();
+
+    const ariaChecked = this.indeterminate
+      ? 'mixed'
+      : a11yBoolean(this.checked);
 
     return (
       <Host
         {...this.inheritAriaAttributes}
         role="switch"
         tabindex={this.disabled ? -1 : 0}
-        aria-label={ariaLabel}
-        aria-checked={a11yBoolean(this.checked)}
+        aria-label={stableAriaLabel}
+        aria-checked={ariaChecked}
         aria-disabled={a11yBoolean(this.disabled)}
         aria-required={a11yBoolean(this.required)}
         class={{
@@ -251,10 +260,7 @@ export class Toggle
             <div class="slider"></div>
           </div>
           {!this.hideText && (
-            <ix-typography
-              class="label"
-              aria-hidden={a11yBoolean(useToggleTextAsLabel)}
-            >
+            <ix-typography class="label" aria-hidden="true">
               {toggleText}
             </ix-typography>
           )}
