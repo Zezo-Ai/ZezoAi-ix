@@ -1968,7 +1968,6 @@ export const IxToggle: StencilReactComponent<IxToggleElement, IxToggleEvents> = 
         textOff: 'text-off',
         textIndeterminate: 'text-indeterminate',
         hideText: 'hide-text',
-        label: 'label',
         required: 'required'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,

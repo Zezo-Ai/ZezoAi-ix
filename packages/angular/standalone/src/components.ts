@@ -2951,14 +2951,14 @@ export declare interface IxToastContainer extends Components.IxToastContainer {}
 
 @ProxyCmp({
   defineCustomElementFn: defineIxToggle,
-  inputs: ['checked', 'disabled', 'hideText', 'indeterminate', 'label', 'name', 'required', 'textIndeterminate', 'textOff', 'textOn', 'value']
+  inputs: ['checked', 'disabled', 'hideText', 'indeterminate', 'name', 'required', 'textIndeterminate', 'textOff', 'textOn', 'value']
 })
 @Component({
   selector: 'ix-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['checked', 'disabled', 'hideText', 'indeterminate', 'label', 'name', 'required', 'textIndeterminate', 'textOff', 'textOn', 'value'],
+  inputs: ['checked', 'disabled', 'hideText', 'indeterminate', 'name', 'required', 'textIndeterminate', 'textOff', 'textOn', 'value'],
   outputs: ['checkedChange', 'ixBlur'],
 })
 export class IxToggle {

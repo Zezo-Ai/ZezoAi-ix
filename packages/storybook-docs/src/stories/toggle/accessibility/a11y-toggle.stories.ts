@@ -178,9 +178,16 @@ export const CustomLabels: Story = {
 };
 
 /**
- * Toggle with no visible text (hideText) – ensure aria-label is set in real usage.
+ * Toggle with no visible text (`hideText`) — a stable host `aria-label` is required (APG / axe).
  */
 export const NoVisibleLabel: Story = {
+  render: (args) =>
+    html`<ix-toggle
+      aria-label="Enable dark mode"
+      ?hide-text=${args.hideText}
+      ?checked=${args.checked}
+      ?disabled=${args.disabled}
+    ></ix-toggle>`,
   args: {
     checked: false,
     disabled: false,
@@ -190,7 +197,7 @@ export const NoVisibleLabel: Story = {
     docs: {
       description: {
         story:
-          'When hideText is true, the toggle must have an accessible name (e.g. aria-label on the host). This story may show a11y warnings without it.',
+          'When `hideText` is true, there is no visible on/off copy; set a stable `aria-label` (or `aria-labelledby`) on the host so the switch has an accessible name.',
       },
     },
   },

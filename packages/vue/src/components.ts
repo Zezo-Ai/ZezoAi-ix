@@ -1517,7 +1517,6 @@ export const IxToggle: StencilVueComponent<JSX.IxToggle> = /*@__PURE__*/ defineC
   'textOff',
   'textIndeterminate',
   'hideText',
-  'label',
   'required',
   'checkedChange',
   'valueChange',
