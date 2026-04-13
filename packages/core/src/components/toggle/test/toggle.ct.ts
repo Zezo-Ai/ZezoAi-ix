@@ -15,9 +15,9 @@ import {
 
 regressionTest('renders', async ({ mount, page }) => {
   await mount(`<ix-toggle></ix-toggle>`);
-  const drawer = page.locator('ix-toggle');
-  await expect(drawer).toHaveClass(/hydrated/);
-  await expect(drawer).toBeVisible();
+  const toggle = page.locator('ix-toggle');
+  await expect(toggle).toHaveClass(/hydrated/);
+  await expect(toggle).toBeVisible();
 });
 
 regressionTest('should toggle', async ({ mount, page }) => {
@@ -151,7 +151,7 @@ regressionTest(
 );
 
 regressionTest(
-  'should keep a stable accessible name; state only in aria-checked (APG switch)',
+  'should keep a stable accessible name; state only in aria-checked',
   async ({ mount, page }) => {
     await mount(`<ix-toggle aria-label="Wi-Fi"></ix-toggle>`);
     const host = page.locator('ix-toggle');
