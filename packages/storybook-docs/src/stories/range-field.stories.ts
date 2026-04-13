@@ -69,7 +69,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<RangeStoryArgs>;
 
-export const Time: Story = {
+export const TimeRange: Story = {
   render: (args) => rangeFieldRender(args, 'ix-time-input'),
   args: {
     type: 'time-range',
@@ -80,7 +80,7 @@ export const Time: Story = {
   },
 };
 
-export const Date: Story = {
+export const DateRange: Story = {
   render: (args) => rangeFieldRender(args, 'ix-date-input'),
   args: {
     type: 'date-range',
@@ -89,7 +89,7 @@ export const Date: Story = {
   },
 };
 
-export const DateTime: Story = {
+export const DateTimeRange: Story = {
   render: (args) => rangeFieldRender(args, 'ix-datetime-input'),
   args: {
     type: 'datetime-range',
