@@ -30,12 +30,6 @@ const meta = {
     },
     a11y: {
       test: 'error',
-      config: {
-        rules: [
-          // Host is role=switch; internal input has tabindex=-1 for form/label. Axe flags as nested-interactive.
-          { id: 'nested-interactive', enabled: false },
-        ],
-      },
     },
   },
 } satisfies Meta<Element>;

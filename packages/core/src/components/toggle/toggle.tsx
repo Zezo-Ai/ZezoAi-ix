@@ -20,17 +20,13 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
-import { a11yBoolean } from '../utils/a11y';
+import { a11yBoolean, type A11yAttributeName } from '../utils/a11y';
 import { DefaultMixins } from '../utils/internal/component';
 import {
   InheritAriaAttributesMixin,
   InheritAriaAttributesMixinContract,
 } from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import { HookValidationLifecycle, IxFormComponent } from '../utils/input';
-
-const DEFAULT_TEXT_ON = 'On';
-const DEFAULT_TEXT_OFF = 'Off';
-const DEFAULT_TEXT_INDETERMINATE = 'Mixed';
 
 /**
  * @form-ready
@@ -77,17 +73,17 @@ export class Toggle
   /**
    * Text for on state
    */
-  @Prop() textOn = DEFAULT_TEXT_ON;
+  @Prop() textOn = 'On';
 
   /**
    * Text for off state
    */
-  @Prop() textOff = DEFAULT_TEXT_OFF;
+  @Prop() textOff = 'Off';
 
   /**
    * Text for indeterminate state
    */
-  @Prop() textIndeterminate = DEFAULT_TEXT_INDETERMINATE;
+  @Prop() textIndeterminate = 'Mixed';
 
   /**
    * Hide `on` and `off` text
@@ -116,6 +112,18 @@ export class Toggle
 
   private touched = false;
 
+  /**
+   * Initial `aria-label` from the host, if the author set one.
+   * `aria-label` is excluded from {@link InheritAriaAttributesMixin} sync because Stencil
+   * reflects the rendered host `aria-label` back onto the element, which would otherwise
+   * fire the mixin watcher and freeze the label (e.g. "Off") while `aria-checked` updates.
+   */
+  private authorProvidedAriaLabel?: string;
+
+  override getIgnoredAriaAttributes(): A11yAttributeName[] {
+    return ['aria-label'];
+  }
+
   onCheckedChange(newChecked: boolean) {
     if (this.disabled) {
       return;
@@ -139,6 +147,10 @@ export class Toggle
   }
 
   override componentWillLoad() {
+    if (this.hostElement.hasAttribute('aria-label')) {
+      this.authorProvidedAriaLabel =
+        this.hostElement.getAttribute('aria-label') ?? '';
+    }
     super.componentWillLoad();
     this.updateFormInternalValue();
   }
@@ -192,12 +204,12 @@ export class Toggle
     }
 
     const isDefaultLabels =
-      this.textOn === DEFAULT_TEXT_ON &&
-      this.textOff === DEFAULT_TEXT_OFF &&
-      this.textIndeterminate === DEFAULT_TEXT_INDETERMINATE;
+      this.textOn === 'On' &&
+      this.textOff === 'Off' &&
+      this.textIndeterminate === 'Mixed';
     const useToggleTextAsLabel = this.hideText || isDefaultLabels;
     const ariaLabel =
-      this.inheritAriaAttributes['aria-label'] ??
+      this.authorProvidedAriaLabel ??
       (useToggleTextAsLabel ? toggleText : undefined);
 
     return (
@@ -238,20 +250,10 @@ export class Toggle
           >
             <div class="slider"></div>
           </div>
-          <input
-            type="checkbox"
-            aria-hidden="true"
-            tabindex={-1}
-            disabled={this.disabled}
-            indeterminate={this.indeterminate}
-            checked={this.checked}
-            onFocus={() => this.hostElement.focus()}
-            onClick={(e) => e.preventDefault()}
-          />
           {!this.hideText && (
             <ix-typography
               class="label"
-              aria-hidden={isDefaultLabels ? 'true' : undefined}
+              aria-hidden={a11yBoolean(useToggleTextAsLabel)}
             >
               {toggleText}
             </ix-typography>
