@@ -95,6 +95,15 @@ export const DateTime: Story = {
     type: 'datetime-range',
     startValue: '2026/03/16 09:00:00',
     endValue: '2026/03/23 16:00:00',
+  },
+};
+
+export const HideArrow: Story = {
+  render: (args) => rangeFieldRender(args, 'ix-datetime-input'),
+  args: {
+    type: 'datetime-range',
+    startValue: '2026/03/16 09:00:00',
+    endValue: '2026/03/23 16:00:00',
     hideArrow: true,
   },
 };
