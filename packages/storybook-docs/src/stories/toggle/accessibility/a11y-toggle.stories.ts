@@ -38,7 +38,7 @@ export default meta;
 type Story = StoryObj<Element>;
 
 /**
- * Basic toggle: visible On/Off is decorative; stable name via host `aria-label` (APG).
+ * Basic toggle: visible On/Off is decorative; stable name via host `aria-label`.
  */
 export const BasicUsage: Story = {
   render: (args) =>
@@ -178,7 +178,7 @@ export const CustomLabels: Story = {
 };
 
 /**
- * Toggle with no visible text (`hideText`) — a stable host `aria-label` is required (APG / axe).
+ * Toggle with no visible text (`hideText`) — a stable host `aria-label` is required (e.g. for axe).
  */
 export const NoVisibleLabel: Story = {
   render: (args) =>

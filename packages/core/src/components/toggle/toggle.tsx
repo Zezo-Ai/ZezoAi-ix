@@ -112,11 +112,7 @@ export class Toggle
 
   private touched = false;
 
-  /**
-   * Initial host `aria-label` (APG switch: stable name; do not derive from on/off text).
-   * Excluded from {@link InheritAriaAttributesMixin} live sync so reflected updates do not
-   * overwrite state-driven naming bugs.
-   */
+  /** Host `aria-label` captured at load; omitted from {@link InheritAriaAttributesMixin} sync (`getIgnoredAriaAttributes`). */
   private authorProvidedAriaLabel?: string;
 
   override getIgnoredAriaAttributes(): A11yAttributeName[] {
@@ -191,9 +187,6 @@ export class Toggle
     /** This function is intentionally empty */
   }
 
-  /**
-   * APG: the switch name must not change with state — never derive this from on/off copy.
-   */
   private getStableAriaLabel(): string | undefined {
     if (this.inheritAriaAttributes['aria-labelledby']) {
       return undefined;
