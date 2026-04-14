@@ -10,10 +10,6 @@
 import { Component, Element, h, Host, Mixin, Prop, State } from '@stencil/core';
 import { IxComponentInterface } from '../utils/internal';
 import { DefaultMixins } from '../utils/internal/component';
-import {
-  InheritAriaAttributesMixin,
-  InheritAriaAttributesMixinContract,
-} from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 import { a11yBoolean } from '../utils/a11y';
 import { makeRef } from '../utils/make-ref';
 
@@ -23,8 +19,8 @@ import { makeRef } from '../utils/make-ref';
   shadow: true,
 })
 export class Pill
-  extends Mixin(...DefaultMixins, InheritAriaAttributesMixin)
-  implements IxComponentInterface, InheritAriaAttributesMixinContract
+  extends Mixin(...DefaultMixins)
+  implements IxComponentInterface
 {
   @Element() override hostElement!: HTMLIxPillElement;
 
@@ -85,7 +81,6 @@ export class Pill
   private readonly containerElementRef = makeRef<HTMLElement>();
 
   override componentWillLoad() {
-    super.componentWillLoad();
     this.checkIfContentAvailable();
   }
 
@@ -126,13 +121,16 @@ export class Pill
       };
     }
 
-    const hasAccessibleName = Boolean(
-      this.inheritAriaAttributes['aria-label'] ||
-        this.inheritAriaAttributes['aria-labelledby']
-    );
-    const containerRole =
-      this.inheritAriaAttributes['role'] ||
-      (hasAccessibleName ? 'group' : undefined);
+    const hasAccessibleName =
+      this.hostElement.hasAttribute('aria-label') ||
+      this.hostElement.hasAttribute('aria-labelledby');
+
+    let hostRole: string | undefined = undefined;
+    if (this.hostElement.hasAttribute('role')) {
+      hostRole = this.hostElement.getAttribute('role') ?? undefined;
+    } else if (hasAccessibleName) {
+      hostRole = 'group';
+    }
 
     const iconIsDecorative = !this.ariaLabelIcon?.trim();
 
@@ -148,10 +146,9 @@ export class Pill
         class={{
           'align-left': this.alignLeft,
         }}
+        role={hostRole}
       >
         <div
-          {...this.inheritAriaAttributes}
-          role={containerRole}
           ref={this.containerElementRef}
           style={{ ...customStyle }}
           class={{

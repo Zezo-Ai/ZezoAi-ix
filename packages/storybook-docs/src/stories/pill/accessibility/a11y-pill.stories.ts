@@ -74,7 +74,7 @@ export const DecorativePill: Story = {
     return html`
       <div>
         <span>Status: Online</span>
-        <ix-pill aria-hidden variant="success">•</ix-pill>
+        <ix-pill aria-hidden="true" variant="success">•</ix-pill>
       </div>
     `;
   },
@@ -175,7 +175,10 @@ export const WithDescription: Story = {
           variant="success"
           >Online</ix-pill
         >
-        <span id="status-desc" hidden>
+        <span
+          id="status-desc"
+          style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;"
+        >
           System has been operational for 48 hours without interruption.
         </span>
       </div>

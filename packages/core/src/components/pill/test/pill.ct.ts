@@ -29,40 +29,43 @@ test.describe('Pill', () => {
 });
 
 test.describe('accessibility', () => {
-  test('should apply aria-label to container when set on host', async ({
+  test('should keep aria-label on host when set by author', async ({
     mount,
     page,
   }) => {
     await mount('<ix-pill aria-label="Custom label">Content</ix-pill>');
-    const container = page.locator('ix-pill .container');
-    await expect(container).toHaveAttribute('aria-label', 'Custom label');
-
     const host = page.locator('ix-pill');
-    await expect(host).not.toHaveAttribute('aria-label');
+    await expect(host).toHaveAttribute('aria-label', 'Custom label');
+
+    const container = page.locator('ix-pill .container');
+    await expect(container).not.toHaveAttribute('aria-label');
   });
 
-  test('should apply aria-hidden to container when set on host', async ({
+  test('should keep aria-hidden on host when set by author', async ({
     mount,
     page,
   }) => {
     await mount('<ix-pill aria-hidden="true">Content</ix-pill>');
-    const container = page.locator('ix-pill .container');
-    await expect(container).toHaveAttribute('aria-hidden', 'true');
+    const host = page.locator('ix-pill');
+    await expect(host).toHaveAttribute('aria-hidden', 'true');
   });
 
-  test('should not apply aria-hidden when not set', async ({ mount, page }) => {
+  test('should not set aria-hidden on host when not set by author', async ({
+    mount,
+    page,
+  }) => {
     await mount('<ix-pill>Content</ix-pill>');
-    const container = page.locator('ix-pill .container');
-    await expect(container).not.toHaveAttribute('aria-hidden');
+    const host = page.locator('ix-pill');
+    await expect(host).not.toHaveAttribute('aria-hidden');
   });
 
-  test('should apply role to container when set on host', async ({
+  test('should keep role on host when set by author', async ({
     mount,
     page,
   }) => {
     await mount('<ix-pill role="status">Online</ix-pill>');
-    const container = page.locator('ix-pill .container');
-    await expect(container).toHaveAttribute('role', 'status');
+    const host = page.locator('ix-pill');
+    await expect(host).toHaveAttribute('role', 'status');
   });
 
   test('should hide decorative icon from screen readers', async ({
@@ -87,14 +90,27 @@ test.describe('accessibility', () => {
     expect(ariaHidden === null || ariaHidden === 'false').toBe(true);
   });
 
-  test('should handle multiple ARIA attributes', async ({ mount, page }) => {
+  test('should keep multiple ARIA attributes on host', async ({
+    mount,
+    page,
+  }) => {
     await mount(
       '<ix-pill role="status" aria-label="System status" aria-live="polite">Online</ix-pill>'
     );
-    const container = page.locator('ix-pill .container');
-    await expect(container).toHaveAttribute('role', 'status');
-    await expect(container).toHaveAttribute('aria-label', 'System status');
-    await expect(container).toHaveAttribute('aria-live', 'polite');
+    const host = page.locator('ix-pill');
+    await expect(host).toHaveAttribute('role', 'status');
+    await expect(host).toHaveAttribute('aria-label', 'System status');
+    await expect(host).toHaveAttribute('aria-live', 'polite');
+  });
+
+  test('should default role to group on host when named but role omitted', async ({
+    mount,
+    page,
+  }) => {
+    await mount('<ix-pill aria-label="Named pill">Text</ix-pill>');
+    const host = page.locator('ix-pill');
+    await expect(host).toHaveAttribute('role', 'group');
+    await expect(host).toHaveAttribute('aria-label', 'Named pill');
   });
 });
 
