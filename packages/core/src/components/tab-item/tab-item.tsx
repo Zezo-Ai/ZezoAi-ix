@@ -7,6 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { iconClose } from '@siemens/ix-icons/icons';
 import { Component, Event, EventEmitter, h, Host, Prop } from '@stencil/core';
 import type { TabClickDetail } from './tab-item.types';
 
@@ -32,9 +33,11 @@ export class TabItem {
   @Prop() small = false;
 
   /**
-   * Set icon only tab
+   * Set icon of the tab
+   *
+   * @since 5.0.0
    */
-  @Prop() icon = false;
+  @Prop() icon?: string;
 
   /**
    * Set rounded tab
@@ -47,14 +50,30 @@ export class TabItem {
   @Prop() counter?: number;
 
   /**
-   * Set layout width style
-   */
-  @Prop() layout: 'auto' | 'stretched' = 'auto';
-
-  /**
    * Set selected placement
    */
   @Prop() placement: 'bottom' | 'top' = 'bottom';
+
+  /**
+   * If the tab can be closed
+   *
+   * @since 5.0.0
+   */
+  @Prop() closable = false;
+
+  /**
+   * Tab label
+   *
+   * @since 5.0.0
+   */
+  @Prop() label?: string;
+
+  /**
+   * Key of the tab, used for identifying the tab in events
+   *
+   * @since 5.0.0
+   */
+  @Prop({ reflect: true }) tabKey!: string;
 
   /**
    * Emitted when the tab is clicked.
@@ -67,7 +86,6 @@ export class TabItem {
     small: boolean;
     icon: boolean;
     circle: boolean;
-    layout: 'auto' | 'stretched';
     placement: 'bottom' | 'top';
   }) {
     return {
@@ -75,7 +93,6 @@ export class TabItem {
       disabled: props.disabled,
       'small-tab': props.small,
       icon: props.small,
-      stretched: props.layout === 'stretched',
       bottom: props.placement === 'bottom',
       top: props.placement === 'top',
       circle: props.circle,
@@ -90,8 +107,7 @@ export class TabItem {
           selected: this.selected,
           disabled: this.disabled,
           small: this.small,
-          icon: this.icon,
-          layout: this.layout,
+          icon: false,
           placement: this.placement,
           circle: this.rounded,
         })}
@@ -100,6 +116,7 @@ export class TabItem {
           if (event.defaultPrevented) return;
 
           const clientEvent = this.tabClick.emit({
+            tabKey: this.tabKey,
             nativeEvent: event,
           });
 
@@ -108,6 +125,9 @@ export class TabItem {
           }
         }}
       >
+        {this.icon && !this.rounded && (
+          <ix-icon name={this.icon} size="16" class={'tab-icon'}></ix-icon>
+        )}
         <div
           class={{
             circle: this.rounded,
@@ -116,6 +136,11 @@ export class TabItem {
             disabled: this.disabled,
           }}
         >
+          {this.icon && this.rounded && (
+            <ix-icon name={this.icon} size="16"></ix-icon>
+          )}
+          {this.label}
+
           <slot></slot>
         </div>
         <div
@@ -128,6 +153,19 @@ export class TabItem {
         >
           {this.counter}
         </div>
+        {this.counter && (
+          <ix-pill variant="primary" outline class={'tab-counter'}>
+            {this.counter}
+          </ix-pill>
+        )}
+        {this.closable && (
+          <ix-icon-button
+            class={'close-tab'}
+            size="12"
+            variant="subtle-tertiary"
+            icon={iconClose}
+          ></ix-icon-button>
+        )}
       </Host>
     );
   }

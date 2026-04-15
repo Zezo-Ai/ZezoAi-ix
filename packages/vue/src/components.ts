@@ -1357,8 +1357,10 @@ export const IxTabItem: StencilVueComponent<JSX.IxTabItem> = /*@__PURE__*/ defin
   'icon',
   'rounded',
   'counter',
-  'layout',
   'placement',
+  'closable',
+  'label',
+  'tabKey',
   'tabClick'
 ], [
   'tabClick'
@@ -1368,13 +1370,13 @@ export const IxTabItem: StencilVueComponent<JSX.IxTabItem> = /*@__PURE__*/ defin
 export const IxTabs: StencilVueComponent<JSX.IxTabs> = /*@__PURE__*/ defineContainer<JSX.IxTabs>('ix-tabs', defineIxTabs, [
   'small',
   'rounded',
-  'selected',
   'layout',
   'placement',
-  'ariaLabelChevronLeftIconButton',
-  'ariaLabelChevronRightIconButton',
+  'activeTabKey',
+  'tabChange',
   'selectedChange'
 ], [
+  'tabChange',
   'selectedChange'
 ]);
 

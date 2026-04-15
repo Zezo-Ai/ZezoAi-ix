@@ -27,6 +27,18 @@
 
   @include component.ix-component;
 
+  .tab-icon {
+    margin-right: 0.5rem;
+  }
+
+  .tab-counter {
+    margin-left: 0.5rem;
+  }
+
+  .close-tab {
+    margin-left: 0.5rem;
+  }
+
   &::after {
     content: '';
     position: absolute;

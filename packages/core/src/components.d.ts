@@ -3143,6 +3143,8 @@ export namespace Components {
     | 'success'
     | 'custom';
     }
+    interface IxPlayground {
+    }
     /**
      * @since 3.2.0
      */
@@ -3681,6 +3683,12 @@ export namespace Components {
     }
     interface IxTabItem {
         /**
+          * If the tab can be closed
+          * @since 5.0.0
+          * @default false
+         */
+        "closable": boolean;
+        /**
           * Set counter value
          */
         "counter"?: number;
@@ -3690,15 +3698,15 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Set icon only tab
-          * @default false
+          * Set icon of the tab
+          * @since 5.0.0
          */
-        "icon": boolean;
+        "icon"?: string;
         /**
-          * Set layout width style
-          * @default 'auto'
+          * Tab label
+          * @since 5.0.0
          */
-        "layout": 'auto' | 'stretched';
+        "label"?: string;
         /**
           * Set selected placement
           * @default 'bottom'
@@ -3719,20 +3727,14 @@ export namespace Components {
           * @default false
          */
         "small": boolean;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxTabs {
-        /**
-          * ARIA label for the chevron left icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs left'
-         */
-        "ariaLabelChevronLeftIconButton": string;
-        /**
-          * ARIA label for the chevron right icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs right'
-         */
-        "ariaLabelChevronRightIconButton": string;
+        "activeTabKey"?: string;
         /**
           * Set layout width style
           * @default 'auto'
@@ -3748,11 +3750,6 @@ export namespace Components {
           * @default false
          */
         "rounded": boolean;
-        /**
-          * Set default selected tab by index
-          * @default 0
-         */
-        "selected": number;
         /**
           * Set tab items to small size
           * @default false
@@ -5826,6 +5823,12 @@ declare global {
         prototype: HTMLIxPillElement;
         new (): HTMLIxPillElement;
     };
+    interface HTMLIxPlaygroundElement extends Components.IxPlayground, HTMLStencilElement {
+    }
+    var HTMLIxPlaygroundElement: {
+        prototype: HTMLIxPlaygroundElement;
+        new (): HTMLIxPlaygroundElement;
+    };
     /**
      * @since 3.2.0
      */
@@ -5996,6 +5999,7 @@ declare global {
         new (): HTMLIxTabItemElement;
     };
     interface HTMLIxTabsElementEventMap {
+        "tabChange": string | undefined;
         "selectedChange": number;
     }
     interface HTMLIxTabsElement extends Components.IxTabs, HTMLStencilElement {
@@ -6341,6 +6345,7 @@ declare global {
         "ix-pane": HTMLIxPaneElement;
         "ix-pane-layout": HTMLIxPaneLayoutElement;
         "ix-pill": HTMLIxPillElement;
+        "ix-playground": HTMLIxPlaygroundElement;
         "ix-progress-indicator": HTMLIxProgressIndicatorElement;
         "ix-push-card": HTMLIxPushCardElement;
         "ix-radio": HTMLIxRadioElement;
@@ -9639,6 +9644,8 @@ declare namespace LocalJSX {
     | 'success'
     | 'custom';
     }
+    interface IxPlayground {
+    }
     /**
      * @since 3.2.0
      */
@@ -10214,6 +10221,12 @@ declare namespace LocalJSX {
     }
     interface IxTabItem {
         /**
+          * If the tab can be closed
+          * @since 5.0.0
+          * @default false
+         */
+        "closable"?: boolean;
+        /**
           * Set counter value
          */
         "counter"?: number;
@@ -10223,15 +10236,15 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Set icon only tab
-          * @default false
+          * Set icon of the tab
+          * @since 5.0.0
          */
-        "icon"?: boolean;
+        "icon"?: string;
         /**
-          * Set layout width style
-          * @default 'auto'
+          * Tab label
+          * @since 5.0.0
          */
-        "layout"?: 'auto' | 'stretched';
+        "label"?: string;
         /**
           * Emitted when the tab is clicked.
          */
@@ -10256,20 +10269,14 @@ declare namespace LocalJSX {
           * @default false
          */
         "small"?: boolean;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxTabs {
-        /**
-          * ARIA label for the chevron left icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs left'
-         */
-        "ariaLabelChevronLeftIconButton"?: string;
-        /**
-          * ARIA label for the chevron right icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs right'
-         */
-        "ariaLabelChevronRightIconButton"?: string;
+        "activeTabKey"?: string;
         /**
           * Set layout width style
           * @default 'auto'
@@ -10277,8 +10284,10 @@ declare namespace LocalJSX {
         "layout"?: 'auto' | 'stretched';
         /**
           * Tab selection event. Event detail is the zero-based tab index. Fires when the user selects a tab, or when the tab list changes and the selected index is adjusted. Not emitted when `selected` is set from outside.
+          * @deprecated Since 5.0.0
          */
         "onSelectedChange"?: (event: IxTabsCustomEvent<number>) => void;
+        "onTabChange"?: (event: IxTabsCustomEvent<string | undefined>) => void;
         /**
           * Set placement style
           * @default 'bottom'
@@ -10289,11 +10298,6 @@ declare namespace LocalJSX {
           * @default false
          */
         "rounded"?: boolean;
-        /**
-          * Set default selected tab by index
-          * @default 0
-         */
-        "selected"?: number;
         /**
           * Set tab items to small size
           * @default false
@@ -11937,20 +11941,20 @@ declare namespace LocalJSX {
         "selected": boolean;
         "disabled": boolean;
         "small": boolean;
-        "icon": boolean;
+        "icon": string;
         "rounded": boolean;
         "counter": number;
-        "layout": 'auto' | 'stretched';
         "placement": 'bottom' | 'top';
+        "closable": boolean;
+        "label": string;
+        "tabKey": string;
     }
     interface IxTabsAttributes {
         "small": boolean;
         "rounded": boolean;
-        "selected": number;
         "layout": 'auto' | 'stretched';
         "placement": 'bottom' | 'top';
-        "ariaLabelChevronLeftIconButton": string;
-        "ariaLabelChevronRightIconButton": string;
+        "activeTabKey": string;
     }
     interface IxTextareaAttributes {
         "name": string;
@@ -12201,6 +12205,7 @@ declare namespace LocalJSX {
         "ix-pane": Omit<IxPane, keyof IxPaneAttributes> & { [K in keyof IxPane & keyof IxPaneAttributes]?: IxPane[K] } & { [K in keyof IxPane & keyof IxPaneAttributes as `attr:${K}`]?: IxPaneAttributes[K] } & { [K in keyof IxPane & keyof IxPaneAttributes as `prop:${K}`]?: IxPane[K] };
         "ix-pane-layout": Omit<IxPaneLayout, keyof IxPaneLayoutAttributes> & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes]?: IxPaneLayout[K] } & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes as `attr:${K}`]?: IxPaneLayoutAttributes[K] } & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes as `prop:${K}`]?: IxPaneLayout[K] };
         "ix-pill": Omit<IxPill, keyof IxPillAttributes> & { [K in keyof IxPill & keyof IxPillAttributes]?: IxPill[K] } & { [K in keyof IxPill & keyof IxPillAttributes as `attr:${K}`]?: IxPillAttributes[K] } & { [K in keyof IxPill & keyof IxPillAttributes as `prop:${K}`]?: IxPill[K] };
+        "ix-playground": IxPlayground;
         "ix-progress-indicator": Omit<IxProgressIndicator, keyof IxProgressIndicatorAttributes> & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes]?: IxProgressIndicator[K] } & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes as `attr:${K}`]?: IxProgressIndicatorAttributes[K] } & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes as `prop:${K}`]?: IxProgressIndicator[K] };
         "ix-push-card": Omit<IxPushCard, keyof IxPushCardAttributes> & { [K in keyof IxPushCard & keyof IxPushCardAttributes]?: IxPushCard[K] } & { [K in keyof IxPushCard & keyof IxPushCardAttributes as `attr:${K}`]?: IxPushCardAttributes[K] } & { [K in keyof IxPushCard & keyof IxPushCardAttributes as `prop:${K}`]?: IxPushCard[K] };
         "ix-radio": Omit<IxRadio, keyof IxRadioAttributes> & { [K in keyof IxRadio & keyof IxRadioAttributes]?: IxRadio[K] } & { [K in keyof IxRadio & keyof IxRadioAttributes as `attr:${K}`]?: IxRadioAttributes[K] } & { [K in keyof IxRadio & keyof IxRadioAttributes as `prop:${K}`]?: IxRadio[K] };
@@ -12212,7 +12217,7 @@ declare namespace LocalJSX {
         "ix-slider": Omit<IxSlider, keyof IxSliderAttributes> & { [K in keyof IxSlider & keyof IxSliderAttributes]?: IxSlider[K] } & { [K in keyof IxSlider & keyof IxSliderAttributes as `attr:${K}`]?: IxSliderAttributes[K] } & { [K in keyof IxSlider & keyof IxSliderAttributes as `prop:${K}`]?: IxSlider[K] };
         "ix-spinner": Omit<IxSpinner, keyof IxSpinnerAttributes> & { [K in keyof IxSpinner & keyof IxSpinnerAttributes]?: IxSpinner[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `attr:${K}`]?: IxSpinnerAttributes[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `prop:${K}`]?: IxSpinner[K] };
         "ix-split-button": Omit<IxSplitButton, keyof IxSplitButtonAttributes> & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes]?: IxSplitButton[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `attr:${K}`]?: IxSplitButtonAttributes[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `prop:${K}`]?: IxSplitButton[K] };
-        "ix-tab-item": Omit<IxTabItem, keyof IxTabItemAttributes> & { [K in keyof IxTabItem & keyof IxTabItemAttributes]?: IxTabItem[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `attr:${K}`]?: IxTabItemAttributes[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `prop:${K}`]?: IxTabItem[K] };
+        "ix-tab-item": Omit<IxTabItem, keyof IxTabItemAttributes> & { [K in keyof IxTabItem & keyof IxTabItemAttributes]?: IxTabItem[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `attr:${K}`]?: IxTabItemAttributes[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `prop:${K}`]?: IxTabItem[K] } & OneOf<"tabKey", IxTabItem["tabKey"], IxTabItemAttributes["tabKey"]>;
         "ix-tabs": Omit<IxTabs, keyof IxTabsAttributes> & { [K in keyof IxTabs & keyof IxTabsAttributes]?: IxTabs[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `attr:${K}`]?: IxTabsAttributes[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `prop:${K}`]?: IxTabs[K] };
         "ix-textarea": Omit<IxTextarea, keyof IxTextareaAttributes> & { [K in keyof IxTextarea & keyof IxTextareaAttributes]?: IxTextarea[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `attr:${K}`]?: IxTextareaAttributes[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `prop:${K}`]?: IxTextarea[K] };
         "ix-tile": Omit<IxTile, keyof IxTileAttributes> & { [K in keyof IxTile & keyof IxTileAttributes]?: IxTile[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `attr:${K}`]?: IxTileAttributes[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `prop:${K}`]?: IxTile[K] };
@@ -12346,6 +12351,7 @@ declare module "@stencil/core" {
             "ix-pane": LocalJSX.IntrinsicElements["ix-pane"] & JSXBase.HTMLAttributes<HTMLIxPaneElement>;
             "ix-pane-layout": LocalJSX.IntrinsicElements["ix-pane-layout"] & JSXBase.HTMLAttributes<HTMLIxPaneLayoutElement>;
             "ix-pill": LocalJSX.IntrinsicElements["ix-pill"] & JSXBase.HTMLAttributes<HTMLIxPillElement>;
+            "ix-playground": LocalJSX.IntrinsicElements["ix-playground"] & JSXBase.HTMLAttributes<HTMLIxPlaygroundElement>;
             /**
              * @since 3.2.0
              */

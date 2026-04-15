@@ -2581,14 +2581,14 @@ export declare interface IxSplitButton extends Components.IxSplitButton {
 
 
 @ProxyCmp({
-  inputs: ['counter', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small']
+  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'placement', 'rounded', 'selected', 'small', 'tabKey']
 })
 @Component({
   selector: 'ix-tab-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['counter', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small'],
+  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'placement', 'rounded', 'selected', 'small', { name: 'tabKey', required: true }],
   outputs: ['tabClick'],
   standalone: false
 })
@@ -2613,19 +2613,20 @@ export declare interface IxTabItem extends Components.IxTabItem {
 
 
 @ProxyCmp({
-  inputs: ['ariaLabelChevronLeftIconButton', 'ariaLabelChevronRightIconButton', 'layout', 'placement', 'rounded', 'selected', 'small']
+  inputs: ['activeTabKey', 'layout', 'placement', 'rounded', 'small']
 })
 @Component({
   selector: 'ix-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaLabelChevronLeftIconButton', 'ariaLabelChevronRightIconButton', 'layout', 'placement', 'rounded', 'selected', 'small'],
-  outputs: ['selectedChange'],
+  inputs: ['activeTabKey', 'layout', 'placement', 'rounded', 'small'],
+  outputs: ['tabChange', 'selectedChange'],
   standalone: false
 })
 export class IxTabs {
   protected el: HTMLIxTabsElement;
+  @Output() tabChange = new EventEmitter<CustomEvent<string | undefined>>();
   @Output() selectedChange = new EventEmitter<CustomEvent<number>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
@@ -2635,10 +2636,12 @@ export class IxTabs {
 
 
 export declare interface IxTabs extends Components.IxTabs {
+
+  tabChange: EventEmitter<CustomEvent<string | undefined>>;
   /**
    * Tab selection event. Event detail is the zero-based tab index. Fires when
 the user selects a tab, or when the tab list changes and the selected index
-is adjusted. Not emitted when `selected` is set from outside.
+is adjusted. Not emitted when `selected` is set from outside. @deprecated Since 5.0.0
    */
   selectedChange: EventEmitter<CustomEvent<number>>;
 }

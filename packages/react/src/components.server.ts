@@ -1776,26 +1776,29 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
         icon: 'icon',
         rounded: 'rounded',
         counter: 'counter',
-        layout: 'layout',
-        placement: 'placement'
+        placement: 'placement',
+        closable: 'closable',
+        label: 'label',
+        tabKey: 'tab-key'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxTabItem as ReactWebComponent<IxTabItemElement, IxTabItemEvents>,
     serializeShadowRoot
 });
 
-export type IxTabsEvents = { onSelectedChange: EventName<IxTabsCustomEvent<number>> };
+export type IxTabsEvents = {
+    onTabChange: EventName<IxTabsCustomEvent<string | undefined>>,
+    onSelectedChange: EventName<IxTabsCustomEvent<number>>
+};
 
 export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__PURE__*/ createComponent<IxTabsElement, IxTabsEvents>({
     tagName: 'ix-tabs',
     properties: {
         small: 'small',
         rounded: 'rounded',
-        selected: 'selected',
         layout: 'layout',
         placement: 'placement',
-        ariaLabelChevronLeftIconButton: 'aria-label-chevron-left-icon-button',
-        ariaLabelChevronRightIconButton: 'aria-label-chevron-right-icon-button'
+        activeTabKey: 'active-tab-key'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxTabs as ReactWebComponent<IxTabsElement, IxTabsEvents>,

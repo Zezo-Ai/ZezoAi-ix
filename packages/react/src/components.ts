@@ -1265,14 +1265,20 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
     defineCustomElement: defineIxTabItem
 });
 
-export type IxTabsEvents = { onSelectedChange: EventName<IxTabsCustomEvent<number>> };
+export type IxTabsEvents = {
+    onTabChange: EventName<IxTabsCustomEvent<string | undefined>>,
+    onSelectedChange: EventName<IxTabsCustomEvent<number>>
+};
 
 export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__PURE__*/ createComponent<IxTabsElement, IxTabsEvents>({
     tagName: 'ix-tabs',
     elementClass: IxTabsElement,
     // @ts-ignore - ignore potential React type mismatches between the Stencil Output Target and your project.
     react: React,
-    events: { onSelectedChange: 'selectedChange' } as IxTabsEvents,
+    events: {
+        onTabChange: 'tabChange',
+        onSelectedChange: 'selectedChange'
+    } as IxTabsEvents,
     defineCustomElement: defineIxTabs
 });
 

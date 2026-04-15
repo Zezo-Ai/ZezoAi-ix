@@ -18,21 +18,21 @@ interface MenuTabsProps {
 }
 
 const getTabItems = (context: MenuSettings | MenuAbout) => {
-  return context.items.map(({ label }) => {
-    return (
-      <ix-tab-item
-        selected={label === context.activeTabLabel}
-        onTabClick={(e) => e.preventDefault()}
-        onClick={() => {
-          if (label) {
-            setTab(context, label);
-          }
-        }}
-      >
-        {label}
-      </ix-tab-item>
-    );
-  });
+  // return context.items.map(({ label }) => {
+  //   return (
+  //     <ix-tab-item
+  //       selected={label === context.activeTabLabel}
+  //       onTabClick={(e) => e.preventDefault()}
+  //       onClick={() => {
+  //         if (label) {
+  //           setTab(context, label);
+  //         }
+  //       }}
+  //     >
+  //       {label}
+  //     </ix-tab-item>
+  //   );
+  // });
 };
 
 export const MenuTabs: FunctionalComponent<MenuTabsProps> = ({ context }) => {
@@ -71,9 +71,10 @@ export const MenuTabs: FunctionalComponent<MenuTabsProps> = ({ context }) => {
           }
         ></ix-icon-button>
       </div>
-      <ix-tabs selected={selectedIndex !== -1 ? selectedIndex : 0}>
+      // TODO implement new tabs
+      {/* <ix-tabs selected={selectedIndex !== -1 ? selectedIndex : 0}>
         {getTabItems(context)}
-      </ix-tabs>
+      </ix-tabs> */}
       <slot></slot>
     </Host>
   );
