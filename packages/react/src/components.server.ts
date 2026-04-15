@@ -1765,21 +1765,26 @@ export const IxSplitButton: StencilReactComponent<IxSplitButtonElement, IxSplitB
     serializeShadowRoot
 });
 
-export type IxTabItemEvents = { onTabClick: EventName<IxTabItemCustomEvent<TabClickDetail>> };
+export type IxTabItemEvents = {
+    onTabClick: EventName<IxTabItemCustomEvent<TabClickDetail>>,
+    onTabClose: EventName<IxTabItemCustomEvent<TabClickDetail>>
+};
 
 export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents> = /*@__PURE__*/ createComponent<IxTabItemElement, IxTabItemEvents>({
     tagName: 'ix-tab-item',
     properties: {
         selected: 'selected',
         disabled: 'disabled',
-        small: 'small',
         icon: 'icon',
-        rounded: 'rounded',
         counter: 'counter',
-        placement: 'placement',
         closable: 'closable',
         label: 'label',
-        tabKey: 'tab-key'
+        tabKey: 'tab-key',
+        placement: 'placement',
+        rounded: 'rounded',
+        small: 'small',
+        layout: 'layout',
+        iconOnly: 'icon-only'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxTabItem as ReactWebComponent<IxTabItemElement, IxTabItemEvents>,
@@ -1788,6 +1793,7 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
 
 export type IxTabsEvents = {
     onTabChange: EventName<IxTabsCustomEvent<string | undefined>>,
+    onTabClose: EventName<IxTabsCustomEvent<string | undefined>>,
     onSelectedChange: EventName<IxTabsCustomEvent<number>>
 };
 
@@ -1798,7 +1804,8 @@ export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__P
         rounded: 'rounded',
         layout: 'layout',
         placement: 'placement',
-        activeTabKey: 'active-tab-key'
+        activeTabKey: 'active-tab-key',
+        keyboardNavigation: 'keyboard-navigation'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxTabs as ReactWebComponent<IxTabsElement, IxTabsEvents>,

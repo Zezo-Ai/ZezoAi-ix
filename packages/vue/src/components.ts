@@ -1353,17 +1353,21 @@ export const IxSplitButton: StencilVueComponent<JSX.IxSplitButton> = /*@__PURE__
 export const IxTabItem: StencilVueComponent<JSX.IxTabItem> = /*@__PURE__*/ defineContainer<JSX.IxTabItem>('ix-tab-item', defineIxTabItem, [
   'selected',
   'disabled',
-  'small',
   'icon',
-  'rounded',
   'counter',
-  'placement',
   'closable',
   'label',
   'tabKey',
-  'tabClick'
+  'placement',
+  'rounded',
+  'small',
+  'layout',
+  'iconOnly',
+  'tabClick',
+  'tabClose'
 ], [
-  'tabClick'
+  'tabClick',
+  'tabClose'
 ]);
 
 
@@ -1373,10 +1377,13 @@ export const IxTabs: StencilVueComponent<JSX.IxTabs> = /*@__PURE__*/ defineConta
   'layout',
   'placement',
   'activeTabKey',
+  'keyboardNavigation',
   'tabChange',
+  'tabClose',
   'selectedChange'
 ], [
   'tabChange',
+  'tabClose',
   'selectedChange'
 ]);
 

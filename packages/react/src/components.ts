@@ -1254,19 +1254,26 @@ export const IxSplitButton: StencilReactComponent<IxSplitButtonElement, IxSplitB
     defineCustomElement: defineIxSplitButton
 });
 
-export type IxTabItemEvents = { onTabClick: EventName<IxTabItemCustomEvent<TabClickDetail>> };
+export type IxTabItemEvents = {
+    onTabClick: EventName<IxTabItemCustomEvent<TabClickDetail>>,
+    onTabClose: EventName<IxTabItemCustomEvent<TabClickDetail>>
+};
 
 export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents> = /*@__PURE__*/ createComponent<IxTabItemElement, IxTabItemEvents>({
     tagName: 'ix-tab-item',
     elementClass: IxTabItemElement,
     // @ts-ignore - ignore potential React type mismatches between the Stencil Output Target and your project.
     react: React,
-    events: { onTabClick: 'tabClick' } as IxTabItemEvents,
+    events: {
+        onTabClick: 'tabClick',
+        onTabClose: 'tabClose'
+    } as IxTabItemEvents,
     defineCustomElement: defineIxTabItem
 });
 
 export type IxTabsEvents = {
     onTabChange: EventName<IxTabsCustomEvent<string | undefined>>,
+    onTabClose: EventName<IxTabsCustomEvent<string | undefined>>,
     onSelectedChange: EventName<IxTabsCustomEvent<number>>
 };
 
@@ -1277,6 +1284,7 @@ export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__P
     react: React,
     events: {
         onTabChange: 'tabChange',
+        onTabClose: 'tabClose',
         onSelectedChange: 'selectedChange'
     } as IxTabsEvents,
     defineCustomElement: defineIxTabs

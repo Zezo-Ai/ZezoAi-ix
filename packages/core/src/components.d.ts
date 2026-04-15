@@ -3703,17 +3703,23 @@ export namespace Components {
          */
         "icon"?: string;
         /**
+          * @default false
+         */
+        "iconOnly": boolean;
+        /**
           * Tab label
           * @since 5.0.0
          */
         "label"?: string;
         /**
-          * Set selected placement
+          * @default 'auto'
+         */
+        "layout": 'auto' | 'stretched';
+        /**
           * @default 'bottom'
          */
         "placement": 'bottom' | 'top';
         /**
-          * Set rounded tab
           * @default false
          */
         "rounded": boolean;
@@ -3723,7 +3729,6 @@ export namespace Components {
          */
         "selected": boolean;
         /**
-          * Set small size tab
           * @default false
          */
         "small": boolean;
@@ -3738,6 +3743,12 @@ export namespace Components {
           * Active tab key.
          */
         "activeTabKey"?: string;
+        /**
+          * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * @since 5.0.0
+          * @default 'automatic'
+         */
+        "keyboardNavigation": 'automatic' | 'manual';
         /**
           * Set layout width style
           * @default 'auto'
@@ -5986,6 +5997,7 @@ declare global {
     };
     interface HTMLIxTabItemElementEventMap {
         "tabClick": TabClickDetail;
+        "tabClose": TabClickDetail;
     }
     interface HTMLIxTabItemElement extends Components.IxTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTabItemElementEventMap>(type: K, listener: (this: HTMLIxTabItemElement, ev: IxTabItemCustomEvent<HTMLIxTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6003,6 +6015,7 @@ declare global {
     };
     interface HTMLIxTabsElementEventMap {
         "tabChange": string | undefined;
+        "tabClose": string | undefined;
         "selectedChange": number;
     }
     interface HTMLIxTabsElement extends Components.IxTabs, HTMLStencilElement {
@@ -10244,21 +10257,31 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
+          * @default false
+         */
+        "iconOnly"?: boolean;
+        /**
           * Tab label
           * @since 5.0.0
          */
         "label"?: string;
         /**
+          * @default 'auto'
+         */
+        "layout"?: 'auto' | 'stretched';
+        /**
           * Emitted when the tab is clicked.
          */
         "onTabClick"?: (event: IxTabItemCustomEvent<TabClickDetail>) => void;
         /**
-          * Set selected placement
+          * Emitted when the tab's close button is clicked.
+         */
+        "onTabClose"?: (event: IxTabItemCustomEvent<TabClickDetail>) => void;
+        /**
           * @default 'bottom'
          */
         "placement"?: 'bottom' | 'top';
         /**
-          * Set rounded tab
           * @default false
          */
         "rounded"?: boolean;
@@ -10268,7 +10291,6 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Set small size tab
           * @default false
          */
         "small"?: boolean;
@@ -10284,6 +10306,12 @@ declare namespace LocalJSX {
          */
         "activeTabKey"?: string;
         /**
+          * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * @since 5.0.0
+          * @default 'automatic'
+         */
+        "keyboardNavigation"?: 'automatic' | 'manual';
+        /**
           * Set layout width style
           * @default 'auto'
          */
@@ -10295,8 +10323,14 @@ declare namespace LocalJSX {
         "onSelectedChange"?: (event: IxTabsCustomEvent<number>) => void;
         /**
           * Tab selection event. Event detail contains the new active tab key.
+          * @since 5.0.0
          */
         "onTabChange"?: (event: IxTabsCustomEvent<string | undefined>) => void;
+        /**
+          * Tab close event. Event detail contains the closed tab key.
+          * @since 5.0.0
+         */
+        "onTabClose"?: (event: IxTabsCustomEvent<string | undefined>) => void;
         /**
           * Set placement style
           * @default 'bottom'
@@ -11949,14 +11983,16 @@ declare namespace LocalJSX {
     interface IxTabItemAttributes {
         "selected": boolean;
         "disabled": boolean;
-        "small": boolean;
         "icon": string;
-        "rounded": boolean;
         "counter": number;
-        "placement": 'bottom' | 'top';
         "closable": boolean;
         "label": string;
         "tabKey": string;
+        "placement": 'bottom' | 'top';
+        "rounded": boolean;
+        "small": boolean;
+        "layout": 'auto' | 'stretched';
+        "iconOnly": boolean;
     }
     interface IxTabsAttributes {
         "small": boolean;
@@ -11964,6 +12000,7 @@ declare namespace LocalJSX {
         "layout": 'auto' | 'stretched';
         "placement": 'bottom' | 'top';
         "activeTabKey": string;
+        "keyboardNavigation": 'automatic' | 'manual';
     }
     interface IxTextareaAttributes {
         "name": string;

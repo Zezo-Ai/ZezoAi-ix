@@ -17,27 +17,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px vars.$large-space;
   line-height: 20px;
   font-size: 14px;
   font-weight: bold;
   background-color: var(--theme-tab--background);
   color: var(--theme-tab--color);
   touch-action: none; // Disable default touch behaviors for drag
+  border: 1px solid transparent;
+
+  height: 2.5rem;
+  padding: 0.625rem vars.$large-space;
+  gap: 0.5rem;
 
   @include component.ix-component;
-
-  .tab-icon {
-    margin-right: 0.5rem;
-  }
-
-  .tab-counter {
-    margin-left: 0.5rem;
-  }
-
-  .close-tab {
-    margin-left: 0.5rem;
-  }
 
   .text {
     @include text-truncation.ellipsis;
@@ -131,18 +123,6 @@
   height: 72px;
 }
 
-:host(.top) {
-  &::after {
-    top: 0;
-  }
-}
-
-:host(.bottom) {
-  &::after {
-    bottom: 0;
-  }
-}
-
 :host(.stretched) {
   flex-basis: 100%;
   width: 100%;
@@ -168,18 +148,6 @@
   }
 }
 
-:host(:focus-visible) {
-  outline: 0px solid var(--focus--border-color);
-
-  .circle {
-    outline: 1px solid var(--focus--border-color);
-  }
-}
-
-:host(:focus-visible:not(.circle)) {
-  outline: 1px solid var(--focus--border-color);
-}
-
 :host(.disabled) {
   cursor: default;
   color: var(--theme-tab--color--disabled);
@@ -199,7 +167,10 @@
   }
 }
 
-:host(.icon) {
+:host(.icon-only) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: vars.$large-space vars.$small-space;
 }
 
@@ -210,4 +181,9 @@
 
 :host(.small-tab.icon) {
   padding: vars.$default-space vars.$tiny-space;
+}
+
+:host(:focus-visible) {
+  outline: none;
+  border: 1px solid var(--theme-color-focus-bdr);
 }

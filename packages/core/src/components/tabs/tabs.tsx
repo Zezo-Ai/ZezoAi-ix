@@ -15,6 +15,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Mixin,
   Prop,
   State,
   Watch,
@@ -22,14 +23,16 @@ import {
 import { makeRef } from '../utils/make-ref';
 import { TabClickDetail } from '../tab-item/tab-item.types';
 import { emitEvent } from '../utils/event';
+import { hasKeyboardMode } from '../utils/internal/mixins/setup.mixin';
+import { DefaultMixins } from '../utils/internal/component';
 
 @Component({
   tag: 'ix-tabs',
   styleUrl: 'tabs.scss',
   shadow: true,
 })
-export class Tabs {
-  @Element() hostElement!: HTMLIxTabsElement;
+export class Tabs extends Mixin(...DefaultMixins) {
+  @Element() override hostElement!: HTMLIxTabsElement;
 
   /**
    * Set tab items to small size
@@ -57,9 +60,27 @@ export class Tabs {
   @Prop({ mutable: true }) activeTabKey?: string;
 
   /**
+   * Keyboard interaction behavior:
+   * automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus.
+   * manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+   *
+   * @since 5.0.0
+   */
+  @Prop() keyboardNavigation: 'automatic' | 'manual' = 'automatic';
+
+  /**
    * Tab selection event. Event detail contains the new active tab key.
+   *
+   * @since 5.0.0
    */
   @Event() tabChange!: EventEmitter<string | undefined>;
+
+  /**
+   * Tab close event. Event detail contains the closed tab key.
+   *
+   * @since 5.0.0
+   */
+  @Event() tabClose!: EventEmitter<string | undefined>;
 
   /**
    * Tab selection event. Event detail is the zero-based tab index. Fires when
@@ -83,25 +104,14 @@ export class Tabs {
   private itemsObserver?: MutationObserver;
   private measureFrame?: number;
 
+  private readonly tabsContainerRef = makeRef<HTMLDivElement>();
   private readonly tabsRef = makeRef<HTMLDivElement>();
 
   private get tabs() {
     return Array.from(this.hostElement.querySelectorAll('ix-tab-item'));
   }
 
-  private scheduleMeasurements() {
-    if (this.measureFrame !== undefined) {
-      cancelAnimationFrame(this.measureFrame);
-    }
-
-    this.measureFrame = requestAnimationFrame(() => {
-      this.measureFrame = undefined;
-      this.onComponentResize();
-      this.updateActiveIndicator();
-    });
-  }
-
-  componentDidLoad() {
+  override componentDidLoad() {
     this.itemsObserver = new MutationObserver(() =>
       this.onComponentChildrenChange()
     );
@@ -116,14 +126,14 @@ export class Tabs {
     this.scheduleMeasurements();
   }
 
-  componentWillLoad() {
+  override componentWillLoad() {
     this.onComponentChildrenChange();
     if (this.activeTabKey) {
       this.setTabActive(this.activeTabKey);
     }
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -137,7 +147,7 @@ export class Tabs {
 
   @Watch('activeTabKey')
   onActiveTabChange(tabKey: string | undefined) {
-    this.setTabActive(tabKey);
+    this.emitTabChangeEvent(tabKey);
   }
 
   private setTabActive(tabKey: string | undefined) {
@@ -172,7 +182,20 @@ export class Tabs {
   }
 
   private onComponentChildrenChange() {
-    const tabItems = this.hostElement.querySelectorAll('ix-tab-item');
+    const tabItems = this.tabs;
+
+    tabItems.forEach((tab) => {
+      const propertiesToInherit = {
+        layout: this.layout,
+        small: this.small,
+        rounded: this.rounded,
+        placement: this.placement,
+        iconOnly: tabItems.every((t) => !t.label && !!t.icon),
+      };
+
+      Object.assign(tab, propertiesToInherit);
+    });
+
     this.overflowMenuItems = Array.from(tabItems).map((item) => ({
       tabKey: item.tabKey,
       label: item.label || item.textContent || '',
@@ -180,6 +203,12 @@ export class Tabs {
     }));
 
     this.scheduleMeasurements();
+
+    const isTabSelected = tabItems.some((tab) => tab.selected);
+    if (!isTabSelected && tabItems.length > 0 && hasKeyboardMode()) {
+      tabItems[0].focus();
+      this.emitTabChangeEvent(tabItems[0].tabKey);
+    }
   }
 
   private onComponentResize() {
@@ -202,16 +231,16 @@ export class Tabs {
 
   private getActiveTabOffset() {
     const activeTab = this.tabs.find((tab) => tab.selected);
-    const tabContainer = this.tabsRef.current;
+    const tabsContainer = this.tabsContainerRef.current;
 
-    if (!activeTab || !tabContainer) {
+    if (!activeTab || !tabsContainer) {
       return 0;
     }
 
     const activeTabRect = activeTab.getBoundingClientRect();
-    const tabContainerRect = tabContainer.getBoundingClientRect();
+    const tabsContainerRect = tabsContainer.getBoundingClientRect();
 
-    return activeTabRect.left - tabContainerRect.left + tabContainer.scrollLeft;
+    return activeTabRect.left - tabsContainerRect.left;
   }
 
   private updateActiveIndicator() {
@@ -219,69 +248,141 @@ export class Tabs {
     this.activeIndicatorOffset = this.getActiveTabOffset();
   }
 
-  render() {
+  private scheduleMeasurements() {
+    if (this.measureFrame !== undefined) {
+      cancelAnimationFrame(this.measureFrame);
+    }
+
+    this.measureFrame = requestAnimationFrame(() => {
+      this.measureFrame = undefined;
+      this.onComponentResize();
+      this.updateActiveIndicator();
+    });
+  }
+
+  private onTabClick(event: CustomEvent<TabClickDetail>) {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (event.detail.tabKey === undefined) {
+      return;
+    }
+
+    this.emitTabChangeEvent(event.detail.tabKey);
+  }
+
+  private emitTabChangeEvent(tabKey: string | undefined) {
+    emitEvent(
+      () => {
+        const oldKey = this.activeTabKey;
+        const newKey = this.setTabActive(tabKey);
+        return {
+          new: newKey,
+          old: oldKey,
+        };
+      },
+      this.tabChange,
+      (oldKey) => this.setTabActive(oldKey!)
+    );
+
+    const selectedIndex = this.tabs.findIndex((tab) => tab.tabKey === tabKey);
+    if (selectedIndex !== -1) {
+      this.selectedChange.emit(selectedIndex);
+    }
+  }
+
+  private onTabsNavigate(event: KeyboardEvent) {
+    const tabs = this.tabs;
+    const currentIndex = tabs.findIndex((tab) => tab.selected);
+
+    const activeTab = (tab: HTMLIxTabItemElement) => {
+      tab.focus();
+      if (this.keyboardNavigation === 'automatic') {
+        this.emitTabChangeEvent(tab.tabKey);
+      }
+    };
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      event.preventDefault();
+
+      if (currentIndex === -1) {
+        return;
+      }
+      const indexOffset = event.key === 'ArrowRight' ? 1 : -1;
+      const nextIndex =
+        (currentIndex + indexOffset + tabs.length) % tabs.length;
+
+      const nextTab = tabs[nextIndex];
+      activeTab(nextTab);
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      activeTab(tabs[0]);
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      activeTab(tabs[tabs.length - 1]);
+    }
+  }
+
+  override render() {
     return (
       <Host
-        onTabClick={(event: CustomEvent<TabClickDetail>) => {
-          if (event.defaultPrevented) {
-            return;
-          }
-
-          if (event.detail.tabKey === undefined) {
-            return;
-          }
-
-          emitEvent(
-            () => {
-              const oldKey = this.activeTabKey;
-              const newKey = this.setTabActive(event.detail.tabKey!);
-              return {
-                new: newKey,
-                old: oldKey,
-              };
-            },
-            this.tabChange,
-            (oldKey) => this.setTabActive(oldKey!)
-          );
-        }}
+        onTabClick={(event: CustomEvent<TabClickDetail>) =>
+          this.onTabClick(event)
+        }
+        onKeyDown={(event: KeyboardEvent) => this.onTabsNavigate(event)}
       >
         <div
+          ref={this.tabsContainerRef}
           class={{
-            'overflow-shadow-container': true,
-            'overflow-shadow': this.isTabsOverflow,
+            'tabs-container': true,
+            top: this.placement === 'top',
+            bottom: this.placement === 'bottom',
+          }}
+          style={{
+            '--ix-tab-active-indicator-width': `${this.activeIndicatorWidth}px`,
+            '--ix-tab-active-indicator-offset': `${this.activeIndicatorOffset}px`,
           }}
         >
           <div
-            role="tablist"
             class={{
-              tabs: true,
-              top: this.placement === 'top',
-              bottom: this.placement === 'bottom',
-            }}
-            ref={this.tabsRef}
-            style={{
-              '--ix-tab-active-indicator-width': `${this.activeIndicatorWidth}px`,
-              '--ix-tab-active-indicator-offset': `${this.activeIndicatorOffset}px`,
+              'overflow-shadow-container': true,
+              'overflow-shadow': this.isTabsOverflow,
             }}
           >
-            <slot></slot>
+            <div
+              role="tablist"
+              ref={this.tabsRef}
+              class={{
+                tabs: true,
+              }}
+              onScroll={() => this.scheduleMeasurements()}
+            >
+              <slot></slot>
+            </div>
           </div>
+          <ix-dropdown-button
+            icon={iconMoreMenu}
+            class={{
+              'tabs-context-menu': true,
+            }}
+            variant="subtle-tertiary"
+          >
+            {this.overflowMenuItems.map((item) => (
+              <ix-dropdown-item
+                key={item.tabKey}
+                checked={item.tabKey === this.activeTabKey}
+                icon={item.icon}
+                label={item.label}
+                onClick={() => (this.activeTabKey = item.tabKey)}
+              ></ix-dropdown-item>
+            ))}
+          </ix-dropdown-button>
         </div>
-        <ix-dropdown-button
-          icon={iconMoreMenu}
-          class="tabs-context-menu"
-          variant="subtle-tertiary"
-        >
-          {this.overflowMenuItems.map((item) => (
-            <ix-dropdown-item
-              key={item.tabKey}
-              checked={item.tabKey === this.activeTabKey}
-              icon={item.icon}
-              label={item.label}
-              onClick={() => (this.activeTabKey = item.tabKey)}
-            ></ix-dropdown-item>
-          ))}
-        </ix-dropdown-button>
       </Host>
     );
   }

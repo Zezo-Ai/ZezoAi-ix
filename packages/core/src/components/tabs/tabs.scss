@@ -11,6 +11,46 @@
 @use 'mixins/scrollbar';
 @use 'mixins/shadow-dom/component';
 
+@mixin tab-border($position) {
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: var(--theme-tab-indicator--background);
+    width: 100%;
+    height: var(--theme-tab-indicator--height);
+    left: 0;
+    bottom: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: var(--theme-tab-indicator--background--selected);
+    width: var(--ix-tab-active-indicator-width);
+    height: var(--theme-tab-indicator--height);
+    left: 0;
+    bottom: 0;
+    transform: translateX(var(--ix-tab-active-indicator-offset));
+    transition:
+      transform 0.2s ease,
+      width 0.2s ease;
+  }
+
+  @if $position == 'top' {
+    &::before,
+    &::after {
+      top: 0;
+      bottom: auto;
+    }
+  } @else if $position == 'bottom' {
+    &::before,
+    &::after {
+      top: auto;
+      bottom: 0;
+    }
+  }
+}
+
 :host {
   width: auto;
   display: flex;
@@ -18,6 +58,23 @@
   position: relative;
 
   @include component.ix-component;
+
+  .tabs-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    &.top {
+      @include tab-border('top');
+    }
+
+    &.bottom {
+      @include tab-border('bottom');
+    }
+  }
 
   .tabs {
     position: relative;
@@ -35,51 +92,10 @@
     &::-webkit-scrollbar {
       display: none;
     }
-
-    &::before {
-      content: '';
-      position: absolute;
-      background-color: var(--theme-tab-indicator--background);
-      width: 100%;
-      height: var(--theme-tab-indicator--height);
-      left: 0;
-      bottom: 0;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      background-color: var(--theme-tab-indicator--background--selected);
-      width: var(--ix-tab-active-indicator-width);
-      height: var(--theme-tab-indicator--height);
-      left: 0;
-      bottom: 0;
-      transform: translateX(var(--ix-tab-active-indicator-offset));
-      transition:
-        transform 0.2s ease,
-        width 0.2s ease;
-    }
-
-    &.top {
-      &::before,
-      &::after {
-        top: 0;
-        bottom: auto;
-      }
-    }
-
-    &.bottom {
-      &::before,
-      &::after {
-        top: auto;
-        bottom: 0;
-      }
-    }
   }
 
   .tabs-context-menu {
-    position: absolute;
-    right: 0.5rem;
+    margin-right: 0.5rem;
   }
 
   .overflow-shadow-container {
@@ -88,6 +104,7 @@
     height: 100%;
     width: 100%;
     pointer-events: all;
+    overflow: auto;
   }
 
   .overflow-shadow {

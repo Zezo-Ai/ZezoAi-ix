@@ -2581,20 +2581,21 @@ export declare interface IxSplitButton extends Components.IxSplitButton {
 
 
 @ProxyCmp({
-  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'placement', 'rounded', 'selected', 'small', 'tabKey']
+  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'selected', 'tabKey']
 })
 @Component({
   selector: 'ix-tab-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'placement', 'rounded', 'selected', 'small', { name: 'tabKey', required: true }],
-  outputs: ['tabClick'],
+  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'selected', { name: 'tabKey', required: true }],
+  outputs: ['tabClick', 'tabClose'],
   standalone: false
 })
 export class IxTabItem {
   protected el: HTMLIxTabItemElement;
   @Output() tabClick = new EventEmitter<CustomEvent<IIxTabItemTabClickDetail>>();
+  @Output() tabClose = new EventEmitter<CustomEvent<IIxTabItemTabClickDetail>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -2609,24 +2610,29 @@ export declare interface IxTabItem extends Components.IxTabItem {
    * Emitted when the tab is clicked.
    */
   tabClick: EventEmitter<CustomEvent<IIxTabItemTabClickDetail>>;
+  /**
+   * Emitted when the tab's close button is clicked.
+   */
+  tabClose: EventEmitter<CustomEvent<IIxTabItemTabClickDetail>>;
 }
 
 
 @ProxyCmp({
-  inputs: ['activeTabKey', 'layout', 'placement', 'rounded', 'small']
+  inputs: ['activeTabKey', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small']
 })
 @Component({
   selector: 'ix-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabKey', 'layout', 'placement', 'rounded', 'small'],
-  outputs: ['tabChange', 'selectedChange'],
+  inputs: ['activeTabKey', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small'],
+  outputs: ['tabChange', 'tabClose', 'selectedChange'],
   standalone: false
 })
 export class IxTabs {
   protected el: HTMLIxTabsElement;
   @Output() tabChange = new EventEmitter<CustomEvent<string | undefined>>();
+  @Output() tabClose = new EventEmitter<CustomEvent<string | undefined>>();
   @Output() selectedChange = new EventEmitter<CustomEvent<number>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
@@ -2637,9 +2643,13 @@ export class IxTabs {
 
 export declare interface IxTabs extends Components.IxTabs {
   /**
-   * Tab selection event. Event detail contains the new active tab key.
+   * Tab selection event. Event detail contains the new active tab key. @since 5.0.0
    */
   tabChange: EventEmitter<CustomEvent<string | undefined>>;
+  /**
+   * Tab close event. Event detail contains the closed tab key. @since 5.0.0
+   */
+  tabClose: EventEmitter<CustomEvent<string | undefined>>;
   /**
    * Tab selection event. Event detail is the zero-based tab index. Fires when
 the user selects a tab, or when the tab list changes and the selected index
