@@ -51,8 +51,14 @@ export class Tabs {
    */
   @Prop() placement: 'bottom' | 'top' = 'bottom';
 
+  /**
+   * Active tab key.
+   */
   @Prop({ mutable: true }) activeTabKey?: string;
 
+  /**
+   * Tab selection event. Event detail contains the new active tab key.
+   */
   @Event() tabChange!: EventEmitter<string | undefined>;
 
   /**
@@ -60,11 +66,13 @@ export class Tabs {
    * the user selects a tab, or when the tab list changes and the selected index
    * is adjusted. Not emitted when `selected` is set from outside.
    *
-   * @deprecated Since 5.0.0
+   * @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
    */
   @Event() selectedChange!: EventEmitter<number>;
 
   @State() private isTabsOverflow = false;
+  @State() private activeIndicatorOffset = 0;
+  @State() private activeIndicatorWidth = 0;
   @State() private overflowMenuItems: {
     tabKey: string;
     label: string;
@@ -73,11 +81,24 @@ export class Tabs {
 
   private resizeObserver?: ResizeObserver;
   private itemsObserver?: MutationObserver;
+  private measureFrame?: number;
 
   private readonly tabsRef = makeRef<HTMLDivElement>();
 
   private get tabs() {
     return Array.from(this.hostElement.querySelectorAll('ix-tab-item'));
+  }
+
+  private scheduleMeasurements() {
+    if (this.measureFrame !== undefined) {
+      cancelAnimationFrame(this.measureFrame);
+    }
+
+    this.measureFrame = requestAnimationFrame(() => {
+      this.measureFrame = undefined;
+      this.onComponentResize();
+      this.updateActiveIndicator();
+    });
   }
 
   componentDidLoad() {
@@ -89,8 +110,10 @@ export class Tabs {
       subtree: true,
     });
 
-    this.resizeObserver = new ResizeObserver(() => this.onComponentResize());
+    this.resizeObserver = new ResizeObserver(() => this.scheduleMeasurements());
     this.resizeObserver.observe(this.hostElement);
+
+    this.scheduleMeasurements();
   }
 
   componentWillLoad() {
@@ -106,6 +129,9 @@ export class Tabs {
     }
     if (this.itemsObserver) {
       this.itemsObserver.disconnect();
+    }
+    if (this.measureFrame !== undefined) {
+      cancelAnimationFrame(this.measureFrame);
     }
   }
 
@@ -134,6 +160,7 @@ export class Tabs {
 
     this.onComponentChildrenChange();
     this.activeTabKey = newTab.tabKey;
+    this.updateActiveIndicator();
 
     newTab.scrollIntoView({
       behavior: 'smooth',
@@ -151,6 +178,8 @@ export class Tabs {
       label: item.label || item.textContent || '',
       icon: item.icon,
     }));
+
+    this.scheduleMeasurements();
   }
 
   private onComponentResize() {
@@ -161,6 +190,33 @@ export class Tabs {
 
     const isOverflowing = tabContainer.scrollWidth > tabContainer.clientWidth;
     this.isTabsOverflow = isOverflowing;
+  }
+
+  private getActiveTabWidth() {
+    const activeTab = this.tabs.find((tab) => tab.selected);
+    if (!activeTab) {
+      return 0;
+    }
+    return activeTab.offsetWidth;
+  }
+
+  private getActiveTabOffset() {
+    const activeTab = this.tabs.find((tab) => tab.selected);
+    const tabContainer = this.tabsRef.current;
+
+    if (!activeTab || !tabContainer) {
+      return 0;
+    }
+
+    const activeTabRect = activeTab.getBoundingClientRect();
+    const tabContainerRect = tabContainer.getBoundingClientRect();
+
+    return activeTabRect.left - tabContainerRect.left + tabContainer.scrollLeft;
+  }
+
+  private updateActiveIndicator() {
+    this.activeIndicatorWidth = this.getActiveTabWidth();
+    this.activeIndicatorOffset = this.getActiveTabOffset();
   }
 
   render() {
@@ -195,7 +251,19 @@ export class Tabs {
             'overflow-shadow': this.isTabsOverflow,
           }}
         >
-          <div role="tablist" class={'tabs'} ref={this.tabsRef}>
+          <div
+            role="tablist"
+            class={{
+              tabs: true,
+              top: this.placement === 'top',
+              bottom: this.placement === 'bottom',
+            }}
+            ref={this.tabsRef}
+            style={{
+              '--ix-tab-active-indicator-width': `${this.activeIndicatorWidth}px`,
+              '--ix-tab-active-indicator-offset': `${this.activeIndicatorOffset}px`,
+            }}
+          >
             <slot></slot>
           </div>
         </div>

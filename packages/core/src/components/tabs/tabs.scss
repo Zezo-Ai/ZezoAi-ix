@@ -20,6 +20,7 @@
   @include component.ix-component;
 
   .tabs {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -33,6 +34,46 @@
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      background-color: var(--theme-tab-indicator--background);
+      width: 100%;
+      height: var(--theme-tab-indicator--height);
+      left: 0;
+      bottom: 0;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: var(--theme-tab-indicator--background--selected);
+      width: var(--ix-tab-active-indicator-width);
+      height: var(--theme-tab-indicator--height);
+      left: 0;
+      bottom: 0;
+      transform: translateX(var(--ix-tab-active-indicator-offset));
+      transition:
+        transform 0.2s ease,
+        width 0.2s ease;
+    }
+
+    &.top {
+      &::before,
+      &::after {
+        top: 0;
+        bottom: auto;
+      }
+    }
+
+    &.bottom {
+      &::before,
+      &::after {
+        top: auto;
+        bottom: 0;
+      }
     }
   }
 

@@ -3734,6 +3734,9 @@ export namespace Components {
         "tabKey": string;
     }
     interface IxTabs {
+        /**
+          * Active tab key.
+         */
         "activeTabKey"?: string;
         /**
           * Set layout width style
@@ -10276,6 +10279,9 @@ declare namespace LocalJSX {
         "tabKey": string;
     }
     interface IxTabs {
+        /**
+          * Active tab key.
+         */
         "activeTabKey"?: string;
         /**
           * Set layout width style
@@ -10284,9 +10290,12 @@ declare namespace LocalJSX {
         "layout"?: 'auto' | 'stretched';
         /**
           * Tab selection event. Event detail is the zero-based tab index. Fires when the user selects a tab, or when the tab list changes and the selected index is adjusted. Not emitted when `selected` is set from outside.
-          * @deprecated Since 5.0.0
+          * @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
          */
         "onSelectedChange"?: (event: IxTabsCustomEvent<number>) => void;
+        /**
+          * Tab selection event. Event detail contains the new active tab key.
+         */
         "onTabChange"?: (event: IxTabsCustomEvent<string | undefined>) => void;
         /**
           * Set placement style

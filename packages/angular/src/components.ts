@@ -2636,12 +2636,14 @@ export class IxTabs {
 
 
 export declare interface IxTabs extends Components.IxTabs {
-
+  /**
+   * Tab selection event. Event detail contains the new active tab key.
+   */
   tabChange: EventEmitter<CustomEvent<string | undefined>>;
   /**
    * Tab selection event. Event detail is the zero-based tab index. Fires when
 the user selects a tab, or when the tab list changes and the selected index
-is adjusted. Not emitted when `selected` is set from outside. @deprecated Since 5.0.0
+is adjusted. Not emitted when `selected` is set from outside. @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
    */
   selectedChange: EventEmitter<CustomEvent<number>>;
 }
