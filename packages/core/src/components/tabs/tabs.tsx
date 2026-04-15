@@ -294,7 +294,11 @@ export class Tabs extends Mixin(...DefaultMixins) {
 
   private onTabsNavigate(event: KeyboardEvent) {
     const tabs = this.tabs;
-    const currentIndex = tabs.findIndex((tab) => tab.selected);
+    let currentIndex = tabs.findIndex((tab) => tab.selected);
+
+    if (this.keyboardNavigation === 'manual') {
+      currentIndex = tabs.findIndex((tab) => tab === document.activeElement);
+    }
 
     const activeTab = (tab: HTMLIxTabItemElement) => {
       tab.focus();

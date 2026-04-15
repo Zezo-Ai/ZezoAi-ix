@@ -130,6 +130,9 @@ export class TabItem {
         }}
         onClick={(event: MouseEvent) => this.onTabSelect(event)}
         onKeyDown={(event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            this.onTabSelect(event);
+          }
           if (this.closable && event.key === 'Delete') {
             event.preventDefault();
             this.tabClose.emit({

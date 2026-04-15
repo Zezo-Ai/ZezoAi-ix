@@ -31,6 +31,7 @@ export class IxPlayground {
       <Host>
         <h2>Testing</h2>
         <ix-tabs
+          keyboardNavigation="manual"
           activeTabKey={this.activeTabKey}
           layout="auto"
           onTabChange={(event) => this.onTabChange(event)}
