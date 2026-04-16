@@ -1045,7 +1045,7 @@ export const IxModal: StencilVueComponent<JSX.IxModal> = /*@__PURE__*/ defineCon
   'closeOnBackdropClick',
   'beforeDismiss',
   'centered',
-  'disableEscapeClose',
+  'isNonBlocking',
   'dialogClose',
   'dialogDismiss'
 ], [

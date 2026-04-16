@@ -12,6 +12,7 @@ import {
   IxModalContent,
   IxModalFooter,
   IxModalHeader,
+  IxTypography,
   Modal,
   ModalRef,
   showModal,
@@ -29,7 +30,7 @@ function CustomModal() {
   };
 
   return (
-    <Modal ref={modalRef}>
+    <Modal ref={modalRef} isNonBlocking>
       <IxModalHeader onCloseClick={() => dismiss()}>
         Message headline
       </IxModalHeader>
@@ -38,7 +39,7 @@ function CustomModal() {
         <IxButton variant="subtle-primary" onClick={() => dismiss()}>
           Cancel
         </IxButton>
-        <IxButton autoFocus onClick={() => close()}>
+        <IxButton onClick={() => close()} autoFocus>
           OK
         </IxButton>
       </IxModalFooter>
@@ -46,7 +47,7 @@ function CustomModal() {
   );
 }
 
-export default () => {
+export default function ModalNonBlockingPreview() {
   async function show() {
     await showModal({
       content: <CustomModal />,
@@ -54,8 +55,14 @@ export default () => {
   }
 
   return (
-    <>
-      <IxButton onClick={show}>Show modal</IxButton>
-    </>
+    <div>
+      <div style={{ padding: '1rem' }}>
+        <IxTypography format="body" textColor="std">
+          Content behind the dialog
+        </IxTypography>
+        <IxButton id="behind">Behind control</IxButton>
+      </div>
+      <IxButton onClick={show}>Show non-blocking modal</IxButton>
+    </div>
   );
-};
+}
