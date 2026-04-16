@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Siemens AG
+ * SPDX-FileCopyrightText: 2026 Siemens AG
  *
  * SPDX-License-Identifier: MIT
  *
@@ -7,8 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-function App() {
-  return <div></div>;
-}
-
-export default App;
+export * from './tab-panels';
+export * from './internal-tab-panel';
+export * from './internal-tab-panels';

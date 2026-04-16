@@ -213,6 +213,7 @@ import Spinner from './preview-examples/spinner';
 import SpinnerLarge from './preview-examples/spinner-large';
 import SplitButton from './preview-examples/split-button';
 import SplitButtonIcons from './preview-examples/split-button-icons';
+import TabPanels from './preview-examples/tab-panels';
 import Tabs from './preview-examples/tabs';
 import TabsOverflow from './preview-examples/tabs-overflow';
 import TabsRounded from './preview-examples/tabs-rounded';
@@ -427,6 +428,7 @@ const routes: IxPreviewRoutes = {
   '/preview/spinner': Spinner,
   '/preview/split-button-icons': SplitButtonIcons,
   '/preview/split-button': SplitButton,
+  '/preview/tab-panels': TabPanels,
   '/preview/tabs-rounded': TabsRounded,
   '/preview/tabs': Tabs,
   '/preview/tabs-overflow': TabsOverflow,

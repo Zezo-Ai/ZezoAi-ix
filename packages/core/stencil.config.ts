@@ -112,6 +112,8 @@ export const config: Config = {
       outDir: '../react/src',
       excludeComponents: [
         ...excludeDevelopmentComponents,
+        'ix-tab-panel',
+        'ix-tab-panels',
         'ix-tree',
         'ix-tree-item',
         'ix-icon',

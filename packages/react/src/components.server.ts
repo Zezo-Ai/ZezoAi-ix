@@ -97,8 +97,6 @@ import { IxSlider as IxSliderElement } from "@siemens/ix/components/ix-slider.js
 import { IxSpinner as IxSpinnerElement } from "@siemens/ix/components/ix-spinner.js";
 import { IxSplitButton as IxSplitButtonElement } from "@siemens/ix/components/ix-split-button.js";
 import { IxTabItem as IxTabItemElement } from "@siemens/ix/components/ix-tab-item.js";
-import { IxTabPanel as IxTabPanelElement } from "@siemens/ix/components/ix-tab-panel.js";
-import { IxTabPanels as IxTabPanelsElement } from "@siemens/ix/components/ix-tab-panels.js";
 import { IxTabs as IxTabsElement } from "@siemens/ix/components/ix-tabs.js";
 import { IxTextarea as IxTextareaElement } from "@siemens/ix/components/ix-textarea.js";
 import { IxTile as IxTileElement } from "@siemens/ix/components/ix-tile.js";
@@ -1798,26 +1796,6 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxTabItem as ReactWebComponent<IxTabItemElement, IxTabItemEvents>,
-    serializeShadowRoot
-});
-
-export type IxTabPanelEvents = NonNullable<unknown>;
-
-export const IxTabPanel: StencilReactComponent<IxTabPanelElement, IxTabPanelEvents> = /*@__PURE__*/ createComponent<IxTabPanelElement, IxTabPanelEvents>({
-    tagName: 'ix-tab-panel',
-    properties: { tabKey: 'tab-key' },
-    hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
-    clientModule: clientComponents.IxTabPanel as ReactWebComponent<IxTabPanelElement, IxTabPanelEvents>,
-    serializeShadowRoot
-});
-
-export type IxTabPanelsEvents = NonNullable<unknown>;
-
-export const IxTabPanels: StencilReactComponent<IxTabPanelsElement, IxTabPanelsEvents> = /*@__PURE__*/ createComponent<IxTabPanelsElement, IxTabPanelsEvents>({
-    tagName: 'ix-tab-panels',
-    properties: {},
-    hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
-    clientModule: clientComponents.IxTabPanels as ReactWebComponent<IxTabPanelsElement, IxTabPanelsEvents>,
     serializeShadowRoot
 });
 
