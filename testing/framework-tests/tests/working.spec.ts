@@ -56,3 +56,7 @@ import './generated/toggle-checked.spec';
 import './generated/toggle-disabled.spec';
 import './generated/toggle-indeterminate.spec';
 import './generated/toggle-custom-label.spec';
+
+// Pill tests
+import './generated/pill.spec';
+import './generated/pill-variants.spec';
