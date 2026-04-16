@@ -75,7 +75,7 @@ async function createToggleExample(page: Page) {
     function createModalExample() {
       const el = document.createElement('DIV');
       el.style.display = 'contents';
-      el.innerHTML = `<ix-toggle id="toggle"></ix-toggle>`;
+      el.innerHTML = `<ix-toggle id="toggle" aria-label="Toggle"></ix-toggle>`;
       return el;
     }
 
@@ -240,7 +240,8 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       await expect(toggle).toBeVisible();
       await waitForModalDialogOpen(page);
 
-      await toggle.locator('input').press('Space');
+      await toggle.focus();
+      await toggle.press('Space');
 
       await expect(modalPanel(page)).toBeVisible();
     }
