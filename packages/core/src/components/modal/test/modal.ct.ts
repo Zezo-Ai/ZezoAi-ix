@@ -54,7 +54,7 @@ async function createToggleExample(page: Page) {
     function createModalExample() {
       const el = document.createElement('DIV');
       el.style.display = 'contents';
-      el.innerHTML = `<ix-toggle id="toggle"></ix-toggle>`;
+      el.innerHTML = `<ix-toggle id="toggle" aria-label="Toggle"></ix-toggle>`;
       return el;
     }
 
@@ -237,7 +237,8 @@ regressionTest.describe('closeOnBackdropClick = true', () => {
       const toggle = page.locator('#toggle');
       await expect(toggle).toBeVisible();
 
-      await toggle.locator('input').press('Space');
+      await toggle.focus();
+      await toggle.press('Space');
 
       // needed to skip fade out / in animation
       await page.waitForTimeout(500);
