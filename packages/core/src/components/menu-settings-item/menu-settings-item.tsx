@@ -17,13 +17,13 @@ import {
   Watch,
 } from '@stencil/core';
 import { CustomLabelChangeEvent } from '../utils/menu-tabs/menu-tabs-utils';
+import { BaseTab } from '../tab-item/tab';
 
 @Component({
   tag: 'ix-menu-settings-item',
-  styleUrl: 'menu-settings-item.css',
-  shadow: true,
+  shadow: false,
 })
-export class MenuSettingsItem {
+export class MenuSettingsItem extends BaseTab {
   /**
    * Settings Item label
    */

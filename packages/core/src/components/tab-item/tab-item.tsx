@@ -15,18 +15,28 @@ import {
   EventEmitter,
   h,
   Host,
+  Mixin,
   Prop,
 } from '@stencil/core';
 import type { TabClickDetail } from './tab-item.types';
 import { a11yBoolean } from '../utils/a11y';
+import { DefaultMixins } from '../utils/internal/component';
+import {
+  ComponentIdMixin,
+  ComponentIdMixinContract,
+} from '../utils/internal/mixins/id.mixin';
+import { BaseTabMixin, BaseTabMixinContract } from './tab.mixin';
 
 @Component({
   tag: 'ix-tab-item',
   styleUrl: 'tab-item.scss',
   shadow: true,
 })
-export class TabItem {
-  @Element() hostElement!: HTMLIxTabItemElement;
+export class TabItem
+  extends Mixin(...DefaultMixins, ComponentIdMixin, BaseTabMixin)
+  implements BaseTabMixinContract, ComponentIdMixinContract
+{
+  @Element() override hostElement!: HTMLIxTabItemElement;
 
   /**
    * Set selected tab
@@ -65,11 +75,9 @@ export class TabItem {
   @Prop() label?: string;
 
   /**
-   * Key of the tab, used for identifying the tab in events
-   *
-   * @since 5.0.0
+   * Aria label for the close button, important for accessibility
    */
-  @Prop({ reflect: true }) tabKey!: string;
+  @Prop() ariaLabelCloseButton: string = 'Close tab';
 
   /** @internal */
   @Prop() placement: 'bottom' | 'top' = 'bottom';
@@ -111,10 +119,11 @@ export class TabItem {
     }
   }
 
-  render() {
+  override render() {
     const shouldRenderText = !this.rounded && this.label;
     return (
       <Host
+        id={this.getHostElementId()}
         role="tab"
         aria-selected={a11yBoolean(this.selected)}
         tabIndex={this.selected ? 0 : -1}
@@ -179,6 +188,7 @@ export class TabItem {
         )}
         {this.closable && (
           <ix-icon-button
+            aria-label={this.ariaLabelCloseButton}
             class={'close-tab'}
             size="12"
             variant="subtle-tertiary"

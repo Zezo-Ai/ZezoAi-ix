@@ -1202,7 +1202,7 @@ export type IxMenuAboutEvents = {
 export const IxMenuAbout: StencilReactComponent<IxMenuAboutElement, IxMenuAboutEvents> = /*@__PURE__*/ createComponent<IxMenuAboutElement, IxMenuAboutEvents>({
     tagName: 'ix-menu-about',
     properties: {
-        activeTabLabel: 'active-tab-label',
+        activeTabKey: 'active-tab-key',
         label: 'label',
         ariaLabelCloseButton: 'aria-label-close-button',
         show: 'show'
@@ -1216,7 +1216,10 @@ export type IxMenuAboutItemEvents = { onLabelChange: EventName<IxMenuAboutItemCu
 
 export const IxMenuAboutItem: StencilReactComponent<IxMenuAboutItemElement, IxMenuAboutItemEvents> = /*@__PURE__*/ createComponent<IxMenuAboutItemElement, IxMenuAboutItemEvents>({
     tagName: 'ix-menu-about-item',
-    properties: { label: 'label' },
+    properties: {
+        tabKey: 'tab-key',
+        label: 'label'
+    },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxMenuAboutItem as ReactWebComponent<IxMenuAboutItemElement, IxMenuAboutItemEvents>,
     serializeShadowRoot
@@ -1234,6 +1237,7 @@ export const IxMenuAboutNews: StencilReactComponent<IxMenuAboutNewsElement, IxMe
         label: 'label',
         i18nShowMore: 'i18n-show-more',
         aboutItemLabel: 'about-item-label',
+        activeAboutTabKey: 'active-about-tab-key',
         expanded: 'expanded'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
@@ -1320,7 +1324,7 @@ export type IxMenuSettingsEvents = {
 export const IxMenuSettings: StencilReactComponent<IxMenuSettingsElement, IxMenuSettingsEvents> = /*@__PURE__*/ createComponent<IxMenuSettingsElement, IxMenuSettingsEvents>({
     tagName: 'ix-menu-settings',
     properties: {
-        activeTabLabel: 'active-tab-label',
+        activeTabKey: 'active-tab-key',
         label: 'label',
         ariaLabelCloseButton: 'aria-label-close-button',
         show: 'show'
@@ -1334,7 +1338,10 @@ export type IxMenuSettingsItemEvents = { onLabelChange: EventName<IxMenuSettings
 
 export const IxMenuSettingsItem: StencilReactComponent<IxMenuSettingsItemElement, IxMenuSettingsItemEvents> = /*@__PURE__*/ createComponent<IxMenuSettingsItemElement, IxMenuSettingsItemEvents>({
     tagName: 'ix-menu-settings-item',
-    properties: { label: 'label' },
+    properties: {
+        tabKey: 'tab-key',
+        label: 'label'
+    },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxMenuSettingsItem as ReactWebComponent<IxMenuSettingsItemElement, IxMenuSettingsItemEvents>,
     serializeShadowRoot
@@ -1773,13 +1780,14 @@ export type IxTabItemEvents = {
 export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents> = /*@__PURE__*/ createComponent<IxTabItemElement, IxTabItemEvents>({
     tagName: 'ix-tab-item',
     properties: {
+        tabKey: 'tab-key',
         selected: 'selected',
         disabled: 'disabled',
         icon: 'icon',
         counter: 'counter',
         closable: 'closable',
         label: 'label',
-        tabKey: 'tab-key',
+        ariaLabelCloseButton: 'aria-label-close-button',
         placement: 'placement',
         rounded: 'rounded',
         small: 'small',

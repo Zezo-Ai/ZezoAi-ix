@@ -2502,7 +2502,7 @@ export namespace Components {
         /**
           * Active tab
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close About'
@@ -2523,12 +2523,22 @@ export namespace Components {
           * About Item label
          */
         "label"?: string;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMenuAboutNews {
         /**
           * Subtitle of the about news
          */
         "aboutItemLabel"?: string;
+        /**
+          * Defines which tab should be active, used when the about news is used in combination with ix-menu-about
+          * @since 5.0.0
+         */
+        "activeAboutTabKey"?: string;
         /**
           * @default false
          */
@@ -2711,7 +2721,7 @@ export namespace Components {
         /**
           * Active tab
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close Settings'
@@ -2732,6 +2742,11 @@ export namespace Components {
           * Settings Item label
          */
         "label"?: string;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMessageBar {
         /**
@@ -3683,6 +3698,11 @@ export namespace Components {
     }
     interface IxTabItem {
         /**
+          * Aria label for the close button, important for accessibility
+          * @default 'Close tab'
+         */
+        "ariaLabelCloseButton": string;
+        /**
           * If the tab can be closed
           * @since 5.0.0
           * @default false
@@ -3737,6 +3757,14 @@ export namespace Components {
           * @since 5.0.0
          */
         "tabKey": string;
+    }
+    interface IxTabPanel {
+        /**
+          * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
+         */
+        "tabKey": string;
+    }
+    interface IxTabPanels {
     }
     interface IxTabs {
         /**
@@ -6013,6 +6041,18 @@ declare global {
         prototype: HTMLIxTabItemElement;
         new (): HTMLIxTabItemElement;
     };
+    interface HTMLIxTabPanelElement extends Components.IxTabPanel, HTMLStencilElement {
+    }
+    var HTMLIxTabPanelElement: {
+        prototype: HTMLIxTabPanelElement;
+        new (): HTMLIxTabPanelElement;
+    };
+    interface HTMLIxTabPanelsElement extends Components.IxTabPanels, HTMLStencilElement {
+    }
+    var HTMLIxTabPanelsElement: {
+        prototype: HTMLIxTabPanelsElement;
+        new (): HTMLIxTabPanelsElement;
+    };
     interface HTMLIxTabsElementEventMap {
         "tabChange": string | undefined;
         "tabClose": string | undefined;
@@ -6374,6 +6414,8 @@ declare global {
         "ix-spinner": HTMLIxSpinnerElement;
         "ix-split-button": HTMLIxSplitButtonElement;
         "ix-tab-item": HTMLIxTabItemElement;
+        "ix-tab-panel": HTMLIxTabPanelElement;
+        "ix-tab-panels": HTMLIxTabPanelsElement;
         "ix-tabs": HTMLIxTabsElement;
         "ix-textarea": HTMLIxTextareaElement;
         "ix-tile": HTMLIxTileElement;
@@ -8940,7 +8982,7 @@ declare namespace LocalJSX {
         /**
           * Active tab
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close About'
@@ -8974,12 +9016,22 @@ declare namespace LocalJSX {
           * Label changed
          */
         "onLabelChange"?: (event: IxMenuAboutItemCustomEvent<CustomLabelChangeEvent>) => void;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMenuAboutNews {
         /**
           * Subtitle of the about news
          */
         "aboutItemLabel"?: string;
+        /**
+          * Defines which tab should be active, used when the about news is used in combination with ix-menu-about
+          * @since 5.0.0
+         */
+        "activeAboutTabKey"?: string;
         /**
           * @default false
          */
@@ -9178,7 +9230,7 @@ declare namespace LocalJSX {
         /**
           * Active tab
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close Settings'
@@ -9212,6 +9264,11 @@ declare namespace LocalJSX {
           * Label changed
          */
         "onLabelChange"?: (event: IxMenuSettingsItemCustomEvent<CustomLabelChangeEvent>) => void;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMessageBar {
         /**
@@ -10237,6 +10294,11 @@ declare namespace LocalJSX {
     }
     interface IxTabItem {
         /**
+          * Aria label for the close button, important for accessibility
+          * @default 'Close tab'
+         */
+        "ariaLabelCloseButton"?: string;
+        /**
           * If the tab can be closed
           * @since 5.0.0
           * @default false
@@ -10299,6 +10361,14 @@ declare namespace LocalJSX {
           * @since 5.0.0
          */
         "tabKey": string;
+    }
+    interface IxTabPanel {
+        /**
+          * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
+         */
+        "tabKey": string;
+    }
+    interface IxTabPanels {
     }
     interface IxTabs {
         /**
@@ -11689,12 +11759,13 @@ declare namespace LocalJSX {
         "i18nCollapse": string;
     }
     interface IxMenuAboutAttributes {
-        "activeTabLabel": string;
+        "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
         "show": boolean;
     }
     interface IxMenuAboutItemAttributes {
+        "tabKey": string;
         "label": string;
     }
     interface IxMenuAboutNewsAttributes {
@@ -11702,6 +11773,7 @@ declare namespace LocalJSX {
         "label": string;
         "i18nShowMore": string;
         "aboutItemLabel": string;
+        "activeAboutTabKey": string;
         "expanded": boolean;
     }
     interface IxMenuAvatarAttributes {
@@ -11747,12 +11819,13 @@ declare namespace LocalJSX {
         "isCategory": boolean;
     }
     interface IxMenuSettingsAttributes {
-        "activeTabLabel": string;
+        "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
         "show": boolean;
     }
     interface IxMenuSettingsItemAttributes {
+        "tabKey": string;
         "label": string;
     }
     interface IxMessageBarAttributes {
@@ -11981,18 +12054,22 @@ declare namespace LocalJSX {
         "enableTopLayer": boolean;
     }
     interface IxTabItemAttributes {
+        "tabKey": string;
         "selected": boolean;
         "disabled": boolean;
         "icon": string;
         "counter": number;
         "closable": boolean;
         "label": string;
-        "tabKey": string;
+        "ariaLabelCloseButton": string;
         "placement": 'bottom' | 'top';
         "rounded": boolean;
         "small": boolean;
         "layout": 'auto' | 'stretched';
         "iconOnly": boolean;
+    }
+    interface IxTabPanelAttributes {
+        "tabKey": string;
     }
     interface IxTabsAttributes {
         "small": boolean;
@@ -12231,7 +12308,7 @@ declare namespace LocalJSX {
         "ix-link-button": Omit<IxLinkButton, keyof IxLinkButtonAttributes> & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes]?: IxLinkButton[K] } & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes as `attr:${K}`]?: IxLinkButtonAttributes[K] } & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes as `prop:${K}`]?: IxLinkButton[K] };
         "ix-menu": Omit<IxMenu, keyof IxMenuAttributes> & { [K in keyof IxMenu & keyof IxMenuAttributes]?: IxMenu[K] } & { [K in keyof IxMenu & keyof IxMenuAttributes as `attr:${K}`]?: IxMenuAttributes[K] } & { [K in keyof IxMenu & keyof IxMenuAttributes as `prop:${K}`]?: IxMenu[K] };
         "ix-menu-about": Omit<IxMenuAbout, keyof IxMenuAboutAttributes> & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes]?: IxMenuAbout[K] } & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes as `attr:${K}`]?: IxMenuAboutAttributes[K] } & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes as `prop:${K}`]?: IxMenuAbout[K] };
-        "ix-menu-about-item": Omit<IxMenuAboutItem, keyof IxMenuAboutItemAttributes> & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes]?: IxMenuAboutItem[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `attr:${K}`]?: IxMenuAboutItemAttributes[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `prop:${K}`]?: IxMenuAboutItem[K] };
+        "ix-menu-about-item": Omit<IxMenuAboutItem, keyof IxMenuAboutItemAttributes> & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes]?: IxMenuAboutItem[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `attr:${K}`]?: IxMenuAboutItemAttributes[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `prop:${K}`]?: IxMenuAboutItem[K] } & OneOf<"tabKey", IxMenuAboutItem["tabKey"], IxMenuAboutItemAttributes["tabKey"]>;
         "ix-menu-about-news": Omit<IxMenuAboutNews, keyof IxMenuAboutNewsAttributes> & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes]?: IxMenuAboutNews[K] } & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes as `attr:${K}`]?: IxMenuAboutNewsAttributes[K] } & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes as `prop:${K}`]?: IxMenuAboutNews[K] };
         "ix-menu-avatar": Omit<IxMenuAvatar, keyof IxMenuAvatarAttributes> & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes]?: IxMenuAvatar[K] } & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes as `attr:${K}`]?: IxMenuAvatarAttributes[K] } & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes as `prop:${K}`]?: IxMenuAvatar[K] };
         "ix-menu-avatar-item": Omit<IxMenuAvatarItem, keyof IxMenuAvatarItemAttributes> & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes]?: IxMenuAvatarItem[K] } & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes as `attr:${K}`]?: IxMenuAvatarItemAttributes[K] } & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes as `prop:${K}`]?: IxMenuAvatarItem[K] };
@@ -12239,7 +12316,7 @@ declare namespace LocalJSX {
         "ix-menu-expand-icon": Omit<IxMenuExpandIcon, keyof IxMenuExpandIconAttributes> & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes]?: IxMenuExpandIcon[K] } & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes as `attr:${K}`]?: IxMenuExpandIconAttributes[K] } & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes as `prop:${K}`]?: IxMenuExpandIcon[K] };
         "ix-menu-item": Omit<IxMenuItem, keyof IxMenuItemAttributes> & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes]?: IxMenuItem[K] } & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes as `attr:${K}`]?: IxMenuItemAttributes[K] } & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes as `prop:${K}`]?: IxMenuItem[K] };
         "ix-menu-settings": Omit<IxMenuSettings, keyof IxMenuSettingsAttributes> & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes]?: IxMenuSettings[K] } & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes as `attr:${K}`]?: IxMenuSettingsAttributes[K] } & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes as `prop:${K}`]?: IxMenuSettings[K] };
-        "ix-menu-settings-item": Omit<IxMenuSettingsItem, keyof IxMenuSettingsItemAttributes> & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes]?: IxMenuSettingsItem[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `attr:${K}`]?: IxMenuSettingsItemAttributes[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `prop:${K}`]?: IxMenuSettingsItem[K] };
+        "ix-menu-settings-item": Omit<IxMenuSettingsItem, keyof IxMenuSettingsItemAttributes> & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes]?: IxMenuSettingsItem[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `attr:${K}`]?: IxMenuSettingsItemAttributes[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `prop:${K}`]?: IxMenuSettingsItem[K] } & OneOf<"tabKey", IxMenuSettingsItem["tabKey"], IxMenuSettingsItemAttributes["tabKey"]>;
         "ix-message-bar": Omit<IxMessageBar, keyof IxMessageBarAttributes> & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes]?: IxMessageBar[K] } & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes as `attr:${K}`]?: IxMessageBarAttributes[K] } & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes as `prop:${K}`]?: IxMessageBar[K] };
         "ix-modal": Omit<IxModal, keyof IxModalAttributes> & { [K in keyof IxModal & keyof IxModalAttributes]?: IxModal[K] } & { [K in keyof IxModal & keyof IxModalAttributes as `attr:${K}`]?: IxModalAttributes[K] } & { [K in keyof IxModal & keyof IxModalAttributes as `prop:${K}`]?: IxModal[K] };
         "ix-modal-content": IxModalContent;
@@ -12264,6 +12341,8 @@ declare namespace LocalJSX {
         "ix-spinner": Omit<IxSpinner, keyof IxSpinnerAttributes> & { [K in keyof IxSpinner & keyof IxSpinnerAttributes]?: IxSpinner[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `attr:${K}`]?: IxSpinnerAttributes[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `prop:${K}`]?: IxSpinner[K] };
         "ix-split-button": Omit<IxSplitButton, keyof IxSplitButtonAttributes> & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes]?: IxSplitButton[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `attr:${K}`]?: IxSplitButtonAttributes[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `prop:${K}`]?: IxSplitButton[K] };
         "ix-tab-item": Omit<IxTabItem, keyof IxTabItemAttributes> & { [K in keyof IxTabItem & keyof IxTabItemAttributes]?: IxTabItem[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `attr:${K}`]?: IxTabItemAttributes[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `prop:${K}`]?: IxTabItem[K] } & OneOf<"tabKey", IxTabItem["tabKey"], IxTabItemAttributes["tabKey"]>;
+        "ix-tab-panel": Omit<IxTabPanel, keyof IxTabPanelAttributes> & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes]?: IxTabPanel[K] } & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes as `attr:${K}`]?: IxTabPanelAttributes[K] } & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes as `prop:${K}`]?: IxTabPanel[K] } & OneOf<"tabKey", IxTabPanel["tabKey"], IxTabPanelAttributes["tabKey"]>;
+        "ix-tab-panels": IxTabPanels;
         "ix-tabs": Omit<IxTabs, keyof IxTabsAttributes> & { [K in keyof IxTabs & keyof IxTabsAttributes]?: IxTabs[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `attr:${K}`]?: IxTabsAttributes[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `prop:${K}`]?: IxTabs[K] };
         "ix-textarea": Omit<IxTextarea, keyof IxTextareaAttributes> & { [K in keyof IxTextarea & keyof IxTextareaAttributes]?: IxTextarea[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `attr:${K}`]?: IxTextareaAttributes[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `prop:${K}`]?: IxTextarea[K] };
         "ix-tile": Omit<IxTile, keyof IxTileAttributes> & { [K in keyof IxTile & keyof IxTileAttributes]?: IxTile[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `attr:${K}`]?: IxTileAttributes[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `prop:${K}`]?: IxTile[K] };
@@ -12425,6 +12504,8 @@ declare module "@stencil/core" {
             "ix-spinner": LocalJSX.IntrinsicElements["ix-spinner"] & JSXBase.HTMLAttributes<HTMLIxSpinnerElement>;
             "ix-split-button": LocalJSX.IntrinsicElements["ix-split-button"] & JSXBase.HTMLAttributes<HTMLIxSplitButtonElement>;
             "ix-tab-item": LocalJSX.IntrinsicElements["ix-tab-item"] & JSXBase.HTMLAttributes<HTMLIxTabItemElement>;
+            "ix-tab-panel": LocalJSX.IntrinsicElements["ix-tab-panel"] & JSXBase.HTMLAttributes<HTMLIxTabPanelElement>;
+            "ix-tab-panels": LocalJSX.IntrinsicElements["ix-tab-panels"] & JSXBase.HTMLAttributes<HTMLIxTabPanelsElement>;
             "ix-tabs": LocalJSX.IntrinsicElements["ix-tabs"] & JSXBase.HTMLAttributes<HTMLIxTabsElement>;
             /**
              * @form-ready 

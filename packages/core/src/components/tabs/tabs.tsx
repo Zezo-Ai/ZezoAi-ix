@@ -25,13 +25,14 @@ import { TabClickDetail } from '../tab-item/tab-item.types';
 import { emitEvent } from '../utils/event';
 import { hasKeyboardMode } from '../utils/internal/mixins/setup.mixin';
 import { DefaultMixins } from '../utils/internal/component';
+import { InheritAriaAttributesMixin } from '../utils/internal/mixins/accessibility/inherit-aria-attributes.mixin';
 
 @Component({
   tag: 'ix-tabs',
   styleUrl: 'tabs.scss',
   shadow: true,
 })
-export class Tabs extends Mixin(...DefaultMixins) {
+export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   @Element() override hostElement!: HTMLIxTabsElement;
 
   /**
@@ -339,6 +340,9 @@ export class Tabs extends Mixin(...DefaultMixins) {
           this.onTabClick(event)
         }
         onKeyDown={(event: KeyboardEvent) => this.onTabsNavigate(event)}
+        class={{
+          small: this.small,
+        }}
       >
         <div
           ref={this.tabsContainerRef}
@@ -360,6 +364,7 @@ export class Tabs extends Mixin(...DefaultMixins) {
           >
             <div
               role="tablist"
+              {...this.inheritAriaAttributes}
               ref={this.tabsRef}
               class={{
                 tabs: true,

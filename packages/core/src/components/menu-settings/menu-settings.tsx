@@ -16,13 +16,11 @@ import {
   h,
   Prop,
   State,
-  Watch,
 } from '@stencil/core';
 import { MenuTabs } from '../utils/menu-tabs/menu-tabs-fc';
 import {
   CustomCloseEvent,
   initialize,
-  syncTabDisplay,
 } from '../utils/menu-tabs/menu-tabs-utils';
 
 @Component({
@@ -37,7 +35,7 @@ export class MenuSettings {
    * Active tab
    */
   // eslint-disable-next-line @stencil-community/strict-mutable
-  @Prop({ mutable: true }) activeTabLabel?: string;
+  @Prop({ mutable: true }) activeTabKey?: string;
 
   /**
    * Label of first tab
@@ -64,13 +62,6 @@ export class MenuSettings {
   @Event() close!: EventEmitter<CustomCloseEvent>;
 
   @State() items!: HTMLIxMenuSettingsItemElement[];
-
-  @Watch('activeTabLabel')
-  updateTab(newLabel: string, oldLabel: string) {
-    if (newLabel !== oldLabel) {
-      syncTabDisplay(this, newLabel);
-    }
-  }
 
   componentWillLoad() {
     initialize(this);

@@ -1768,14 +1768,14 @@ export declare interface IxMenu extends Components.IxMenu {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuAbout,
-  inputs: ['activeTabLabel', 'ariaLabelCloseButton', 'label']
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label']
 })
 @Component({
   selector: 'ix-menu-about',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabLabel', 'ariaLabelCloseButton', 'label'],
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label'],
   outputs: ['tabChange', 'close'],
 })
 export class IxMenuAbout {
@@ -1805,14 +1805,14 @@ export declare interface IxMenuAbout extends Components.IxMenuAbout {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuAboutItem,
-  inputs: ['label']
+  inputs: ['label', 'tabKey']
 })
 @Component({
   selector: 'ix-menu-about-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['label'],
+  inputs: ['label', { name: 'tabKey', required: true }],
   outputs: ['labelChange'],
 })
 export class IxMenuAboutItem {
@@ -1837,14 +1837,14 @@ export declare interface IxMenuAboutItem extends Components.IxMenuAboutItem {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuAboutNews,
-  inputs: ['aboutItemLabel', 'i18nShowMore', 'label', 'show']
+  inputs: ['aboutItemLabel', 'activeAboutTabKey', 'i18nShowMore', 'label', 'show']
 })
 @Component({
   selector: 'ix-menu-about-news',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['aboutItemLabel', 'i18nShowMore', 'label', 'show'],
+  inputs: ['aboutItemLabel', 'activeAboutTabKey', 'i18nShowMore', 'label', 'show'],
   outputs: ['showMore', 'closePopover'],
 })
 export class IxMenuAboutNews {
@@ -1978,14 +1978,14 @@ export declare interface IxMenuItem extends Components.IxMenuItem {}
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuSettings,
-  inputs: ['activeTabLabel', 'ariaLabelCloseButton', 'label']
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label']
 })
 @Component({
   selector: 'ix-menu-settings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabLabel', 'ariaLabelCloseButton', 'label'],
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label'],
   outputs: ['tabChange', 'close'],
 })
 export class IxMenuSettings {
@@ -2015,14 +2015,14 @@ export declare interface IxMenuSettings extends Components.IxMenuSettings {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuSettingsItem,
-  inputs: ['label']
+  inputs: ['label', 'tabKey']
 })
 @Component({
   selector: 'ix-menu-settings-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['label'],
+  inputs: ['label', { name: 'tabKey', required: true }],
   outputs: ['labelChange'],
 })
 export class IxMenuSettingsItem {
@@ -2684,14 +2684,14 @@ export declare interface IxSplitButton extends Components.IxSplitButton {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxTabItem,
-  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'selected', 'tabKey']
+  inputs: ['ariaLabelCloseButton', 'closable', 'counter', 'disabled', 'icon', 'label', 'selected', 'tabKey']
 })
 @Component({
   selector: 'ix-tab-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['closable', 'counter', 'disabled', 'icon', 'label', 'selected', { name: 'tabKey', required: true }],
+  inputs: ['ariaLabelCloseButton', 'closable', 'counter', 'disabled', 'icon', 'label', 'selected', { name: 'tabKey', required: true }],
   outputs: ['tabClick', 'tabClose'],
 })
 export class IxTabItem {

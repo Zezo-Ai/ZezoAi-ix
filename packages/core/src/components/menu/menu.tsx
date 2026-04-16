@@ -390,7 +390,7 @@ export class Menu {
     if (!this.popoverArea?.contains(this.aboutNewsPopover)) {
       const showMore = () => {
         if (this.aboutNewsPopover?.aboutItemLabel && this.about) {
-          this.about.activeTabLabel = this.aboutNewsPopover.aboutItemLabel;
+          this.about.activeTabKey = this.aboutNewsPopover.activeAboutTabKey;
           this.toggleAbout(true);
         }
       };

@@ -9,50 +9,33 @@
 
 import { iconClose } from '@siemens/ix-icons/icons';
 import { FunctionalComponent, h, Host } from '@stencil/core';
-import { MenuAbout } from '../../menu-about/menu-about';
 import { MenuSettings } from '../../menu-settings/menu-settings';
-import { setTab } from './menu-tabs-utils';
 
 interface MenuTabsProps {
-  context: MenuSettings | MenuAbout;
+  context: MenuSettings;
 }
 
-const getTabItems = (context: MenuSettings | MenuAbout) => {
-  // return context.items.map(({ label }) => {
-  //   return (
-  //     <ix-tab-item
-  //       selected={label === context.activeTabLabel}
-  //       onTabClick={(e) => e.preventDefault()}
-  //       onClick={() => {
-  //         if (label) {
-  //           setTab(context, label);
-  //         }
-  //       }}
-  //     >
-  //       {label}
-  //     </ix-tab-item>
-  //   );
-  // });
+const getTabItems = (context: MenuSettings) => {
+  return context.items.map(({ label, tabKey }) => {
+    return (
+      <ix-tab-item
+        tabKey={tabKey}
+        selected={label === context.activeTabKey}
+        label={label}
+      ></ix-tab-item>
+    );
+  });
 };
 
 export const MenuTabs: FunctionalComponent<MenuTabsProps> = ({ context }) => {
-  const selectedIndex = context.items.findIndex(
-    (item) => item.label === context.activeTabLabel
-  );
   return (
     <Host
-      slot={
-        context instanceof MenuSettings ? 'ix-menu-settings' : 'ix-menu-about'
-      }
+      slot="ix-menu-settings"
       class={{
         show: context.show,
       }}
     >
-      <div
-        class={
-          context instanceof MenuSettings ? 'settings-header' : 'about-header'
-        }
-      >
+      <div class="settings-header">
         <h2 class="text-h2">{context.label}</h2>
         <ix-icon-button
           variant="tertiary"
@@ -62,19 +45,15 @@ export const MenuTabs: FunctionalComponent<MenuTabsProps> = ({ context }) => {
           aria-label={context.ariaLabelCloseButton}
           onClick={(e) =>
             context.close.emit({
-              name:
-                context instanceof MenuSettings
-                  ? 'ix-menu-settings'
-                  : 'ix-menu-about',
+              name: 'ix-menu-settings',
               nativeEvent: e,
             })
           }
         ></ix-icon-button>
       </div>
-      // TODO implement new tabs
-      {/* <ix-tabs selected={selectedIndex !== -1 ? selectedIndex : 0}>
+      <ix-tabs activeTabKey={context.activeTabKey}>
         {getTabItems(context)}
-      </ix-tabs> */}
+      </ix-tabs>
       <slot></slot>
     </Host>
   );

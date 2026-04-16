@@ -7,7 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@use 'misc/common-variables' as vars;
 @use 'mixins/text-truncation';
 @use 'mixins/hover';
 @use 'mixins/shadow-dom/component';
@@ -26,7 +25,10 @@
   border: 1px solid transparent;
 
   height: 2.5rem;
-  padding: 0.625rem vars.$large-space;
+  min-height: 2.5rem;
+  max-height: 2.5rem;
+
+  padding: 0.625rem 1.5rem;
   gap: 0.5rem;
 
   @include component.ix-component;
@@ -97,8 +99,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-left: vars.$tiny-space;
-    padding-right: vars.$tiny-space;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
     font-size: 12px;
     line-height: 14px;
     color: var(--theme-pill-outline--color);
@@ -171,16 +173,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: vars.$large-space vars.$small-space;
+  padding: 1.5rem 0.5rem;
 }
 
 :host(.small-tab) {
-  height: 32px;
-  padding: vars.$default-space;
+  height: 2rem;
+  min-height: 2rem;
+  max-height: 2rem;
+  padding: 1rem;
 }
 
 :host(.small-tab.icon) {
-  padding: vars.$default-space vars.$tiny-space;
+  padding: 1rem 0.25rem;
 }
 
 :host(:focus-visible) {

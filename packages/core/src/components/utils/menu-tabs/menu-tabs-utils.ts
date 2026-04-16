@@ -10,9 +10,7 @@
 import { MenuAbout } from '../../menu-about/menu-about';
 import { MenuSettings } from '../../menu-settings/menu-settings';
 
-function getItems(
-  context: MenuSettings | MenuAbout
-): HTMLIxMenuSettingsItemElement[] | HTMLIxMenuAboutItemElement[] {
+function getItems(context: MenuSettings): HTMLIxMenuSettingsItemElement[] {
   return Array.from(
     context.el.querySelectorAll(
       context instanceof MenuSettings
@@ -23,7 +21,7 @@ function getItems(
 }
 
 export function setTab(context: MenuSettings | MenuAbout, label: string) {
-  if (context.activeTabLabel === label) {
+  if (context.activeTabKey === label) {
     return;
   }
   const { defaultPrevented } = context.tabChange.emit(label);
@@ -31,13 +29,10 @@ export function setTab(context: MenuSettings | MenuAbout, label: string) {
   if (defaultPrevented) {
     return;
   }
-  context.activeTabLabel = label;
+  context.activeTabKey = label;
 }
 
-export function syncTabDisplay(
-  context: MenuSettings | MenuAbout,
-  label: string
-) {
+export function syncTabDisplay(context: MenuSettings, label: string) {
   context.items.forEach((i) => {
     i.style.display = 'none';
     if (i.label === label) {
@@ -46,11 +41,11 @@ export function syncTabDisplay(
   });
 }
 
-export function initialize(context: MenuSettings | MenuAbout) {
+export function initialize(context: MenuSettings) {
   context.items = getItems(context);
 
   if (context.items.length) {
-    const selectedLabel = context.activeTabLabel || context.items[0].label;
+    const selectedLabel = context.activeTabKey || context.items[0].label;
     if (selectedLabel) {
       setTab(context, selectedLabel);
     }
@@ -60,8 +55,8 @@ export function initialize(context: MenuSettings | MenuAbout) {
     item.addEventListener('labelChange', (e: CustomEvent) => {
       context.items = getItems(context);
 
-      if (e.detail.oldLabel === context.activeTabLabel) {
-        context.activeTabLabel = e.detail.newLabel;
+      if (e.detail.oldLabel === context.activeTabKey) {
+        context.activeTabKey = e.detail.newLabel;
       }
     });
   });
