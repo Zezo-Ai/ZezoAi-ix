@@ -2148,11 +2148,6 @@ export namespace Components {
     }
     interface IxIconToggleButton {
         /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -4246,11 +4241,6 @@ export namespace Components {
         "value": string;
     }
     interface IxToggleButton {
-        /**
-          * ARIA label that will be set on the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
         /**
           * Disable the button
           * @default false
@@ -8555,11 +8545,6 @@ declare namespace LocalJSX {
     }
     interface IxIconToggleButton {
         /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -10799,11 +10784,6 @@ declare namespace LocalJSX {
     }
     interface IxToggleButton {
         /**
-          * ARIA label that will be set on the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -11573,7 +11553,6 @@ declare namespace LocalJSX {
         "size": '24' | '16' | '12';
         "disabled": boolean;
         "loading": boolean;
-        "ariaLabelIconButton": string;
     }
     interface IxInputAttributes {
         "type": 'text' | 'email' | 'password' | 'tel' | 'url';
@@ -12059,7 +12038,6 @@ declare namespace LocalJSX {
         "icon": string;
         "iconRight": string;
         "pressed": boolean;
-        "ariaLabelButton": string;
     }
     interface IxTooltipAttributes {
         "for": ElementReference | ElementReference[];

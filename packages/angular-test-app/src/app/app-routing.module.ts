@@ -367,10 +367,6 @@ const routes: Routes = [
         component: ButtonSubtlePrimary,
       },
       {
-        path: 'button-group',
-        component: ButtonGroup,
-      },
-      {
         path: 'button-loading',
         component: ButtonLoading,
       },
@@ -389,10 +385,6 @@ const routes: Routes = [
       {
         path: 'button-with-link',
         component: ButtonWithLink,
-      },
-      {
-        path: 'buttons',
-        component: Buttons,
       },
       {
         path: 'button-danger-primary',

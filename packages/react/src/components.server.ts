@@ -1028,8 +1028,7 @@ export const IxIconToggleButton: StencilReactComponent<IxIconToggleButtonElement
         pressed: 'pressed',
         size: 'size',
         disabled: 'disabled',
-        loading: 'loading',
-        ariaLabelIconButton: 'aria-label-icon-button'
+        loading: 'loading'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxIconToggleButton as ReactWebComponent<IxIconToggleButtonElement, IxIconToggleButtonEvents>,
@@ -1986,8 +1985,7 @@ export const IxToggleButton: StencilReactComponent<IxToggleButtonElement, IxTogg
         loading: 'loading',
         icon: 'icon',
         iconRight: 'icon-right',
-        pressed: 'pressed',
-        ariaLabelButton: 'aria-label-button'
+        pressed: 'pressed'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     clientModule: clientComponents.IxToggleButton as ReactWebComponent<IxToggleButtonElement, IxToggleButtonEvents>,
