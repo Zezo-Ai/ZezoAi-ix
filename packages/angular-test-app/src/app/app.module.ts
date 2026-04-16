@@ -221,6 +221,7 @@ import SpinnerLarge from '../preview-examples/spinner-large';
 import SplitButton from '../preview-examples/split-button';
 import SplitButtonIcons from '../preview-examples/split-button-icons';
 import Tabs from '../preview-examples/tabs';
+import TabPanels from '../preview-examples/tab-panels';
 import TabsOverflow from '../preview-examples/tabs-overflow';
 import TabsRounded from '../preview-examples/tabs-rounded';
 import Textarea from '../preview-examples/textarea';
@@ -446,6 +447,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     SplitButton,
     TabsRounded,
     Tabs,
+    TabPanels,
     TabsOverflow,
     TextareaLegacyDisabled,
     Textarea,

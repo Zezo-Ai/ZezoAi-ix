@@ -46,6 +46,7 @@ export const testIds = [
   "tabs",
   "tabs-rounded",
   "tabs-overflow",
+  "tab-panels",
   "split-button",
   "split-button-icons",
   "spinner",

@@ -19,7 +19,6 @@ type IxPreviewRoutes = {
   'preview/modal-by-instance': AngularComponent;
   'preview/modal-by-template': AngularComponent;
   'preview/select-ng-model': AngularComponent;
-  'preview/tabs-overflow': AngularComponent;
   'preview/toggle-ng-model': AngularComponent;
 };
 
@@ -70,7 +69,9 @@ export const routePaths: IxPreviewRoutes = {
   'preview/button-subtle-tertiary': () =>
     import('../preview-examples/button-subtle-tertiary').then((m) => m.default),
   'preview/button-subtle-secondary': () =>
-    import('../preview-examples/button-subtle-secondary').then((m) => m.default),
+    import('../preview-examples/button-subtle-secondary').then(
+      (m) => m.default
+    ),
   'preview/button-group': () =>
     import('../preview-examples/button-group').then((m) => m.default),
   'preview/button-loading': () =>
@@ -150,7 +151,9 @@ export const routePaths: IxPreviewRoutes = {
   'preview/datetime-input': () =>
     import('../preview-examples/datetime-input').then((m) => m.default),
   'preview/datetime-input-disabled': () =>
-    import('../preview-examples/datetime-input-disabled').then((m) => m.default),
+    import('../preview-examples/datetime-input-disabled').then(
+      (m) => m.default
+    ),
   'preview/datetime-input-label': () =>
     import('../preview-examples/datetime-input-label').then((m) => m.default),
   'preview/datetime-input-min-max-date': () =>
@@ -466,6 +469,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/split-button-icons').then((m) => m.default),
   'preview/tabs': () =>
     import('../preview-examples/tabs').then((m) => m.default),
+  'preview/tab-panels': () =>
+    import('../preview-examples/tab-panels').then((m) => m.default),
   'preview/tabs-overflow': () =>
     import('../preview-examples/tabs-overflow').then((m) => m.default),
   'preview/tabs-rounded': () =>
@@ -583,7 +588,9 @@ export const routePaths: IxPreviewRoutes = {
   'preview/button-danger-tertiary': () =>
     import('../preview-examples/button-danger-tertiary').then((m) => m.default),
   'preview/button-danger-secondary': () =>
-    import('../preview-examples/button-danger-secondary').then((m) => m.default),
+    import('../preview-examples/button-danger-secondary').then(
+      (m) => m.default
+    ),
   'preview/date-input-min-max-date': () =>
     import('../preview-examples/date-input-min-max-date').then(
       (m) => m.default
