@@ -89,6 +89,8 @@ export const DIRECTIVES = [
   d.IxSpinner,
   d.IxSplitButton,
   d.IxTabItem,
+  d.IxTabPanel,
+  d.IxTabPanels,
   d.IxTabs,
   d.IxTextarea,
   d.IxTile,

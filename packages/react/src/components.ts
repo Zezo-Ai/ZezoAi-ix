@@ -95,6 +95,8 @@ import { IxSlider as IxSliderElement, defineCustomElement as defineIxSlider } fr
 import { IxSpinner as IxSpinnerElement, defineCustomElement as defineIxSpinner } from "@siemens/ix/components/ix-spinner.js";
 import { IxSplitButton as IxSplitButtonElement, defineCustomElement as defineIxSplitButton } from "@siemens/ix/components/ix-split-button.js";
 import { IxTabItem as IxTabItemElement, defineCustomElement as defineIxTabItem } from "@siemens/ix/components/ix-tab-item.js";
+import { IxTabPanel as IxTabPanelElement, defineCustomElement as defineIxTabPanel } from "@siemens/ix/components/ix-tab-panel.js";
+import { IxTabPanels as IxTabPanelsElement, defineCustomElement as defineIxTabPanels } from "@siemens/ix/components/ix-tab-panels.js";
 import { IxTabs as IxTabsElement, defineCustomElement as defineIxTabs } from "@siemens/ix/components/ix-tabs.js";
 import { IxTextarea as IxTextareaElement, defineCustomElement as defineIxTextarea } from "@siemens/ix/components/ix-textarea.js";
 import { IxTile as IxTileElement, defineCustomElement as defineIxTile } from "@siemens/ix/components/ix-tile.js";
@@ -1269,6 +1271,28 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
         onTabClose: 'tabClose'
     } as IxTabItemEvents,
     defineCustomElement: defineIxTabItem
+});
+
+export type IxTabPanelEvents = NonNullable<unknown>;
+
+export const IxTabPanel: StencilReactComponent<IxTabPanelElement, IxTabPanelEvents> = /*@__PURE__*/ createComponent<IxTabPanelElement, IxTabPanelEvents>({
+    tagName: 'ix-tab-panel',
+    elementClass: IxTabPanelElement,
+    // @ts-ignore - ignore potential React type mismatches between the Stencil Output Target and your project.
+    react: React,
+    events: {} as IxTabPanelEvents,
+    defineCustomElement: defineIxTabPanel
+});
+
+export type IxTabPanelsEvents = NonNullable<unknown>;
+
+export const IxTabPanels: StencilReactComponent<IxTabPanelsElement, IxTabPanelsEvents> = /*@__PURE__*/ createComponent<IxTabPanelsElement, IxTabPanelsEvents>({
+    tagName: 'ix-tab-panels',
+    elementClass: IxTabPanelsElement,
+    // @ts-ignore - ignore potential React type mismatches between the Stencil Output Target and your project.
+    react: React,
+    events: {} as IxTabPanelsEvents,
+    defineCustomElement: defineIxTabPanels
 });
 
 export type IxTabsEvents = {

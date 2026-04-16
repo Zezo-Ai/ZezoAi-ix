@@ -12,7 +12,6 @@ import { Context, ContextProvider, useContextProvider } from '../utils/context';
 import { panelsContext } from './tab-panels.context';
 import { queryElements } from '../utils/focus/focus-utilities';
 
-/** @internal */
 @Component({
   tag: 'ix-tab-panels',
   styleUrl: 'tab-panels.scss',
@@ -71,7 +70,6 @@ export class TabPanels {
   }
 
   private onPanelComponentsChange() {
-    console.log('panels update');
     this.checkPanelsVisibility();
 
     this.ariaControlIdMapping = {};

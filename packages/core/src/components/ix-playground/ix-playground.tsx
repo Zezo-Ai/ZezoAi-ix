@@ -29,7 +29,55 @@ export class IxPlayground {
   render() {
     return (
       <Host>
-        <ix-application>
+        <ix-tab-panels>
+          <ix-tabs
+            activeTabKey={this.activeTabKey}
+            layout="auto"
+            onTabChange={(event) => this.onTabChange(event)}
+          >
+            <ix-tab-item
+              icon={iconAbout}
+              tabKey="tab-1"
+              label="Tab 1"
+            ></ix-tab-item>
+            <ix-tab-item
+              icon={iconAdd}
+              tabKey="tab-2"
+              label="Tab 2"
+            ></ix-tab-item>
+            <ix-tab-item
+              icon={iconAdd}
+              tabKey="tab-3"
+              label="Tab 3"
+            ></ix-tab-item>
+            <ix-tab-item
+              tabKey="tab-4"
+              icon="star"
+              label="Tab 4"
+              closable
+              counter={12}
+              onTabClose={(event) => event.target.remove()}
+            ></ix-tab-item>
+            <ix-tab-item
+              icon={iconAdd}
+              tabKey="tab-5"
+              label="Tab 5"
+            ></ix-tab-item>
+            <ix-tab-item
+              icon={iconAdd}
+              tabKey="tab-6"
+              label="Tab 6"
+            ></ix-tab-item>
+          </ix-tabs>
+
+          <ix-tab-panel tabKey="tab-1">Content 1</ix-tab-panel>
+          <ix-tab-panel tabKey="tab-2">Content 2</ix-tab-panel>
+          <ix-tab-panel tabKey="tab-3">Content 3</ix-tab-panel>
+          <ix-tab-panel tabKey="tab-4">Content 4</ix-tab-panel>
+          <ix-tab-panel tabKey="tab-5">Content 5</ix-tab-panel>
+          <ix-tab-panel tabKey="tab-6">Content 6</ix-tab-panel>
+        </ix-tab-panels>
+        {/* <ix-application>
           <ix-application-header></ix-application-header>
           <ix-menu>
             <ix-menu-item label="About" icon={iconAbout}></ix-menu-item>
@@ -63,7 +111,7 @@ export class IxPlayground {
           </ix-menu>
           <ix-content>
             <h2>Testing</h2>
-            {/* <ix-tabs
+            <ix-tabs
               keyboardNavigation="manual"
               activeTabKey={this.activeTabKey}
               layout="auto"
@@ -85,33 +133,28 @@ export class IxPlayground {
               <ix-tab-item tabKey="tab-6" label="Tab 6"></ix-tab-item>
             </ix-tabs>
 
-            <ix-tabs activeTabKey={this.activeTabKey}>
-              <ix-tab-item icon={iconAbout} tabKey="tab-1"></ix-tab-item>
-              <ix-tab-item icon={iconAdd} tabKey="tab-2"></ix-tab-item>
-              <ix-tab-item icon={iconAdd} tabKey="tab-3"></ix-tab-item>
-              <ix-tab-item
-                tabKey="tab-4"
-                icon="star"
-                closable
-                counter={12}
-                onTabClose={(event) => event.target.remove()}
-              ></ix-tab-item>
-              <ix-tab-item icon={iconAdd} tabKey="tab-5"></ix-tab-item>
-              <ix-tab-item icon={iconAdd} tabKey="tab-6"></ix-tab-item>
-            </ix-tabs> */}
-
-            {/* <ix-tab-panels>
-              <ix-tabs activeTabKey="tab-2">
-                <ix-tab-item tabKey="tab-1" label="Tab 1"></ix-tab-item>
-                <ix-tab-item tabKey="tab-2" label="Tab 2"></ix-tab-item>
-                <ix-tab-item tabKey="tab-3" label="Tab 3"></ix-tab-item>
+            <ix-tab-panels>
+              <ix-tabs activeTabKey={this.activeTabKey}>
+                <ix-tab-item icon={iconAbout} tabKey="tab-1"></ix-tab-item>
+                <ix-tab-item icon={iconAdd} tabKey="tab-2"></ix-tab-item>
+                <ix-tab-item icon={iconAdd} tabKey="tab-3"></ix-tab-item>
+                <ix-tab-item
+                  tabKey="tab-4"
+                  icon="star"
+                  closable
+                  counter={12}
+                  onTabClose={(event) => event.target.remove()}
+                ></ix-tab-item>
+                <ix-tab-item icon={iconAdd} tabKey="tab-5"></ix-tab-item>
+                <ix-tab-item icon={iconAdd} tabKey="tab-6"></ix-tab-item>
               </ix-tabs>
+
               <ix-tab-panel tabKey="tab-1">Content 1</ix-tab-panel>
               <ix-tab-panel tabKey="tab-2">Content 2</ix-tab-panel>
               <ix-tab-panel tabKey="tab-3">Content 3</ix-tab-panel>
-            </ix-tab-panels> */}
+            </ix-tab-panels>
           </ix-content>
-        </ix-application>
+        </ix-application> */}
       </Host>
     );
   }

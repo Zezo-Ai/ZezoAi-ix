@@ -14,7 +14,6 @@ import {
 } from '../utils/context';
 import { panelsContext } from '../tab-panels/tab-panels.context';
 
-/** @internal */
 @Component({
   tag: 'ix-tab-panel',
   styleUrl: 'tab-panel.scss',
@@ -36,7 +35,6 @@ export class TabPanel {
       this.hostElement,
       panelsContext,
       (context) => {
-        console.log('Received context in tab panel:', context);
         if (context.tabs[this.tabKey]) {
           this.tabId = context.tabs[this.tabKey];
         }
