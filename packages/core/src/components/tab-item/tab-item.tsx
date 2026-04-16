@@ -120,7 +120,16 @@ export class TabItem
   }
 
   override render() {
-    const shouldRenderText = !this.rounded && this.label;
+    let variant: 'normal' | 'icon-only' | 'rounded' = 'normal';
+
+    if (this.rounded) {
+      variant = 'rounded';
+    } else if (this.icon || this.label === undefined) {
+      variant = 'icon-only';
+    } else {
+      variant = 'normal';
+    }
+
     return (
       <Host
         id={this.getHostElementId()}
@@ -151,26 +160,32 @@ export class TabItem
           }
         }}
       >
-        {this.icon && !this.rounded && (
-          <ix-icon name={this.icon} size="16" class={'tab-icon'}></ix-icon>
-        )}
-        {shouldRenderText && (
+        {variant === 'rounded' && (
           <div
             class={{
-              circle: this.rounded,
-              text: !this.rounded,
+              circle: true,
+            }}
+          >
+            {this.icon && <ix-icon name={this.icon} size="16"></ix-icon>}
+          </div>
+        )}
+        {this.icon && variant !== 'rounded' && (
+          <ix-icon name={this.icon} size="16" class={'tab-icon'}></ix-icon>
+        )}
+        {(variant === 'normal' || variant === 'icon-only') && (
+          <div
+            class={{
+              text: !!this.label,
               selected: this.selected,
               disabled: this.disabled,
             }}
           >
-            {this.icon && this.rounded && (
-              <ix-icon name={this.icon} size="16"></ix-icon>
-            )}
             {this.label}
             <slot></slot>
           </div>
         )}
-        {this.rounded && this.counter !== undefined && (
+
+        {variant === 'rounded' && this.counter !== undefined && (
           <div
             class={{
               counter: true,
@@ -181,12 +196,13 @@ export class TabItem
             {this.counter}
           </div>
         )}
-        {this.counter && (
+
+        {this.counter && variant !== 'rounded' && (
           <ix-pill variant="primary" outline class={'tab-counter'}>
             {this.counter}
           </ix-pill>
         )}
-        {this.closable && (
+        {this.closable && variant !== 'rounded' && (
           <ix-icon-button
             aria-label={this.ariaLabelCloseButton}
             class={'close-tab'}

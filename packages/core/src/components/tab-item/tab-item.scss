@@ -122,7 +122,9 @@
 }
 
 :host(.circle) {
-  height: 72px;
+  height: 4.5rem;
+  min-height: 4.5rem;
+  max-height: 4.5rem;
 }
 
 :host(.stretched) {
