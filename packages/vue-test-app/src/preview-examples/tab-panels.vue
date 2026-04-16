@@ -31,13 +31,13 @@ const setActiveTabKey = (event: CustomEvent<string | undefined>) => {
     </IxTabs>
 
     <IxTabPanel tabKey="tab-1">
-      <div v-if="activeTabKey === 'tab-1'">Content 1</div>
+      <div>Content 1</div>
     </IxTabPanel>
     <IxTabPanel tabKey="tab-2">
-      <div v-if="activeTabKey === 'tab-2'">Content 2</div>
+      <div>Content 2</div>
     </IxTabPanel>
     <IxTabPanel tabKey="tab-3">
-      <div v-if="activeTabKey === 'tab-3'">Content 3</div>
+      <div>Content 3</div>
     </IxTabPanel>
   </IxTabPanels>
 </template>

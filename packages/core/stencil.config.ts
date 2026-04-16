@@ -88,7 +88,12 @@ export const config: Config = {
       includeImportCustomElements: true,
       includePolyfills: false,
       includeDefineCustomElements: false,
-      excludeComponents: [...excludeDevelopmentComponents, 'ix-icon'],
+      excludeComponents: [
+        ...excludeDevelopmentComponents,
+        'ix-icon',
+        'ix-tab-panel',
+        'ix-tab-panels',
+      ],
       componentModels: [
         {
           elements: [
