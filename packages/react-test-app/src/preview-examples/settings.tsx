@@ -32,8 +32,14 @@ export default () => {
       </IxApplicationHeader>
       <IxMenu ref={ref}>
         <IxMenuSettings>
-          <IxMenuSettingsItem label="Example Setting 1"></IxMenuSettingsItem>
-          <IxMenuSettingsItem label="Example Setting 2"></IxMenuSettingsItem>
+          <IxMenuSettingsItem
+            tabKey="tab-1"
+            label="Example Setting 1"
+          ></IxMenuSettingsItem>
+          <IxMenuSettingsItem
+            tabKey="tab-2"
+            label="Example Setting 2"
+          ></IxMenuSettingsItem>
         </IxMenuSettings>
       </IxMenu>
     </IxApplication>

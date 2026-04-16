@@ -24,6 +24,8 @@ const excludeDevelopmentComponents = ['ix-playground'];
 function getAngularConfig() {
   const excludeComponents = [
     ...excludeDevelopmentComponents,
+    'ix-tab-panel',
+    'ix-tab-panels',
     'ix-tree',
     'ix-icon',
   ];

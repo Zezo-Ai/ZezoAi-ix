@@ -199,6 +199,7 @@ import Spinner from './preview-examples/spinner.vue';
 import SplitButtonIcons from './preview-examples/split-button-icons.vue';
 import SplitButton from './preview-examples/split-button.vue';
 import TabsRounded from './preview-examples/tabs-rounded.vue';
+import TabPanels from './preview-examples/tab-panels.vue';
 import Tabs from './preview-examples/tabs.vue';
 import TabsOverflow from './preview-examples/tabs-overflow.vue';
 import TextareaFieldDisabled from './preview-examples/textarea-disabled.vue';
@@ -254,6 +255,7 @@ type IxPreviewRoutes = {
   [K in (typeof exampleNames)[number] as `/preview/${K}`]: any;
 } & {
   '/preview/tabs-overflow': any;
+  '/preview/tab-panels': any;
 };
 
 const routes: IxPreviewRoutes = {
@@ -358,9 +360,9 @@ const routes: IxPreviewRoutes = {
   '/preview/group-header-suppressed': GroupHeaderSuppressed,
   '/preview/icon-toggle-button-tertiary': IconToggleButtonTertiary,
   '/preview/icon-toggle-button-subtle-tertiary': IconToggleButtonSubtleTertiary,
-  '/preview/icon-toggle-button-subtle-secondary': IconToggleButtonSubtleSecondary,
-  '/preview/icon-toggle-button-subtle-primary':
-    IconToggleButtonSubtlePrimary,
+  '/preview/icon-toggle-button-subtle-secondary':
+    IconToggleButtonSubtleSecondary,
+  '/preview/icon-toggle-button-subtle-primary': IconToggleButtonSubtlePrimary,
   '/preview/icon-toggle-button-secondary': IconToggleButtonSecondary,
   '/preview/input-legacy-disabled': InputLegacyDisabled,
   '/preview/input-legacy-readonly': InputLegacyReadonly,
@@ -385,6 +387,7 @@ const routes: IxPreviewRoutes = {
   '/preview/split-button': SplitButton,
   '/preview/split-button-icons': SplitButtonIcons,
   '/preview/tabs': Tabs,
+  '/preview/tab-panels': TabPanels,
   '/preview/tabs-overflow': TabsOverflow,
   '/preview/textarea-legacy': TextareaLegacy,
   '/preview/textarea-legacy-disabled': TextareaLegacyDisabled,

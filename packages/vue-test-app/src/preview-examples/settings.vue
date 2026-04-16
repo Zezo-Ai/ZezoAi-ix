@@ -33,8 +33,14 @@ onMounted(async () => {
     </IxApplicationHeader>
     <IxMenu ref="menu">
       <IxMenuSettings>
-        <IxMenuSettingsItem label="Example Setting 1"></IxMenuSettingsItem>
-        <IxMenuSettingsItem label="Example Setting 2"></IxMenuSettingsItem>
+        <IxMenuSettingsItem
+          tabKey="tab-1"
+          label="Example Setting 1"
+        ></IxMenuSettingsItem>
+        <IxMenuSettingsItem
+          tabKey="tab-2"
+          label="Example Setting 2"
+        ></IxMenuSettingsItem>
       </IxMenuSettings>
     </IxMenu>
   </IxApplication>

@@ -10,6 +10,7 @@
 export * from './components';
 export * from './internal-components';
 export { IxIcon } from './ix-icon';
+export { IxTabPanel, IxTabPanels } from './tab-panels';
 export { IxTree } from './tree';
 export * from './providers/modal';
 export * from './providers/toast';

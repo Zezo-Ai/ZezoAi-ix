@@ -10,6 +10,7 @@
 export * from '@siemens/ix';
 export * from './components';
 export { IxIcon } from './ix-icon';
+export { IxTabPanel, IxTabPanels } from './tab-panels';
 export { IxTree } from './tree';
 export {
   ModalService,

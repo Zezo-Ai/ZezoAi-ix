@@ -21,6 +21,7 @@ import { IxIcon } from './ix-icon';
 import { ModalService } from './providers/modal';
 import { ToastService } from './providers/toast';
 import { MessageService } from './providers/message';
+import * as tabPanels from './tab-panels';
 import * as tree from './tree';
 import { IxDropdownTriggerDirective } from './directives/dropdown-trigger';
 import { IxSelectValueAccessorDirective } from './directives/control-value-accessors/select-value-accessor';
@@ -32,6 +33,8 @@ import { IxDatetimeValueAccessorDirective } from './directives/control-value-acc
 
 const DECLARATIONS = [
   ...DIRECTIVES,
+  tabPanels.IxTabPanel,
+  tabPanels.IxTabPanels,
   tree.IxTree,
   IxIcon,
   IxDropdownTriggerDirective,

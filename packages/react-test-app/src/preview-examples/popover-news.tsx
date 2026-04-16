@@ -24,7 +24,9 @@ export default () => {
       </IxApplicationHeader>
       <IxMenu>
         <IxMenuAbout>
-          <IxMenuAboutItem label="Example"> </IxMenuAboutItem>
+          <IxMenuAboutItem tabKey="tab-1" label="Example">
+            {' '}
+          </IxMenuAboutItem>
         </IxMenuAbout>
         <IxMenuAboutNews label="Test" show about-item-label="Example">
           Test

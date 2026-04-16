@@ -2618,51 +2618,6 @@ export declare interface IxTabItem extends Components.IxTabItem {
 
 
 @ProxyCmp({
-  inputs: ['tabKey']
-})
-@Component({
-  selector: 'ix-tab-panel',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-content></ng-content>',
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: [{ name: 'tabKey', required: true }],
-  standalone: false
-})
-export class IxTabPanel {
-  protected el: HTMLIxTabPanelElement;
-  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
-    c.detach();
-    this.el = r.nativeElement;
-  }
-}
-
-
-export declare interface IxTabPanel extends Components.IxTabPanel {}
-
-
-@ProxyCmp({
-})
-@Component({
-  selector: 'ix-tab-panels',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-content></ng-content>',
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: [],
-  standalone: false
-})
-export class IxTabPanels {
-  protected el: HTMLIxTabPanelsElement;
-  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
-    c.detach();
-    this.el = r.nativeElement;
-  }
-}
-
-
-export declare interface IxTabPanels extends Components.IxTabPanels {}
-
-
-@ProxyCmp({
   inputs: ['activeTabKey', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small']
 })
 @Component({
