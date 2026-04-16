@@ -86,7 +86,9 @@ export const DecorativePill: Story = {
  */
 export const StatusRole: Story = {
   render: () => {
-    return html`<ix-pill role="status" variant="success">System Online</ix-pill>`;
+    return html`<ix-pill role="status" variant="success"
+      >System Online</ix-pill
+    >`;
   },
 };
 
@@ -121,16 +123,17 @@ export const DecorativeIcon: Story = {
  */
 export const InformationalIcon: Story = {
   render: () => {
-    return html`<ix-pill icon="warning" aria-label-icon="Warning" variant="warning"
+    return html`<ix-pill
+      icon="warning"
+      aria-label-icon="Warning"
+      variant="warning"
       >Check Required</ix-pill
     >`;
   },
   parameters: {
     a11y: {
       config: {
-        rules: [
-          { id: 'aria-valid-attr', enabled: false },
-        ],
+        rules: [{ id: 'aria-valid-attr', enabled: false }],
       },
     },
   },
@@ -152,9 +155,7 @@ export const IconOnlyWithTooltip: Story = {
   parameters: {
     a11y: {
       config: {
-        rules: [
-          { id: 'aria-tooltip-name', enabled: false },
-        ],
+        rules: [{ id: 'aria-tooltip-name', enabled: false }],
       },
     },
   },
@@ -167,7 +168,7 @@ export const IconOnlyWithTooltip: Story = {
 export const WithDescription: Story = {
   render: () => {
     return html`
-      <div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
         <ix-pill
           aria-label="System status"
           aria-describedby="status-desc"
@@ -175,12 +176,9 @@ export const WithDescription: Story = {
           variant="success"
           >Online</ix-pill
         >
-        <span
-          id="status-desc"
-          style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;"
-        >
+        <p id="status-desc" style="margin: 0;">
           System has been operational for 48 hours without interruption.
-        </span>
+        </p>
       </div>
     `;
   },
