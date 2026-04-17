@@ -460,10 +460,8 @@ regressionTest(
     await expect(tabs.nth(1)).not.toHaveAttribute('disabled');
     await expect(tabs.nth(1)).not.toHaveClass(/\bdisabled\b/);
 
-    // Tab-1 is disabled and already selected via active-tab-key
     await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
 
-    // Switch to second (non-disabled) tab
     await tabs.nth(1).click();
     await expect(tabs.nth(0)).not.toHaveClass(/\bselected\b/);
     await expect(tabs.nth(1)).toHaveClass(/\bselected\b/);

@@ -7,21 +7,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { iconClose } from '@siemens/ix-icons/icons';
 import {
   Component,
   Element,
   Event,
   EventEmitter,
-  forceUpdate,
   h,
+  Host,
   Prop,
-  State,
 } from '@stencil/core';
-import { MenuTabs } from '../utils/menu-tabs/menu-tabs-fc';
-import {
-  CustomCloseEvent,
-  initialize,
-} from '../utils/menu-tabs/menu-tabs-utils';
+import { CustomCloseEvent } from '../utils/menu-tabs/menu-tabs-utils';
 
 @Component({
   tag: 'ix-menu-settings',
@@ -29,12 +25,13 @@ import {
   shadow: true,
 })
 export class MenuSettings {
-  @Element() el!: HTMLIxMenuSettingsElement;
+  @Element() hostElement!: HTMLIxMenuSettingsElement;
 
   /**
    * Active tab
+   *
+   * @since 5.0.0
    */
-  // eslint-disable-next-line @stencil-community/strict-mutable
   @Prop({ mutable: true }) activeTabKey?: string;
 
   /**
@@ -61,17 +58,71 @@ export class MenuSettings {
    */
   @Event() close!: EventEmitter<CustomCloseEvent>;
 
-  @State() items!: HTMLIxMenuSettingsItemElement[];
+  private itemsObserver?: MutationObserver;
 
-  componentWillLoad() {
-    initialize(this);
+  private get items() {
+    return Array.from(
+      this.hostElement.querySelectorAll('ix-menu-settings-item')
+    );
   }
 
-  componentDidLoad() {
-    forceUpdate(this.el);
+  componentWillLoad() {
+    this.itemsObserver = new MutationObserver(() => this.onItemsChange());
+
+    this.itemsObserver.observe(this.hostElement, {
+      childList: true,
+      subtree: true,
+    });
+    this.onItemsChange();
+  }
+
+  disconnectedCallback() {
+    this.itemsObserver?.disconnect();
+  }
+
+  private onItemsChange() {
+    if (this.activeTabKey === undefined && this.items.length > 0) {
+      this.activeTabKey = this.items[0].tabKey;
+    }
   }
 
   render() {
-    return <MenuTabs context={this} />;
+    return (
+      <Host
+        slot={'ix-menu-settings'}
+        class={{
+          show: this.show,
+        }}
+      >
+        <div class={'settings-header'}>
+          <h2 class="text-h2">{this.label}</h2>
+          <ix-icon-button
+            variant="tertiary"
+            size="24"
+            icon={iconClose}
+            iconColor="color-soft-text"
+            aria-label={this.ariaLabelCloseButton}
+            onClick={(e) =>
+              this.close.emit({
+                name: 'ix-menu-settings',
+                nativeEvent: e,
+              })
+            }
+          ></ix-icon-button>
+        </div>
+        <ix-tab-panels>
+          <ix-tabs activeTabKey={this.activeTabKey}>
+            {this.items.map(({ label, tabKey }) => (
+              <ix-tab-item
+                tabKey={tabKey}
+                selected={tabKey === this.activeTabKey}
+                label={label}
+              ></ix-tab-item>
+            ))}
+          </ix-tabs>
+          <slot></slot>
+        </ix-tab-panels>
+      </Host>
+    );
   }
 }

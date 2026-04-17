@@ -49,6 +49,7 @@ export class MenuAboutNews extends Mixin(...DefaultMixins) {
 
   /**
    * Defines which tab should be active, used when the about news is used in combination with ix-menu-about
+   *
    * @since 5.0.0
    */
   @Prop() activeAboutTabKey?: string;

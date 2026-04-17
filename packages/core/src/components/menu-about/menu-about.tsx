@@ -29,8 +29,9 @@ export class MenuAbout {
 
   /**
    * Active tab
+   *
+   * @since 5.0.0
    */
-
   @Prop({ mutable: true }) activeTabKey?: string;
 
   /**

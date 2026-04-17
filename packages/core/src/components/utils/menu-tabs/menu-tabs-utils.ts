@@ -7,61 +7,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MenuAbout } from '../../menu-about/menu-about';
-import { MenuSettings } from '../../menu-settings/menu-settings';
-
-function getItems(context: MenuSettings): HTMLIxMenuSettingsItemElement[] {
-  return Array.from(
-    context.el.querySelectorAll(
-      context instanceof MenuSettings
-        ? 'ix-menu-settings-item'
-        : 'ix-menu-about-item'
-    )
-  );
-}
-
-export function setTab(context: MenuSettings | MenuAbout, label: string) {
-  if (context.activeTabKey === label) {
-    return;
-  }
-  const { defaultPrevented } = context.tabChange.emit(label);
-
-  if (defaultPrevented) {
-    return;
-  }
-  context.activeTabKey = label;
-}
-
-export function syncTabDisplay(context: MenuSettings, label: string) {
-  context.items.forEach((i) => {
-    i.style.display = 'none';
-    if (i.label === label) {
-      i.style.display = 'block';
-    }
-  });
-}
-
-export function initialize(context: MenuSettings) {
-  context.items = getItems(context);
-
-  if (context.items.length) {
-    const selectedLabel = context.activeTabKey || context.items[0].tabKey;
-    if (selectedLabel) {
-      setTab(context, selectedLabel);
-    }
-  }
-
-  context.items.forEach((item) => {
-    item.addEventListener('labelChange', (e: CustomEvent) => {
-      context.items = getItems(context);
-
-      if (e.detail.oldLabel === context.activeTabKey) {
-        context.activeTabKey = e.detail.newLabel;
-      }
-    });
-  });
-}
-
 export interface CustomLabelChangeEvent {
   name: string;
   oldLabel: string;
