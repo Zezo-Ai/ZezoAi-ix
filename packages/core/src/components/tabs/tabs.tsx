@@ -101,6 +101,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
     tabKey: string;
     label: string;
     icon?: string;
+    disabled?: boolean;
   }[] = [];
 
   private resizeObserver?: ResizeObserver;
@@ -203,6 +204,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
       tabKey: item.tabKey,
       label: item.label || item.textContent || '',
       icon: item.icon,
+      disabled: item.disabled,
     }));
 
     this.scheduleMeasurements();
@@ -296,7 +298,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   }
 
   private onTabsNavigate(event: KeyboardEvent) {
-    const tabs = this.tabs;
+    const tabs = this.tabs.filter((tab) => !tab.disabled);
     let currentIndex = tabs.findIndex((tab) => tab.selected);
 
     if (this.keyboardNavigation === 'manual') {
@@ -389,6 +391,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
                 checked={item.tabKey === this.activeTabKey}
                 icon={item.icon}
                 label={item.label}
+                disabled={item.disabled}
                 onClick={() => (this.activeTabKey = item.tabKey)}
               ></ix-dropdown-item>
             ))}

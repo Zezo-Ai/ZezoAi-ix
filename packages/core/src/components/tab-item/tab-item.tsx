@@ -135,7 +135,7 @@ export class TabItem
         id={this.getHostElementId()}
         role="tab"
         aria-selected={a11yBoolean(this.selected)}
-        tabIndex={this.selected ? 0 : -1}
+        tabIndex={this.selected && !this.disabled ? 0 : -1}
         class={{
           selected: this.selected,
           disabled: this.disabled,

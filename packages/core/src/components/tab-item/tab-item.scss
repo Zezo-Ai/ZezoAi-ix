@@ -156,6 +156,7 @@
   cursor: default;
   color: var(--theme-tab--color--disabled);
   background-color: var(--theme-tab--background--disabled);
+  pointer-events: none;
 
   &::after {
     background-color: var(--theme-tab-indicator--background--disabled);
