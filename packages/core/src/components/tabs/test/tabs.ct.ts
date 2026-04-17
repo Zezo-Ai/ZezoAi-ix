@@ -9,17 +9,32 @@
 import { expect } from '@playwright/test';
 import { regressionTest } from '@utils/test';
 
-regressionTest('accessibility', async ({ mount, makeAxeBuilder }) => {
-  await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+regressionTest.describe('accessibility', () => {
+  regressionTest('default', async ({ mount, makeAxeBuilder }) => {
+    await mount(`
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
 
-  const accessibilityScanResults = await makeAxeBuilder().analyze();
-  expect(accessibilityScanResults.violations).toEqual([]);
+    const accessibilityScanResults = await makeAxeBuilder().analyze();
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  regressionTest('closable tab', async ({ mount, makeAxeBuilder }) => {
+    await mount(`
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1" label="Item 1<">/ix-tab-item>
+      <ix-tab-item tab-key="tab-2" closable label="Item 2"></ix-tab-item>
+      <ix-tab-item tab-key="tab-3" label="Item 3"></ix-tab-item>
+    </ix-tabs>
+  `);
+
+    const accessibilityScanResults = await makeAxeBuilder().analyze();
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
 });
 
 regressionTest('renders', async ({ mount, page }) => {
