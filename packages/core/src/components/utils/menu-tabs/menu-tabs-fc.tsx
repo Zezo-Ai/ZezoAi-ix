@@ -20,7 +20,7 @@ const getTabItems = (context: MenuSettings) => {
     return (
       <ix-tab-item
         tabKey={tabKey}
-        selected={label === context.activeTabKey}
+        selected={tabKey === context.activeTabKey}
         label={label}
       ></ix-tab-item>
     );

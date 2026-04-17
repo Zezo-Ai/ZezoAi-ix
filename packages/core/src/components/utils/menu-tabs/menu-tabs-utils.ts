@@ -45,7 +45,7 @@ export function initialize(context: MenuSettings) {
   context.items = getItems(context);
 
   if (context.items.length) {
-    const selectedLabel = context.activeTabKey || context.items[0].label;
+    const selectedLabel = context.activeTabKey || context.items[0].tabKey;
     if (selectedLabel) {
       setTab(context, selectedLabel);
     }

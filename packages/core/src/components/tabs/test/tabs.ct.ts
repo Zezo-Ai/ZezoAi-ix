@@ -24,10 +24,10 @@ regressionTest('accessibility', async ({ mount, makeAxeBuilder }) => {
 
 regressionTest('renders', async ({ mount, page }) => {
   await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
   const tabs = page.locator('ix-tabs');
@@ -39,10 +39,10 @@ regressionTest('renders', async ({ mount, page }) => {
 
 regressionTest('should change tab', async ({ mount, page }) => {
   await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
   const tabs = page.locator('ix-tabs');
@@ -58,10 +58,10 @@ regressionTest(
   'should not change tab by tab click event',
   async ({ mount, page }) => {
     await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
     const tabs = page.locator('ix-tabs');
@@ -86,10 +86,10 @@ regressionTest(
   'should not change tab by native click event on prevent default',
   async ({ mount, page }) => {
     await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
     const tabs = page.locator('ix-tabs');
@@ -122,10 +122,10 @@ regressionTest(
   'should not change tab by tabs event',
   async ({ mount, page }) => {
     await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
   `);
     const tabs = page.locator('ix-tabs');
@@ -133,7 +133,7 @@ regressionTest(
     const lastTab = page.locator('ix-tab-item').nth(2);
 
     tabs.evaluate((tabElement) => {
-      tabElement.addEventListener('selectedChange', (event) =>
+      tabElement.addEventListener('tabChange', (event) =>
         event.preventDefault()
       );
     });
@@ -148,32 +148,38 @@ regressionTest(
 
 regressionTest('should update layout on resize', async ({ mount, page }) => {
   await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
     </ix-tabs>
     `);
   const tabs = page.locator('ix-tabs');
+
   await page.setViewportSize({ width: 200, height: 100 });
-  const arrowNext = tabs.locator('.arrow.right');
-  await expect(arrowNext).toBeVisible();
+
+  await expect(tabs.locator('.overflow-shadow-container')).toHaveClass(
+    /overflow-shadow(?!-)/
+  );
 
   await page.setViewportSize({ width: 1000, height: 100 });
-  await expect(arrowNext).not.toBeVisible();
+
+  await expect(tabs.locator('.overflow-shadow-container')).not.toHaveClass(
+    /overflow-shadow(?!-)/
+  );
 });
 
 regressionTest(
   'should scroll selected tab into view',
   async ({ mount, page }) => {
     await mount(`
-    <ix-tabs>
-      <ix-tab-item>Item 1</ix-tab-item>
-      <ix-tab-item>Item 2</ix-tab-item>
-      <ix-tab-item>Item 3</ix-tab-item>
-      <ix-tab-item>Item 4</ix-tab-item>
-      <ix-tab-item>Item 5</ix-tab-item>
-      <ix-tab-item>Item 6</ix-tab-item>
+    <ix-tabs active-tab-key="tab-1">
+      <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+      <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
+      <ix-tab-item tab-key="tab-3">Item 3</ix-tab-item>
+      <ix-tab-item tab-key="tab-4">Item 4</ix-tab-item>
+      <ix-tab-item tab-key="tab-5">Item 5</ix-tab-item>
+      <ix-tab-item tab-key="tab-6">Item 6</ix-tab-item>
     </ix-tabs>
   `);
     await page.setViewportSize({ width: 300, height: 100 });
@@ -193,16 +199,16 @@ regressionTest(
     await mount(`
       <div style="width: 350px; border: 1px solid #ccc; padding: 10px;">
         <ix-tabs style="width: 100%;">
-          <ix-tab-item style="min-width: 100px;">Item 1</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 2</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 3</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 4</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 5</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 6</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 7</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 8</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 9</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;">Item 10</ix-tab-item>
+          <ix-tab-item tab-key="tab-1" style="min-width: 100px;">Item 1</ix-tab-item>
+          <ix-tab-item tab-key="tab-2" style="min-width: 100px;">Item 2</ix-tab-item>
+          <ix-tab-item tab-key="tab-3" style="min-width: 100px;">Item 3</ix-tab-item>
+          <ix-tab-item tab-key="tab-4" style="min-width: 100px;">Item 4</ix-tab-item>
+          <ix-tab-item tab-key="tab-5" style="min-width: 100px;">Item 5</ix-tab-item>
+          <ix-tab-item tab-key="tab-6" style="min-width: 100px;">Item 6</ix-tab-item>
+          <ix-tab-item tab-key="tab-7" style="min-width: 100px;">Item 7</ix-tab-item>
+          <ix-tab-item tab-key="tab-8" style="min-width: 100px;">Item 8</ix-tab-item>
+          <ix-tab-item tab-key="tab-9" style="min-width: 100px;">Item 9</ix-tab-item>
+          <ix-tab-item tab-key="tab-10" style="min-width: 100px;">Item 10</ix-tab-item>
         </ix-tabs>
       </div>
     `);
@@ -223,7 +229,7 @@ regressionTest(
       clickedTab.boundingBox(),
       firstTab.boundingBox(),
       tabs.evaluate((el) => {
-        const container = el.shadowRoot?.querySelector('.tab-items');
+        const container = el.shadowRoot?.querySelector('.tabs');
         return container?.getBoundingClientRect();
       }),
     ]);
@@ -252,16 +258,16 @@ regressionTest(
     await mount(`
       <div style="width: 350px; border: 1px solid #ccc; padding: 10px;">
         <ix-tabs style="width: 100%;">
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-1">Item 1</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-2">Item 2</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-3">Item 3</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-4">Item 4</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-5">Item 5</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-6">Item 6</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-7">Item 7</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-8">Item 8</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-9">Item 9</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tabKey="tab-10">Item 10</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-1">Item 1</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-2">Item 2</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-3">Item 3</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-4">Item 4</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-5">Item 5</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-6">Item 6</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-7">Item 7</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-8">Item 8</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-9">Item 9</ix-tab-item>
+          <ix-tab-item style="min-width: 100px;" tab-key="tab-10">Item 10</ix-tab-item>
         </ix-tabs>
       </div>
     `);
@@ -293,8 +299,7 @@ regressionTest(
 
           return Math.round(
             Math.abs(
-              indicatorOffset -
-                (selectedTabRect.left - tabsContainerRect.left)
+              indicatorOffset - (selectedTabRect.left - tabsContainerRect.left)
             )
           );
         });
@@ -307,17 +312,17 @@ regressionTest(
   'dynamic tabs - should preserve default classes when adding custom classes during re-render',
   async ({ mount, page }) => {
     await mount(`
-      <ix-tabs>
-        <ix-tab-item>Item 1</ix-tab-item>
-        <ix-tab-item>Item 2</ix-tab-item>
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
       </ix-tabs>
     `);
 
     await page.evaluate(() => {
       const tabsElement = document.querySelector('ix-tabs');
       tabsElement!.innerHTML = `
-        <ix-tab-item class="new">Item 1</ix-tab-item>
-        <ix-tab-item class="new">Item 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1" class="new">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2" class="new">Item 2</ix-tab-item>
       `;
     });
 
@@ -331,6 +336,8 @@ regressionTest(
         new RegExp(String.raw`\b${className}\b`)
       );
     }
+
+    await tabs.nth(0).click();
     await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
 
     await tabs.nth(1).click();
@@ -344,16 +351,16 @@ regressionTest(
   async ({ mount, page }) => {
     await mount(`
       <ix-tabs placement="top">
-        <ix-tab-item>Item 1</ix-tab-item>
-        <ix-tab-item>Item 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
       </ix-tabs>
     `);
 
     await page.evaluate(() => {
       const tabsElement = document.querySelector('ix-tabs');
       tabsElement!.innerHTML = `
-        <ix-tab-item class="new">Item 1</ix-tab-item>
-        <ix-tab-item class="new">Item 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1" class="new">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2" class="new">Item 2</ix-tab-item>
       `;
     });
 
@@ -375,16 +382,16 @@ regressionTest(
   async ({ mount, page }) => {
     await mount(`
       <ix-tabs layout="stretched">
-        <ix-tab-item>Item 1</ix-tab-item>
-        <ix-tab-item>Item 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Item 2</ix-tab-item>
       </ix-tabs>
     `);
 
     await page.evaluate(() => {
       const tabsElement = document.querySelector('ix-tabs');
       tabsElement!.innerHTML = `
-        <ix-tab-item class="new">Item 1</ix-tab-item>
-        <ix-tab-item class="new">Item 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1" class="new">Item 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2" class="new">Item 2</ix-tab-item>
       `;
     });
 
@@ -405,10 +412,10 @@ regressionTest(
   'dynamic tabs - should preserve classes and reselect when reducing tab count with new class',
   async ({ mount, page }) => {
     await mount(`
-      <ix-tabs placement="bottom" layout="stretched">
-        <ix-tab-item>Tab 1</ix-tab-item>
-        <ix-tab-item>Tab 2</ix-tab-item>
-        <ix-tab-item>Tab 3</ix-tab-item>
+      <ix-tabs placement="bottom" layout="stretched" active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-3">Tab 3</ix-tab-item>
       </ix-tabs>
     `);
 
@@ -419,12 +426,15 @@ regressionTest(
     await page.evaluate(() => {
       const tabsElement = document.querySelector('ix-tabs');
       tabsElement!.innerHTML = `
-        <ix-tab-item class="new">Tab 1</ix-tab-item>
-        <ix-tab-item class="new">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1" class="new">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2" class="new">Tab 2</ix-tab-item>
       `;
     });
 
     const tabs = page.locator('ix-tab-item');
+
+    // After innerHTML replacement, click the last remaining tab to select it
+    await tabs.nth(1).click();
 
     for (const className of [
       'new',
@@ -444,17 +454,17 @@ regressionTest(
   'dynamic tabs - should handle disabled state and class changes',
   async ({ mount, page }) => {
     await mount(`
-      <ix-tabs>
-        <ix-tab-item>Tab 1</ix-tab-item>
-        <ix-tab-item>Tab 2</ix-tab-item>
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
       </ix-tabs>
     `);
 
     await page.evaluate(() => {
       const tabsElement = document.querySelector('ix-tabs');
       tabsElement!.innerHTML = `
-        <ix-tab-item disabled class="new">Tab 1</ix-tab-item>
-        <ix-tab-item class="new">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-1" disabled class="new">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2" class="new">Tab 2</ix-tab-item>
       `;
     });
 
@@ -471,11 +481,13 @@ regressionTest(
 
     await expect(tabs.nth(0)).toHaveAttribute('disabled', '');
     await expect(tabs.nth(0)).toHaveClass(/\bdisabled\b/);
-    await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
 
     await expect(tabs.nth(1)).not.toHaveAttribute('disabled');
     await expect(tabs.nth(1)).not.toHaveClass(/\bdisabled\b/);
-    await expect(tabs.nth(1)).not.toHaveClass(/\bselected\b/);
+
+    // Select first tab, then switch to second
+    await tabs.nth(0).click();
+    await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
 
     await tabs.nth(1).click();
     await expect(tabs.nth(0)).not.toHaveClass(/\bselected\b/);
@@ -483,47 +495,177 @@ regressionTest(
   }
 );
 
-regressionTest('tab re-selection algorithm', async ({ mount, page }) => {
-  await mount(`
-      <ix-tabs>
-        <ix-tab-item>Tab 1</ix-tab-item>
-        <ix-tab-item>Tab 2</ix-tab-item>
-        <ix-tab-item>Tab 3</ix-tab-item>
-        <ix-tab-item>Tab 4</ix-tab-item>
-        <ix-tab-item>Tab 5</ix-tab-item>
+regressionTest(
+  'should set active tab via activeTabKey prop',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-2">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
       </ix-tabs>
     `);
 
-  await page.locator('ix-tab-item').nth(2).click();
+    const secondTab = page.locator('ix-tab-item').nth(1);
+    await expect(secondTab).toHaveClass(/\bselected\b/);
+    await expect(page.locator('ix-tab-item').nth(0)).not.toHaveClass(
+      /\bselected\b/
+    );
+  }
+);
 
+regressionTest(
+  'should emit tabChange event with tabKey on tab click',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    const tabs = page.locator('ix-tabs');
+
+    const eventPromise = tabs.evaluate((e) => {
+      return new Promise<string>((resolve) => {
+        e.addEventListener('tabChange', (event: any) => resolve(event.detail));
+      });
+    });
+
+    await page.locator('ix-tab-item').nth(2).click();
+
+    const detail = await eventPromise;
+    expect(detail).toBe('tab-3');
+  }
+);
+
+regressionTest(
+  'should update active tab when activeTabKey changes programmatically',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    await expect(page.locator('ix-tab-item').nth(0)).toHaveClass(
+      /\bselected\b/
+    );
+
+    await page.evaluate(() => {
+      document.querySelector('ix-tabs')!.activeTabKey = 'tab-3';
+    });
+
+    await expect(page.locator('ix-tab-item').nth(2)).toHaveClass(
+      /\bselected\b/
+    );
+    await expect(page.locator('ix-tab-item').nth(0)).not.toHaveClass(
+      /\bselected\b/
+    );
+  }
+);
+
+regressionTest(
+  'should render label prop in tab item',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs>
+        <ix-tab-item tab-key="tab-1" label="First Label"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Second Label"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    await expect(page.locator('ix-tab-item').nth(0)).toContainText(
+      'First Label'
+    );
+    await expect(page.locator('ix-tab-item').nth(1)).toContainText(
+      'Second Label'
+    );
+  }
+);
+
+regressionTest(
+  'should emit tabClose event when closable tab close button is clicked',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1" closable></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    const tabs = page.locator('ix-tabs');
+
+    const eventPromise = tabs.evaluate((e) => {
+      return new Promise<string>((resolve) => {
+        e.addEventListener('tabClose', (event: any) =>
+          resolve(event.detail.tabKey)
+        );
+      });
+    });
+
+    const closeButton = page
+      .locator('ix-tab-item')
+      .nth(0)
+      .locator('ix-icon-button');
+    await closeButton.click();
+
+    const closedTabKey = await eventPromise;
+    expect(closedTabKey).toBe('tab-1');
+  }
+);
+
+regressionTest('tab re-selection algorithm', async ({ mount, page }) => {
+  await mount(`
+      <ix-tabs active-tab-key="tab-3">
+        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-3">Tab 3</ix-tab-item>
+        <ix-tab-item tab-key="tab-4">Tab 4</ix-tab-item>
+        <ix-tab-item tab-key="tab-5">Tab 5</ix-tab-item>
+      </ix-tabs>
+    `);
+
+  await expect(page.locator('ix-tab-item').nth(2)).toHaveClass(/\bselected\b/);
+
+  // Remove Tab 3, select Tab 4 as replacement
   await page.evaluate(() => {
-    document.querySelector('ix-tabs')!.innerHTML = `
-        <ix-tab-item>Tab 1</ix-tab-item>
-        <ix-tab-item>Tab 2</ix-tab-item>
-        <ix-tab-item>Tab 4</ix-tab-item>
-        <ix-tab-item>Tab 5</ix-tab-item>
+    const tabs = document.querySelector('ix-tabs')!;
+    tabs.innerHTML = `
+        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-4">Tab 4</ix-tab-item>
+        <ix-tab-item tab-key="tab-5">Tab 5</ix-tab-item>
       `;
+    tabs.activeTabKey = 'tab-4';
   });
 
   await expect(page.locator('ix-tab-item').nth(2)).toHaveClass(/\bselected\b/);
 
+  // Select Tab 5, then remove it, select Tab 4
   await page.locator('ix-tab-item').nth(3).click();
+  await expect(page.locator('ix-tab-item').nth(3)).toHaveClass(/\bselected\b/);
 
   await page.evaluate(() => {
-    document.querySelector('ix-tabs')!.innerHTML = `
-        <ix-tab-item>Tab 1</ix-tab-item>
-        <ix-tab-item>Tab 2</ix-tab-item>
-        <ix-tab-item>Tab 4</ix-tab-item>
+    const tabs = document.querySelector('ix-tabs')!;
+    tabs.innerHTML = `
+        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
+        <ix-tab-item tab-key="tab-4">Tab 4</ix-tab-item>
       `;
+    tabs.activeTabKey = 'tab-4';
   });
 
   await expect(page.locator('ix-tab-item').nth(2)).toHaveClass(/\bselected\b/);
 
-  await page.locator('ix-tab-item').nth(1).click();
-
+  // Reduce to single tab
   await page.evaluate(() => {
-    document.querySelector('ix-tabs')!.innerHTML =
-      `<ix-tab-item>Tab 1</ix-tab-item>`;
+    const tabs = document.querySelector('ix-tabs')!;
+    tabs.innerHTML = `<ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>`;
+    tabs.activeTabKey = 'tab-1';
   });
 
   await expect(page.locator('ix-tab-item').nth(0)).toHaveClass(/\bselected\b/);

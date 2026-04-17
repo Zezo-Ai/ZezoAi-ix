@@ -13,8 +13,8 @@ test('should not change tab', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
         <ix-menu-settings>
-          <ix-menu-settings-item label="Tab 1">Content 1</ix-menu-settings-item>
-          <ix-menu-settings-item label="Tab 2">Content 2</ix-menu-settings-item>
+          <ix-menu-settings-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-settings-item>
+          <ix-menu-settings-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-settings-item>
         </ix-menu-settings>
       </ix-menu>
     `);
@@ -32,8 +32,8 @@ test('should not change tab', async ({ mount, page }) => {
 
   await tabItems.last().click();
 
-  await expect(tabItems.first()).toHaveAttribute('selected', 'true');
-  await expect(tabItems.last()).not.toHaveAttribute('selected', 'true');
+  await expect(tabItems.first()).toHaveClass(/\bselected\b/);
+  await expect(tabItems.last()).not.toHaveClass(/\bselected\b/);
 });
 
 test('tabChange event should fire exactly once per tab click', async ({
@@ -43,8 +43,8 @@ test('tabChange event should fire exactly once per tab click', async ({
   await mount(`
       <ix-menu>
         <ix-menu-settings>
-          <ix-menu-settings-item label="Tab 1">Content 1</ix-menu-settings-item>
-          <ix-menu-settings-item label="Tab 2">Content 2</ix-menu-settings-item>
+          <ix-menu-settings-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-settings-item>
+          <ix-menu-settings-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-settings-item>
         </ix-menu-settings>
       </ix-menu>
     `);
@@ -70,5 +70,5 @@ test('tabChange event should fire exactly once per tab click', async ({
   await tabItems.nth(1).click();
 
   const eventDetail = await eventPromise;
-  expect(eventDetail).toBe('Tab 2');
+  expect(eventDetail).toBe('tab-2');
 });

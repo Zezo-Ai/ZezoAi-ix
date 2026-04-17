@@ -13,8 +13,8 @@ regressionTest('renders', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
         <ix-menu-about>
-          <ix-menu-about-item label="Tab 1">Content 1</ix-menu-about-item>
-          <ix-menu-about-item label="Tab 2">Content 2</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
       </ix-menu>
     `);
@@ -32,9 +32,9 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
   await mount(`
     <ix-application>
       <ix-menu>
-        <ix-menu-about active-tab-label="Tab 2">
-          <ix-menu-about-item label="Tab 1">Content 1</ix-menu-about-item>
-          <ix-menu-about-item label="Tab 2">Content 2</ix-menu-about-item>
+        <ix-menu-about active-tab-key="tab-2">
+          <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
       </ix-menu>
     </ix-application>
@@ -46,16 +46,16 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
   const tabItems = page.locator('ix-tab-item');
   await expect(tabItems.first()).toHaveClass(/hydrated/);
 
-  await expect(tabItems.first()).not.toHaveAttribute('selected', 'true');
-  await expect(tabItems.last()).toHaveAttribute('selected', 'true');
+  await expect(tabItems.first()).not.toHaveClass(/\bselected\b/);
+  await expect(tabItems.last()).toHaveClass(/\bselected\b/);
 });
 
 regressionTest('should not change tab', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
         <ix-menu-about>
-          <ix-menu-about-item label="Tab 1">Content 1</ix-menu-about-item>
-          <ix-menu-about-item label="Tab 2">Content 2</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
       </ix-menu>
     `);
@@ -73,8 +73,8 @@ regressionTest('should not change tab', async ({ mount, page }) => {
 
   await tabItems.last().click();
 
-  await expect(tabItems.first()).toHaveAttribute('selected', 'true');
-  await expect(tabItems.last()).not.toHaveAttribute('selected', 'true');
+  await expect(tabItems.first()).toHaveClass(/\bselected\b/);
+  await expect(tabItems.last()).not.toHaveClass(/\bselected\b/);
 });
 
 regressionTest(
@@ -83,8 +83,8 @@ regressionTest(
     await mount(`
       <ix-menu>
         <ix-menu-about>
-          <ix-menu-about-item label="Tab 1">Content 1</ix-menu-about-item>
-          <ix-menu-about-item label="Tab 2">Content 2</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
       </ix-menu>
     `);
@@ -110,6 +110,6 @@ regressionTest(
     await tabItems.nth(1).click();
 
     const eventDetail = await eventPromise;
-    expect(eventDetail).toBe('Tab 2');
+    expect(eventDetail).toBe('tab-2');
   }
 );
