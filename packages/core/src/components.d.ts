@@ -2501,6 +2501,7 @@ export namespace Components {
     interface IxMenuAbout {
         /**
           * Active tab
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
         /**
@@ -2720,6 +2721,7 @@ export namespace Components {
     interface IxMenuSettings {
         /**
           * Active tab
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
         /**
@@ -3756,12 +3758,18 @@ export namespace Components {
          */
         "tabKey": string;
     }
+    /**
+     * @since 5.0.0
+     */
     interface IxTabPanel {
         /**
           * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
          */
         "tabKey": string;
     }
+    /**
+     * @since 5.0.0
+     */
     interface IxTabPanels {
     }
     interface IxTabs {
@@ -6033,12 +6041,18 @@ declare global {
         prototype: HTMLIxTabItemElement;
         new (): HTMLIxTabItemElement;
     };
+    /**
+     * @since 5.0.0
+     */
     interface HTMLIxTabPanelElement extends Components.IxTabPanel, HTMLStencilElement {
     }
     var HTMLIxTabPanelElement: {
         prototype: HTMLIxTabPanelElement;
         new (): HTMLIxTabPanelElement;
     };
+    /**
+     * @since 5.0.0
+     */
     interface HTMLIxTabPanelsElement extends Components.IxTabPanels, HTMLStencilElement {
     }
     var HTMLIxTabPanelsElement: {
@@ -8972,6 +8986,7 @@ declare namespace LocalJSX {
     interface IxMenuAbout {
         /**
           * Active tab
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
         /**
@@ -9220,6 +9235,7 @@ declare namespace LocalJSX {
     interface IxMenuSettings {
         /**
           * Active tab
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
         /**
@@ -10351,12 +10367,18 @@ declare namespace LocalJSX {
          */
         "tabKey": string;
     }
+    /**
+     * @since 5.0.0
+     */
     interface IxTabPanel {
         /**
           * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
          */
         "tabKey": string;
     }
+    /**
+     * @since 5.0.0
+     */
     interface IxTabPanels {
     }
     interface IxTabs {
@@ -12491,7 +12513,13 @@ declare module "@stencil/core" {
             "ix-spinner": LocalJSX.IntrinsicElements["ix-spinner"] & JSXBase.HTMLAttributes<HTMLIxSpinnerElement>;
             "ix-split-button": LocalJSX.IntrinsicElements["ix-split-button"] & JSXBase.HTMLAttributes<HTMLIxSplitButtonElement>;
             "ix-tab-item": LocalJSX.IntrinsicElements["ix-tab-item"] & JSXBase.HTMLAttributes<HTMLIxTabItemElement>;
+            /**
+             * @since 5.0.0
+             */
             "ix-tab-panel": LocalJSX.IntrinsicElements["ix-tab-panel"] & JSXBase.HTMLAttributes<HTMLIxTabPanelElement>;
+            /**
+             * @since 5.0.0
+             */
             "ix-tab-panels": LocalJSX.IntrinsicElements["ix-tab-panels"] & JSXBase.HTMLAttributes<HTMLIxTabPanelsElement>;
             "ix-tabs": LocalJSX.IntrinsicElements["ix-tabs"] & JSXBase.HTMLAttributes<HTMLIxTabsElement>;
             /**

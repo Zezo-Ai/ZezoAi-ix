@@ -87,8 +87,6 @@ import { defineCustomElement as ixSlider } from '@siemens/ix/components/ix-slide
 import { defineCustomElement as ixSpinner } from '@siemens/ix/components/ix-spinner.js';
 import { defineCustomElement as ixSplitButton } from '@siemens/ix/components/ix-split-button.js';
 import { defineCustomElement as ixTabItem } from '@siemens/ix/components/ix-tab-item.js';
-import { defineCustomElement as ixTabPanel } from '@siemens/ix/components/ix-tab-panel.js';
-import { defineCustomElement as ixTabPanels } from '@siemens/ix/components/ix-tab-panels.js';
 import { defineCustomElement as ixTabs } from '@siemens/ix/components/ix-tabs.js';
 import { defineCustomElement as ixTextarea } from '@siemens/ix/components/ix-textarea.js';
 import { defineCustomElement as ixTile } from '@siemens/ix/components/ix-tile.js';
@@ -193,8 +191,6 @@ ixSlider();
 ixSpinner();
 ixSplitButton();
 ixTabItem();
-ixTabPanel();
-ixTabPanels();
 ixTabs();
 ixTextarea();
 ixTile();
