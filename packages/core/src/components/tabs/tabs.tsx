@@ -30,7 +30,9 @@ import { InheritAriaAttributesMixin } from '../utils/internal/mixins/accessibili
 @Component({
   tag: 'ix-tabs',
   styleUrl: 'tabs.scss',
-  shadow: true,
+  shadow: {
+    delegatesFocus: true,
+  },
 })
 export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   @Element() override hostElement!: HTMLIxTabsElement;
