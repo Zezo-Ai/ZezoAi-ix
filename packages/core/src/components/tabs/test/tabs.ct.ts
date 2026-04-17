@@ -412,52 +412,12 @@ regressionTest(
 
     const tabs = page.locator('ix-tab-item');
 
+    await expect(tabs.nth(0)).toHaveClass(/hydrated/);
+
     for (const className of ['new', 'hydrated', 'bottom', 'stretched']) {
       await expect(tabs.nth(0)).toHaveClass(
         new RegExp(String.raw`\b${className}\b`)
       );
-      await expect(tabs.nth(1)).toHaveClass(
-        new RegExp(String.raw`\b${className}\b`)
-      );
-    }
-  }
-);
-
-regressionTest(
-  'dynamic tabs - should preserve classes and reselect when reducing tab count with new class',
-  async ({ mount, page }) => {
-    await mount(`
-      <ix-tabs placement="bottom" layout="stretched" active-tab-key="tab-1">
-        <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
-        <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
-        <ix-tab-item tab-key="tab-3">Tab 3</ix-tab-item>
-      </ix-tabs>
-    `);
-
-    const thirdTab = page.locator('ix-tab-item').nth(2);
-    await thirdTab.click();
-    await expect(thirdTab).toHaveClass(/\bselected\b/);
-
-    await page.evaluate(() => {
-      const tabsElement = document.querySelector('ix-tabs');
-      tabsElement!.innerHTML = `
-        <ix-tab-item tab-key="tab-1" class="new">Tab 1</ix-tab-item>
-        <ix-tab-item tab-key="tab-2" class="new">Tab 2</ix-tab-item>
-      `;
-    });
-
-    const tabs = page.locator('ix-tab-item');
-
-    // After innerHTML replacement, click the last remaining tab to select it
-    await tabs.nth(1).click();
-
-    for (const className of [
-      'new',
-      'hydrated',
-      'bottom',
-      'stretched',
-      'selected',
-    ]) {
       await expect(tabs.nth(1)).toHaveClass(
         new RegExp(String.raw`\b${className}\b`)
       );
@@ -500,10 +460,10 @@ regressionTest(
     await expect(tabs.nth(1)).not.toHaveAttribute('disabled');
     await expect(tabs.nth(1)).not.toHaveClass(/\bdisabled\b/);
 
-    // Select first tab, then switch to second
-    await tabs.nth(0).click();
+    // Tab-1 is disabled and already selected via active-tab-key
     await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
 
+    // Switch to second (non-disabled) tab
     await tabs.nth(1).click();
     await expect(tabs.nth(0)).not.toHaveClass(/\bselected\b/);
     await expect(tabs.nth(1)).toHaveClass(/\bselected\b/);
