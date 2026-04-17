@@ -685,3 +685,96 @@ regressionTest('tab re-selection algorithm', async ({ mount, page }) => {
 
   await expect(page.locator('ix-tab-item').nth(0)).toHaveClass(/\bselected\b/);
 });
+
+regressionTest(
+  'disabled tab should not be selectable by click',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2" disabled></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    const tab1 = page.locator('ix-tab-item').nth(0);
+    const tab2 = page.locator('ix-tab-item').nth(1);
+    const tab3 = page.locator('ix-tab-item').nth(2);
+
+    await tab1.click();
+    await expect(tab1).toHaveClass(/\bselected\b/);
+    await expect(tab2).toHaveClass(/\bdisabled\b/);
+
+    await tab2.dispatchEvent('click');
+    await expect(tab1).toHaveClass(/\bselected\b/);
+    await expect(tab2).not.toHaveClass(/\bselected\b/);
+
+    await tab3.click();
+    await expect(tab3).toHaveClass(/\bselected\b/);
+    await expect(tab1).not.toHaveClass(/\bselected\b/);
+  }
+);
+
+regressionTest(
+  'disabled tab should be skipped during keyboard navigation',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2" disabled></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    const tab1 = page.locator('ix-tab-item').nth(0);
+    const tab3 = page.locator('ix-tab-item').nth(2);
+
+    await tab1.click();
+    await expect(tab1).toHaveClass(/\bselected\b/);
+
+    await page.keyboard.press('ArrowRight');
+
+    await expect(tab3).toHaveClass(/\bselected\b/);
+    await expect(tab3).toBeFocused();
+
+    await page.keyboard.press('ArrowLeft');
+
+    await expect(tab1).toHaveClass(/\bselected\b/);
+    await expect(tab1).toBeFocused();
+  }
+);
+
+regressionTest(
+  'disabled tab in overflow dropdown should not be selectable',
+  async ({ mount, page }) => {
+    await mount(`
+      <div style="width: 200px;">
+        <ix-tabs active-tab-key="tab-1">
+          <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+          <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+          <ix-tab-item tab-key="tab-3" label="Tab 3" disabled></ix-tab-item>
+          <ix-tab-item tab-key="tab-4" label="Tab 4"></ix-tab-item>
+          <ix-tab-item tab-key="tab-5" label="Tab 5"></ix-tab-item>
+        </ix-tabs>
+      </div>
+    `);
+
+    const tabs = page.locator('ix-tabs');
+    const overflowButton = tabs.locator('ix-dropdown-button.tabs-context-menu');
+
+    await expect(overflowButton).toBeVisible();
+
+    await overflowButton.click();
+
+    const disabledItem = page.locator('ix-dropdown-item', {
+      hasText: 'Tab 3',
+    });
+    await expect(disabledItem).toBeVisible();
+    await expect(disabledItem).toHaveAttribute('disabled', '');
+
+    await disabledItem.click({ force: true });
+    await expect(page.locator('ix-tab-item').nth(0)).toHaveClass(
+      /\bselected\b/
+    );
+  }
+);
