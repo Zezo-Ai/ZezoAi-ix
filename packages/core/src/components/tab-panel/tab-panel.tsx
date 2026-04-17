@@ -14,6 +14,10 @@ import {
 } from '../utils/context';
 import { panelsContext } from '../tab-panels/tab-panels.context';
 
+/**
+ * @internal
+ * @since 5.0.0
+ * */
 @Component({
   tag: 'ix-tab-panel',
   styleUrl: 'tab-panel.scss',
@@ -21,6 +25,7 @@ import { panelsContext } from '../tab-panels/tab-panels.context';
 })
 export class TabPanel {
   @Element() hostElement!: HTMLIxTabPanelElement;
+
   /**
    * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
    */

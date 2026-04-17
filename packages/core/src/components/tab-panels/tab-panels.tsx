@@ -12,6 +12,10 @@ import { Context, ContextProvider, useContextProvider } from '../utils/context';
 import { panelsContext } from './tab-panels.context';
 import { queryElements } from '../utils/focus/focus-utilities';
 
+/**
+ * @internal
+ * @since 5.0.0
+ * */
 @Component({
   tag: 'ix-tab-panels',
   styleUrl: 'tab-panels.scss',

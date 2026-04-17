@@ -213,7 +213,6 @@ import SpinnerLarge from '../preview-examples/spinner-large';
 import SplitButton from '../preview-examples/split-button';
 import SplitButtonIcons from '../preview-examples/split-button-icons';
 import Tabs from '../preview-examples/tabs';
-import TabPanels from '../preview-examples/tab-panels';
 import TabsOverflow from '../preview-examples/tabs-overflow';
 import TabsRounded from '../preview-examples/tabs-rounded';
 import Textarea from '../preview-examples/textarea';
@@ -845,7 +844,6 @@ const routes: Routes = [
       { path: 'split-button-icons', component: SplitButtonIcons },
       { path: 'split-button', component: SplitButton },
       { path: 'tabs', component: Tabs },
-      { path: 'tab-panels', component: TabPanels },
       { path: 'tabs-overflow', component: TabsOverflow },
       { path: 'tabs-rounded', component: TabsRounded },
       { path: 'textarea-legacy', component: TextareaLegacy },
@@ -951,10 +949,6 @@ const routes: Routes = [
       {
         path: 'tabs',
         component: Tabs,
-      },
-      {
-        path: 'tab-panels',
-        component: TabPanels,
       },
       {
         path: 'theme-switcher',
