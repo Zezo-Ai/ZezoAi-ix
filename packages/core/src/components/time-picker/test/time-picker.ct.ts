@@ -94,6 +94,42 @@ regressionTest('renders', async ({ mount, page }) => {
   await expect(datePicker).toHaveClass(/hydrated/);
 });
 
+regressionTest(
+  'minTime and maxTime disable out-of-range hour buttons',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="10:00:00" max-time="14:00:00"></ix-time-picker>`
+    );
+    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    await expect(picker).toHaveClass(/hydrated/);
+    await expect(picker.locator('[data-element-container-id="hour-8"]')).toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-12"]')
+    ).not.toBeDisabled();
+    await expect(picker.locator('[data-element-container-id="hour-15"]')).toBeDisabled();
+  }
+);
+
+regressionTest(
+  'minTime/maxTime: repeated ArrowDown then Enter updates hour',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="09:00:00" max-time="17:30:00"></ix-time-picker>`
+    );
+    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    await expect(picker).toHaveClass(/hydrated/);
+    await picker.locator('[data-element-container-id="hour-12"]').focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    const t = await picker.evaluate(async (el: HTMLElement) => {
+      return await (el as HTMLIxTimePickerElement).getCurrentTime();
+    });
+    expect(t).toBe('15:00:00');
+  }
+);
+
 regressionTest.describe('time picker tests', () => {
   regressionTest.beforeEach(async ({ mount }) => {
     await mount(

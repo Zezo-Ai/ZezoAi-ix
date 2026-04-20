@@ -101,6 +101,12 @@ export class DatetimeInput
   /** Maximum allowed date (matching format or date-only, e.g., "2026/12/31") */
   @Prop() maxDate?: string;
 
+  /** Earliest selectable time of day (must match `format` time portion / `timeFormat` on picker). */
+  @Prop() minTime?: string;
+
+  /** Latest selectable time of day (must match `format` time portion / `timeFormat` on picker). */
+  @Prop() maxTime?: string;
+
   /** Label text displayed above the input */
   @Prop() label?: string;
 
@@ -130,6 +136,18 @@ export class DatetimeInput
 
   /** Header text for time picker section */
   @Prop() i18nTime: string = 'Time';
+
+  /** Hour column header for embedded time picker (pass-through). */
+  @Prop() i18nHourColumnHeader?: string;
+
+  /** Minute column header for embedded time picker (pass-through). */
+  @Prop() i18nMinuteColumnHeader?: string;
+
+  /** Second column header for embedded time picker (pass-through). */
+  @Prop() i18nSecondColumnHeader?: string;
+
+  /** Millisecond column header for embedded time picker (pass-through). */
+  @Prop() i18nMillisecondColumnHeader?: string;
 
   /** ARIA label for previous month navigation button */
   @Prop() ariaLabelPreviousMonthButton?: string = 'Previous month';
@@ -226,6 +244,14 @@ export class DatetimeInput
     this.syncPickerState();
   }
 
+  @Watch('minTime')
+  @Watch('maxTime')
+  watchTimeBoundsProps() {
+    if (this.value) {
+      void this.onInput(this.value);
+    }
+  }
+
   private get combinedFormat(): string {
     return this.format;
   }
@@ -281,11 +307,21 @@ export class DatetimeInput
 
     const minDateTime = this.parseConstraintDate(this.minDate, 'start');
     const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
+    const minTimeOnDay = this.parseTimeConstraintOnValueDay(
+      dateTime,
+      this.minTime
+    );
+    const maxTimeOnDay = this.parseTimeConstraintOnValueDay(
+      dateTime,
+      this.maxTime
+    );
 
     const validationResult = this.validateConstraints(
       dateTime,
       minDateTime,
-      maxDateTime
+      maxDateTime,
+      minTimeOnDay,
+      maxTimeOnDay
     );
 
     this.isInputInvalid = validationResult.isInvalid;
@@ -326,10 +362,35 @@ export class DatetimeInput
     return boundary === 'start' ? parsed.startOf('day') : parsed.endOf('day');
   }
 
+  private parseTimeConstraintOnValueDay(
+    dateTime: DateTime,
+    timeStr: string | undefined
+  ): DateTime | null {
+    const trimmed = timeStr?.trim();
+    if (!trimmed) {
+      return null;
+    }
+    const parsed = DateTime.fromFormat(trimmed, this.format, {
+      locale: this.locale,
+    });
+    if (!parsed.isValid) {
+      return null;
+    }
+    const day = dateTime.startOf('day');
+    return day.set({
+      hour: parsed.hour,
+      minute: parsed.minute,
+      second: parsed.second,
+      millisecond: parsed.millisecond,
+    });
+  }
+
   private validateConstraints(
     dateTime: DateTime,
     minDateTime: DateTime | null,
-    maxDateTime: DateTime | null
+    maxDateTime: DateTime | null,
+    minTimeOnDay: DateTime | null,
+    maxTimeOnDay: DateTime | null
   ): { isInvalid: boolean; reason: string | undefined } {
     const isFormatInvalid = !dateTime.isValid;
     const isBeforeMin = !!(
@@ -343,12 +404,34 @@ export class DatetimeInput
       dateTime > maxDateTime
     );
 
-    const isInvalid = isFormatInvalid || isBeforeMin || isAfterMax;
+    let minT = minTimeOnDay;
+    let maxT = maxTimeOnDay;
+    if (minT && maxT && minT > maxT) {
+      minT = null;
+      maxT = null;
+    }
+    const isBeforeMinTime = !!(
+      minT?.isValid &&
+      dateTime.isValid &&
+      dateTime < minT
+    );
+    const isAfterMaxTime = !!(
+      maxT?.isValid &&
+      dateTime.isValid &&
+      dateTime > maxT
+    );
+
+    const isInvalid =
+      isFormatInvalid ||
+      isBeforeMin ||
+      isAfterMax ||
+      isBeforeMinTime ||
+      isAfterMaxTime;
 
     let reason: string | undefined;
-    if (isBeforeMin) {
+    if (isBeforeMin || isBeforeMinTime) {
       reason = 'rangeUnderflow';
-    } else if (isAfterMax) {
+    } else if (isAfterMax || isAfterMaxTime) {
       reason = 'rangeOverflow';
     } else if (isFormatInvalid) {
       reason = dateTime.invalidReason || undefined;
@@ -713,9 +796,15 @@ export class DatetimeInput
             from={this.from ?? ''}
             i18nDone={this.i18nDone}
             i18nTime={this.i18nTime}
+            i18nHourColumnHeader={this.i18nHourColumnHeader}
+            i18nMinuteColumnHeader={this.i18nMinuteColumnHeader}
+            i18nSecondColumnHeader={this.i18nSecondColumnHeader}
+            i18nMillisecondColumnHeader={this.i18nMillisecondColumnHeader}
             locale={this.locale}
             maxDate={this.maxDate}
             minDate={this.minDate}
+            minTime={this.minTime}
+            maxTime={this.maxTime}
             ref={this.datetimePickerRef}
             showWeekNumbers={this.showWeekNumbers}
             singleSelection

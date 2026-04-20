@@ -76,12 +76,14 @@ import DatetimeInput from './preview-examples/datetime-input';
 import DatetimeInputDisabled from './preview-examples/datetime-input-disabled';
 import DatetimeInputLabel from './preview-examples/datetime-input-label';
 import DatetimeInputMinMaxDate from './preview-examples/datetime-input-min-max-date';
+import DatetimeInputMinMaxTime from './preview-examples/datetime-input-min-max-time';
 import DatetimeInputReadonly from './preview-examples/datetime-input-readonly';
 import DatetimeInputValidation from './preview-examples/datetime-input-validation';
 import DatetimeInputWithSlots from './preview-examples/datetime-input-with-slots';
 import DatepickerLocale from './preview-examples/datepicker-locale';
 import DatepickerRange from './preview-examples/datepicker-range';
 import Datetimepicker from './preview-examples/datetimepicker';
+import DatetimepickerMinMaxTime from './preview-examples/datetimepicker-min-max-time';
 import Divider from './preview-examples/divider';
 import Drawer from './preview-examples/drawer';
 import DrawerFullHeight from './preview-examples/drawer-full-height';
@@ -231,12 +233,14 @@ import timeInputDisabled from './preview-examples/time-input-disabled.tsx';
 import timeInputLabel from './preview-examples/time-input-label.tsx';
 import timeInputReadonly from './preview-examples/time-input-readonly.tsx';
 import timeInputValidation from './preview-examples/time-input-validation.tsx';
+import timeInputMinMaxTime from './preview-examples/time-input-min-max-time.tsx';
 import timeInputWithSlots from './preview-examples/time-input-with-slots.tsx';
 import timeInput from './preview-examples/time-input.tsx';
 import TimeRange from './preview-examples/time-range';
 import Timepicker from './preview-examples/timepicker';
 import timepickerFormatAdjusted from './preview-examples/timepicker-format-adjusted.tsx';
 import timepickerIntervals from './preview-examples/timepicker-intervals.tsx';
+import timepickerMinMaxTime from './preview-examples/timepicker-min-max-time.tsx';
 import Toast from './preview-examples/toast';
 import ToastCustom from './preview-examples/toast-custom';
 import ToastPosition from './preview-examples/toast-position';
@@ -326,6 +330,7 @@ const routes: IxPreviewRoutes = {
   '/preview/datepicker': Datepicker,
   '/preview/datepicker-locale': DatepickerLocale,
   '/preview/datetimepicker': Datetimepicker,
+  '/preview/datetimepicker-min-max-time': DatetimepickerMinMaxTime,
   '/preview/divider': Divider,
   '/preview/drawer-full-height': DrawerFullHeight,
   '/preview/drawer': Drawer,
@@ -480,6 +485,7 @@ const routes: IxPreviewRoutes = {
   '/preview/datetime-input-disabled': DatetimeInputDisabled,
   '/preview/datetime-input-label': DatetimeInputLabel,
   '/preview/datetime-input-min-max-date': DatetimeInputMinMaxDate,
+  '/preview/datetime-input-min-max-time': DatetimeInputMinMaxTime,
   '/preview/datetime-input-readonly': DatetimeInputReadonly,
   '/preview/datetime-input-validation': DatetimeInputValidation,
   '/preview/datetime-input-with-slots': DatetimeInputWithSlots,
@@ -519,9 +525,11 @@ const routes: IxPreviewRoutes = {
   '/preview/time-input-label': timeInputLabel,
   '/preview/time-input-readonly': timeInputReadonly,
   '/preview/time-input-validation': timeInputValidation,
+  '/preview/time-input-min-max-time': timeInputMinMaxTime,
   '/preview/time-input-with-slots': timeInputWithSlots,
   '/preview/timepicker-format-adjusted': timepickerFormatAdjusted,
   '/preview/timepicker-intervals': timepickerIntervals,
+  '/preview/timepicker-min-max-time': timepickerMinMaxTime,
   '/preview/toggle-button-primary': toggleButtonPrimary,
 };
 

@@ -1,0 +1,3 @@
+- main:
+  - textbox "Time": /\d+:\d+:\d+/
+  - button "Toggle time picker"

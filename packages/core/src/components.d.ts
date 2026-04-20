@@ -1295,6 +1295,22 @@ export namespace Components {
          */
         "i18nErrorDateTimeUnparsable": string;
         /**
+          * Hour column header for embedded time picker (pass-through).
+         */
+        "i18nHourColumnHeader"?: string;
+        /**
+          * Millisecond column header for embedded time picker (pass-through).
+         */
+        "i18nMillisecondColumnHeader"?: string;
+        /**
+          * Minute column header for embedded time picker (pass-through).
+         */
+        "i18nMinuteColumnHeader"?: string;
+        /**
+          * Second column header for embedded time picker (pass-through).
+         */
+        "i18nSecondColumnHeader"?: string;
+        /**
           * Header text for time picker section
           * @default 'Time'
          */
@@ -1324,9 +1340,17 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time of day (must match `format` time portion / `timeFormat` on picker).
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time of day (must match `format` time portion / `timeFormat` on picker).
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -1416,6 +1440,26 @@ export namespace Components {
          */
         "i18nDone": string;
         /**
+          * Text for the embedded time picker hour column header.
+          * @since 5.0.0
+         */
+        "i18nHourColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker millisecond column header.
+          * @since 5.0.0
+         */
+        "i18nMillisecondColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker minute column header.
+          * @since 5.0.0
+         */
+        "i18nMinuteColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker second column header.
+          * @since 5.0.0
+         */
+        "i18nSecondColumnHeader"?: string;
+        /**
           * Top label of the time picker.
           * @since 3.0.0
           * @default 'Time'
@@ -1430,9 +1474,19 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time of day (must match `timeFormat`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time of day (must match `timeFormat`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Show AM/PM time reference control.
           * @default false
@@ -3970,10 +4024,20 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Latest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -4097,11 +4161,21 @@ export namespace Components {
          */
         "i18nSecondColumnHeader": string;
         /**
+          * Latest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -7613,6 +7687,22 @@ declare namespace LocalJSX {
          */
         "i18nErrorDateTimeUnparsable"?: string;
         /**
+          * Hour column header for embedded time picker (pass-through).
+         */
+        "i18nHourColumnHeader"?: string;
+        /**
+          * Millisecond column header for embedded time picker (pass-through).
+         */
+        "i18nMillisecondColumnHeader"?: string;
+        /**
+          * Minute column header for embedded time picker (pass-through).
+         */
+        "i18nMinuteColumnHeader"?: string;
+        /**
+          * Second column header for embedded time picker (pass-through).
+         */
+        "i18nSecondColumnHeader"?: string;
+        /**
           * Header text for time picker section
           * @default 'Time'
          */
@@ -7638,9 +7728,17 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time of day (must match `format` time portion / `timeFormat` on picker).
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time of day (must match `format` time portion / `timeFormat` on picker).
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -7748,6 +7846,26 @@ declare namespace LocalJSX {
          */
         "i18nDone"?: string;
         /**
+          * Text for the embedded time picker hour column header.
+          * @since 5.0.0
+         */
+        "i18nHourColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker millisecond column header.
+          * @since 5.0.0
+         */
+        "i18nMillisecondColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker minute column header.
+          * @since 5.0.0
+         */
+        "i18nMinuteColumnHeader"?: string;
+        /**
+          * Text for the embedded time picker second column header.
+          * @since 5.0.0
+         */
+        "i18nSecondColumnHeader"?: string;
+        /**
           * Top label of the time picker.
           * @since 3.0.0
           * @default 'Time'
@@ -7762,9 +7880,19 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time of day (must match `timeFormat`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time of day (must match `timeFormat`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Date change event. Emitted when the date changes in the embedded date picker.
          */
@@ -10497,10 +10625,20 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
+          * Latest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -10634,11 +10772,21 @@ declare namespace LocalJSX {
          */
         "i18nSecondColumnHeader"?: string;
         /**
+          * Latest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time of day (string format must match `format`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -11345,6 +11493,8 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "minDate": string;
         "maxDate": string;
+        "minTime": string;
+        "maxTime": string;
         "label": string;
         "helperText": string;
         "invalidText": string;
@@ -11355,6 +11505,10 @@ declare namespace LocalJSX {
         "i18nErrorDateTimeUnparsable": string;
         "i18nDone": string;
         "i18nTime": string;
+        "i18nHourColumnHeader": string;
+        "i18nMinuteColumnHeader": string;
+        "i18nSecondColumnHeader": string;
+        "i18nMillisecondColumnHeader": string;
         "ariaLabelPreviousMonthButton": string;
         "ariaLabelNextMonthButton": string;
         "ariaLabelCalendarButton": string;
@@ -11368,6 +11522,8 @@ declare namespace LocalJSX {
         "singleSelection": boolean;
         "minDate": string;
         "maxDate": string;
+        "minTime": string;
+        "maxTime": string;
         "dateFormat": string;
         "timeFormat": string;
         "from": string;
@@ -11377,6 +11533,10 @@ declare namespace LocalJSX {
         "timeReference": 'AM' | 'PM';
         "i18nDone": string;
         "i18nTime": string;
+        "i18nHourColumnHeader": string;
+        "i18nMinuteColumnHeader": string;
+        "i18nSecondColumnHeader": string;
+        "i18nMillisecondColumnHeader": string;
         "ariaLabelPreviousMonthButton": string;
         "ariaLabelNextMonthButton": string;
         "weekStartIndex": number;
@@ -11961,6 +12121,8 @@ declare namespace LocalJSX {
         "placeholder": string;
         "value": string;
         "format": string;
+        "minTime": string;
+        "maxTime": string;
         "required": boolean;
         "helperText": string;
         "label": string;
@@ -11999,6 +12161,8 @@ declare namespace LocalJSX {
         "secondInterval": number;
         "millisecondInterval": number;
         "time": string;
+        "minTime": string;
+        "maxTime": string;
         "i18nConfirmTime": string;
         "i18nHeader": string;
         "i18nHourColumnHeader": string;

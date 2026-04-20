@@ -78,10 +78,12 @@ import Datepicker from '../preview-examples/datepicker';
 import DatepickerLocale from '../preview-examples/datepicker-locale';
 import DatepickerRange from '../preview-examples/datepicker-range';
 import Datetimepicker from '../preview-examples/datetimepicker';
+import DatetimepickerMinMaxTime from '../preview-examples/datetimepicker-min-max-time';
 import DatetimeInput from '../preview-examples/datetime-input';
 import DatetimeInputDisabled from '../preview-examples/datetime-input-disabled';
 import DatetimeInputLabel from '../preview-examples/datetime-input-label';
 import DatetimeInputMinMaxDate from '../preview-examples/datetime-input-min-max-date';
+import DatetimeInputMinMaxTime from '../preview-examples/datetime-input-min-max-time';
 import DatetimeInputReadonly from '../preview-examples/datetime-input-readonly';
 import DatetimeInputValidation from '../preview-examples/datetime-input-validation';
 import DatetimeInputWithSlots from '../preview-examples/datetime-input-with-slots';
@@ -237,8 +239,10 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeSwitcher from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
+import TimeInputMinMaxTime from '../preview-examples/time-input-min-max-time';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
+import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
 import ToastPosition from '../preview-examples/toast-position';
@@ -332,10 +336,12 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     Datepicker,
     DatepickerLocale,
     Datetimepicker,
+    DatetimepickerMinMaxTime,
     DatetimeInput,
     DatetimeInputDisabled,
     DatetimeInputLabel,
     DatetimeInputMinMaxDate,
+    DatetimeInputMinMaxTime,
     DatetimeInputReadonly,
     DatetimeInputValidation,
     DatetimeInputWithSlots,
@@ -471,8 +477,10 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     ThemeSwitcher,
     Tile,
     TimeInput,
+    TimeInputMinMaxTime,
     TimeRange,
     Timepicker,
+    TimepickerMinMaxTime,
     ToastCustom,
     ToastPosition,
     Toast,
