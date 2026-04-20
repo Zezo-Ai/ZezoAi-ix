@@ -102,11 +102,15 @@ regressionTest(
     );
     const picker = page.locator(TIME_PICKER_SELECTOR).first();
     await expect(picker).toHaveClass(/hydrated/);
-    await expect(picker.locator('[data-element-container-id="hour-8"]')).toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-8"]')
+    ).toBeDisabled();
     await expect(
       picker.locator('[data-element-container-id="hour-12"]')
     ).not.toBeDisabled();
-    await expect(picker.locator('[data-element-container-id="hour-15"]')).toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-15"]')
+    ).toBeDisabled();
   }
 );
 

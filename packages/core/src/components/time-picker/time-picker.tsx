@@ -23,10 +23,24 @@ import {
 import { DateTime } from 'luxon';
 import { DefaultMixins } from '../utils/internal/component';
 import { OnListener } from '../utils/listener';
-import type { TimePickerCorners } from './time-picker.types';
+import { computeTimeWithRawUnitValue } from './time-picker-compute-time';
+import {
+  getTimePickerConstraintBounds,
+  hasActiveTimePickerConstraints,
+  isWithinTimePickerConstraints,
+} from './time-picker-constraints';
+import { buildTimePickerColumnNumberArrays } from './time-picker-column-values';
+import {
+  formatTimePickerUnitValue,
+  getTimePickerColumnSeparator,
+  getTimePickerInitialFocusedValueForUnit,
+} from './time-picker-display';
+import { isFormat12Hour, LUXON_FORMAT_PATTERNS } from './time-picker-format';
+import type {
+  TimePickerCorners,
+  TimePickerDescriptorUnit,
+} from './time-picker.types';
 import { closestPassShadow } from '../utils/shadow-dom';
-
-type TimePickerDescriptorUnit = 'hour' | 'minute' | 'second' | 'millisecond';
 
 interface TimePickerDescriptor {
   unit: TimePickerDescriptorUnit;
@@ -42,17 +56,6 @@ interface TimeOutputFormat {
   second: string;
   millisecond: string;
 }
-
-const LUXON_FORMAT_PATTERNS = {
-  // h, hh, H, HH and various time formats that include hours
-  hours: /\b[Hh]\b|HH|hh|H{3,4}|h{3,4}|t|tt|ttt|tttt|T|TT|TTT|TTTT/,
-  // m, mm and time formats that include minutes
-  minutes: /\bm\b|mm|t|tt|ttt|tttt|T|TT|TTT|TTTT/,
-  // s, ss and time formats that include seconds
-  seconds: /\bs\b|ss|tt|ttt|tttt|TT|TTT|TTTT/,
-  // S, SSS (milliseconds), u/uu/uuu (fractional seconds), x/X (timestamps)
-  milliseconds: /\bS\b|SSS|u|uu|uuu/,
-};
 
 const HOUR_INTERVAL_DEFAULT = 1;
 const MINUTE_INTERVAL_DEFAULT = 1;
@@ -437,7 +440,6 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     }
 
     // Focus may move to another cell in this column (e.g. keyboard navigation)
-    // before blur runs; do not exit column mode or reset the explored value in that case.
     if (movingWithinSameColumn) {
       return;
     }
@@ -639,27 +641,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     this.timeChange.emit(this._time.toFormat(this.format));
   }
 
-  private isFormat12Hour(format: string): boolean {
-    // Remove any text that's inside quotes (literal text in Luxon format strings)
-    let cleanFormat = '';
-    let inQuote = false;
-
-    for (let i = 0; i < format.length; i++) {
-      const char = format[i];
-      if (char === "'") {
-        inQuote = !inQuote;
-      } else if (!inQuote) {
-        cleanFormat += char;
-      }
-    }
-
-    // Check for specific 12-hour format tokens
-    // Case-sensitive matching to distinguish between 'h' and 'H'
-    return /h|a|t/.test(cleanFormat);
-  }
-
   private setTimeRef() {
-    const uses12HourFormat = this.isFormat12Hour(this.format);
+    const uses12HourFormat = isFormat12Hour(this.format);
 
     if (uses12HourFormat && this._time) {
       this.timeRef = this._time!.hour >= 12 ? 'PM' : 'AM';
@@ -668,58 +651,27 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     }
   }
 
-  private getBoundsBaseDay(): DateTime {
-    return (this._time ?? DateTime.now()).startOf('day');
-  }
-
   private getConstraintBounds(): {
     min: DateTime | null;
     max: DateTime | null;
   } {
-    let min = this.parseTimeBoundary(this.minTime);
-    let max = this.parseTimeBoundary(this.maxTime);
-    if (min && max && min > max) {
-      min = null;
-      max = null;
-    }
-    return { min, max };
-  }
-
-  private parseTimeBoundary(value?: string): DateTime | null {
-    const trimmed = value?.trim();
-    if (!trimmed) {
-      return null;
-    }
-    const parsed = DateTime.fromFormat(trimmed, this.format);
-    if (!parsed.isValid) {
-      return null;
-    }
-    const day = this.getBoundsBaseDay();
-    return day.set({
-      hour: parsed.hour,
-      minute: parsed.minute,
-      second: parsed.second,
-      millisecond: parsed.millisecond,
-    });
+    const baseDay = (this._time ?? DateTime.now()).startOf('day');
+    return getTimePickerConstraintBounds(
+      this.minTime,
+      this.maxTime,
+      this.format,
+      baseDay
+    );
   }
 
   private isWithinTimeConstraints(candidate: DateTime): boolean {
     const { min, max } = this.getConstraintBounds();
-    if (!candidate.isValid) {
-      return false;
-    }
-    if (min && candidate < min) {
-      return false;
-    }
-    if (max && candidate > max) {
-      return false;
-    }
-    return true;
+    return isWithinTimePickerConstraints(candidate, min, max);
   }
 
   private hasActiveTimeConstraints(): boolean {
     const { min, max } = this.getConstraintBounds();
-    return !!(min || max);
+    return hasActiveTimePickerConstraints(min, max);
   }
 
   /**
@@ -730,43 +682,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     unit: TimePickerDescriptorUnit,
     rawValue: number
   ): DateTime | null {
-    let value = rawValue;
-    let maxValue =
-      unit === 'hour'
-        ? 23
-        : unit === 'minute'
-          ? 59
-          : unit === 'second'
-            ? 59
-            : 999;
-
-    if (unit === 'hour') {
-      if (this.timeRef === 'PM') {
-        value = value === 12 ? 12 : value + 12;
-      } else if (this.timeRef === 'AM') {
-        value = value === 12 ? 0 : value;
-        maxValue = 12;
-      }
-    }
-
-    if (value > maxValue) {
-      value = maxValue;
-    } else if (value < 0) {
-      value = 0;
-    }
-
-    try {
-      return baseTime.set({
-        [unit]: value,
-      } as {
-        hour?: number;
-        minute?: number;
-        second?: number;
-        millisecond?: number;
-      });
-    } catch {
-      return null;
-    }
+    return computeTimeWithRawUnitValue(baseTime, unit, rawValue, this.timeRef);
   }
 
   private canSelectUnitValue(
@@ -814,40 +730,23 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     unit: TimePickerDescriptorUnit,
     numberArray: number[]
   ): number {
-    const selectedValue = Number(this.formattedTime[unit]);
-    return numberArray.includes(selectedValue) ? selectedValue : numberArray[0];
+    return getTimePickerInitialFocusedValueForUnit(
+      Number(this.formattedTime[unit]),
+      numberArray
+    );
   }
 
   private setTimePickerDescriptors() {
-    let hourNumbers = [];
-    let minuteNumbers = [];
-    let secondNumbers = [];
-    let millisecondsNumbers = [];
-
-    if (this.timeRef !== undefined) {
-      hourNumbers = Array.from(
-        { length: Math.ceil(12 / this.hourInterval) },
-        (_, i) => i * this.hourInterval + 1
-      ).filter((hour) => hour <= 12);
-    } else {
-      hourNumbers = Array.from(
-        { length: Math.ceil(24 / this.hourInterval) },
-        (_, i) => i * this.hourInterval
+    const { hourNumbers, minuteNumbers, secondNumbers, millisecondsNumbers } =
+      buildTimePickerColumnNumberArrays(
+        {
+          hourInterval: this.hourInterval,
+          minuteInterval: this.minuteInterval,
+          secondInterval: this.secondInterval,
+          millisecondInterval: this.millisecondInterval,
+        },
+        this.timeRef
       );
-    }
-
-    minuteNumbers = Array.from(
-      { length: Math.ceil(60 / this.minuteInterval) },
-      (_, i) => i * this.minuteInterval
-    );
-    secondNumbers = Array.from(
-      { length: Math.ceil(60 / this.secondInterval) },
-      (_, i) => i * this.secondInterval
-    );
-    millisecondsNumbers = Array.from(
-      { length: Math.ceil(1000 / this.millisecondInterval) },
-      (_, i) => i * this.millisecondInterval
-    );
 
     this.timePickerDescriptors = [
       {
@@ -1002,20 +901,14 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     unit: TimePickerDescriptorUnit,
     value: number
   ): string {
-    if (unit === 'millisecond') {
-      return value.toString().padStart(3, '0');
-    }
-
-    return value < 10 ? `0${value}` : value.toString();
+    return formatTimePickerUnitValue(unit, value);
   }
 
   private getColumnSeparator(currentIndex: number): string {
-    if (currentIndex + 1 < this.timePickerDescriptors.length) {
-      const nextUnit = this.timePickerDescriptors[currentIndex + 1].unit;
-      return nextUnit === 'millisecond' ? '.' : ':';
-    }
-
-    return ':';
+    return getTimePickerColumnSeparator(
+      currentIndex,
+      this.timePickerDescriptors
+    );
   }
 
   override render() {
