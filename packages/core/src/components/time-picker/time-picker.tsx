@@ -30,6 +30,7 @@ import {
   isWithinTimePickerConstraints,
 } from './time-picker-constraints';
 import { buildTimePickerColumnNumberArrays } from './time-picker-column-values';
+import { findNextSelectableRingValue } from './time-picker-step-focus';
 import {
   formatTimePickerUnitValue,
   getTimePickerColumnSeparator,
@@ -40,6 +41,7 @@ import type {
   TimePickerCorners,
   TimePickerDescriptorUnit,
 } from './time-picker.types';
+import { hasKeyboardMode } from '../utils/internal/mixins/setup.mixin';
 import { closestPassShadow } from '../utils/shadow-dom';
 
 interface TimePickerDescriptor {
@@ -346,6 +348,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   }
 
   override componentDidLoad() {
+    super.componentDidLoad?.();
     this.updateScrollPositions();
     this.setupVisibilityObserver();
   }
@@ -364,8 +367,9 @@ export class TimePicker extends Mixin(...DefaultMixins) {
       return;
     }
 
-    // Keep DOM focus on the current keyboard cell (same as arrow navigation before min/max blur fixes).
-    elementContainer.focus({ preventScroll: true });
+    if (hasKeyboardMode()) {
+      elementContainer.focus({ preventScroll: true });
+    }
 
     if (!this.isElementVisible(elementContainer, elementList)) {
       this.scrollElementIntoView(
@@ -604,7 +608,12 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     if (!this._time) {
       this._time = DateTime.now().startOf('day');
     }
-    const next = this.computeTimeWithRawUnitValue(this._time, unit, value);
+    const next = computeTimeWithRawUnitValue(
+      this._time,
+      unit,
+      value,
+      this.timeRef
+    );
     if (next) {
       this._time = next;
     }
@@ -674,23 +683,17 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     return hasActiveTimePickerConstraints(min, max);
   }
 
-  /**
-   * Applies a raw column value to a base time (including 12h rules). Does not mutate `this._time`.
-   */
-  private computeTimeWithRawUnitValue(
-    baseTime: DateTime,
-    unit: TimePickerDescriptorUnit,
-    rawValue: number
-  ): DateTime | null {
-    return computeTimeWithRawUnitValue(baseTime, unit, rawValue, this.timeRef);
-  }
-
   private canSelectUnitValue(
     unit: TimePickerDescriptorUnit,
     rawValue: number
   ): boolean {
     const base = this._time ?? DateTime.now().startOf('day');
-    const candidate = this.computeTimeWithRawUnitValue(base, unit, rawValue);
+    const candidate = computeTimeWithRawUnitValue(
+      base,
+      unit,
+      rawValue,
+      this.timeRef
+    );
     if (!candidate) {
       return true;
     }
@@ -700,22 +703,17 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   private stepFocusedValue(direction: 1 | -1) {
     const unit = this.focusedUnit;
     const arr = this.getNumberArrayForUnit(unit);
-    if (!arr.length) {
+    const next = findNextSelectableRingValue(
+      arr,
+      this.focusedValue,
+      direction,
+      (candidate) => this.canSelectUnitValue(unit, candidate)
+    );
+    if (next === null) {
       return;
     }
-    let idx = arr.indexOf(this.focusedValue);
-    if (idx === -1) {
-      idx = 0;
-    }
-    for (let i = 0; i < arr.length; i++) {
-      idx = (idx + direction + arr.length) % arr.length;
-      const candidate = arr[idx];
-      if (this.canSelectUnitValue(unit, candidate)) {
-        this.focusedValue = candidate;
-        this.updateDescriptorFocusedValue(unit, candidate);
-        return;
-      }
-    }
+    this.focusedValue = next;
+    this.updateDescriptorFocusedValue(unit, next);
   }
 
   private isConfirmDisabled(): boolean {
