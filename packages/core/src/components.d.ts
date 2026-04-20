@@ -3699,6 +3699,7 @@ export namespace Components {
     interface IxTabItem {
         /**
           * Aria label for the close button, important for accessibility
+          * @since 5.0.0
           * @default 'Close tab'
          */
         "ariaLabelCloseButton": string;
@@ -3775,8 +3776,15 @@ export namespace Components {
     interface IxTabs {
         /**
           * Active tab key.
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
+        /**
+          * Aria label for the overflow menu button.
+          * @since 5.0.0
+          * @default 'Show all tabs'
+         */
+        "ariaLabelMoreTabs": string;
         /**
           * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
           * @since 5.0.0
@@ -6062,7 +6070,6 @@ declare global {
     interface HTMLIxTabsElementEventMap {
         "tabChange": string | undefined;
         "tabClose": string | undefined;
-        "selectedChange": number;
     }
     interface HTMLIxTabsElement extends Components.IxTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTabsElementEventMap>(type: K, listener: (this: HTMLIxTabsElement, ev: IxTabsCustomEvent<HTMLIxTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -10300,6 +10307,7 @@ declare namespace LocalJSX {
     interface IxTabItem {
         /**
           * Aria label for the close button, important for accessibility
+          * @since 5.0.0
           * @default 'Close tab'
          */
         "ariaLabelCloseButton"?: string;
@@ -10384,8 +10392,15 @@ declare namespace LocalJSX {
     interface IxTabs {
         /**
           * Active tab key.
+          * @since 5.0.0
          */
         "activeTabKey"?: string;
+        /**
+          * Aria label for the overflow menu button.
+          * @since 5.0.0
+          * @default 'Show all tabs'
+         */
+        "ariaLabelMoreTabs"?: string;
         /**
           * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
           * @since 5.0.0
@@ -10397,11 +10412,6 @@ declare namespace LocalJSX {
           * @default 'auto'
          */
         "layout"?: 'auto' | 'stretched';
-        /**
-          * Tab selection event. Event detail is the zero-based tab index. Fires when the user selects a tab, or when the tab list changes and the selected index is adjusted. Not emitted when `selected` is set from outside.
-          * @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
-         */
-        "onSelectedChange"?: (event: IxTabsCustomEvent<number>) => void;
         /**
           * Tab selection event. Event detail contains the new active tab key.
           * @since 5.0.0
@@ -12087,6 +12097,7 @@ declare namespace LocalJSX {
         "rounded": boolean;
         "layout": 'auto' | 'stretched';
         "placement": 'bottom' | 'top';
+        "ariaLabelMoreTabs": string;
         "activeTabKey": string;
         "keyboardNavigation": 'automatic' | 'manual';
     }

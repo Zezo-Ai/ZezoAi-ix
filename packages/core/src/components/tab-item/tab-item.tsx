@@ -76,6 +76,8 @@ export class TabItem
 
   /**
    * Aria label for the close button, important for accessibility
+   *
+   * @since 5.0.0
    */
   @Prop() ariaLabelCloseButton: string = 'Close tab';
 

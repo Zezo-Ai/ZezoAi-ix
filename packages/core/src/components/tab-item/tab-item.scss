@@ -44,6 +44,10 @@
     vertical-align: middle;
   }
 
+  slot {
+    white-space: nowrap;
+  }
+
   .circle {
     display: flex;
     justify-content: center;

@@ -58,7 +58,16 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   @Prop() placement: 'bottom' | 'top' = 'bottom';
 
   /**
+   * Aria label for the overflow menu button.
+   *
+   * @since 5.0.0
+   */
+  @Prop() ariaLabelMoreTabs = 'Show all tabs';
+
+  /**
    * Active tab key.
+   *
+   * @since 5.0.0
    */
   @Prop({ mutable: true }) activeTabKey?: string;
 
@@ -141,8 +150,14 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   }
 
   @Watch('activeTabKey')
-  onActiveTabChange(tabKey: string | undefined) {
-    this.emitTabChangeEvent(tabKey);
+  onActiveTabChange(tabKey: string | undefined, oldTabKey: string | undefined) {
+    const activeTab = this.tabs.find((tab) => tab.selected);
+
+    if (activeTab?.tabKey === tabKey) {
+      return;
+    }
+
+    this.emitTabChangeEvent(tabKey, oldTabKey);
   }
 
   private setTabActive(tabKey: string | undefined) {
@@ -268,18 +283,20 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
     this.emitTabChangeEvent(event.detail.tabKey);
   }
 
-  private emitTabChangeEvent(tabKey: string | undefined) {
+  private emitTabChangeEvent(
+    tabKey: string | undefined,
+    oldTabKey = this.activeTabKey
+  ) {
     emitEvent(
       () => {
-        const oldKey = this.activeTabKey;
         const newKey = this.setTabActive(tabKey);
         return {
           new: newKey,
-          old: oldKey,
+          old: oldTabKey,
         };
       },
       this.tabChange,
-      (oldKey) => this.setTabActive(oldKey!)
+      (oldKey) => this.setTabActive(oldKey)
     );
   }
 
@@ -365,6 +382,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
             </div>
           </div>
           <ix-dropdown-button
+            ariaLabel={this.ariaLabelMoreTabs}
             icon={iconMoreMenu}
             class={{
               'tabs-context-menu': true,

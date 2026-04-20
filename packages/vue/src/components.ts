@@ -1380,15 +1380,14 @@ export const IxTabs: StencilVueComponent<JSX.IxTabs> = /*@__PURE__*/ defineConta
   'rounded',
   'layout',
   'placement',
+  'ariaLabelMoreTabs',
   'activeTabKey',
   'keyboardNavigation',
   'tabChange',
-  'tabClose',
-  'selectedChange'
+  'tabClose'
 ], [
   'tabChange',
-  'tabClose',
-  'selectedChange'
+  'tabClose'
 ]);
 
 

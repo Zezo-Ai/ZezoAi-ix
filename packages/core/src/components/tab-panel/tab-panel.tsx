@@ -54,7 +54,7 @@ export class TabPanel {
 
   render() {
     return (
-      <Host role="tabpanel" aria-labelledby={this.tabId} tabindex={0}>
+      <Host role="tabpanel" aria-labelledby={this.tabId}>
         <slot></slot>
       </Host>
     );

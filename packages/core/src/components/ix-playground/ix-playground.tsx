@@ -32,7 +32,6 @@ export class IxPlayground {
         <ix-tab-panels>
           <ix-tabs
             activeTabKey={this.activeTabKey}
-            layout="auto"
             onTabChange={(event) => this.onTabChange(event)}
           >
             <ix-tab-item icon={iconAbout} tabKey="tab-1">
@@ -51,7 +50,7 @@ export class IxPlayground {
               counter={12}
               onTabClose={(event) => event.target.remove()}
             >
-              Tab Item 4
+              Item 4
             </ix-tab-item>
             <ix-tab-item icon={iconAdd} tabKey="tab-5">
               Tab Item 5

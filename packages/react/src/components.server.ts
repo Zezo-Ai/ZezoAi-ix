@@ -1801,8 +1801,7 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
 
 export type IxTabsEvents = {
     onTabChange: EventName<IxTabsCustomEvent<string | undefined>>,
-    onTabClose: EventName<IxTabsCustomEvent<string | undefined>>,
-    onSelectedChange: EventName<IxTabsCustomEvent<number>>
+    onTabClose: EventName<IxTabsCustomEvent<string | undefined>>
 };
 
 export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__PURE__*/ createComponent<IxTabsElement, IxTabsEvents>({
@@ -1812,6 +1811,7 @@ export const IxTabs: StencilReactComponent<IxTabsElement, IxTabsEvents> = /*@__P
         rounded: 'rounded',
         layout: 'layout',
         placement: 'placement',
+        ariaLabelMoreTabs: 'aria-label-more-tabs',
         activeTabKey: 'active-tab-key',
         keyboardNavigation: 'keyboard-navigation'
     },

@@ -542,6 +542,46 @@ regressionTest(
 );
 
 regressionTest(
+  'should emit tabChange once and roll back when tab change is prevented',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-tabs active-tab-key="tab-1">
+        <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
+        <ix-tab-item tab-key="tab-2" label="Tab 2"></ix-tab-item>
+        <ix-tab-item tab-key="tab-3" label="Tab 3"></ix-tab-item>
+      </ix-tabs>
+    `);
+
+    const tabs = page.locator('ix-tabs');
+    const thirdTab = page.locator('ix-tab-item').nth(2);
+
+    const emitCount = tabs.evaluate((element) => {
+      return new Promise<number>((resolve) => {
+        let count = 0;
+
+        element.addEventListener(
+          'tabChange',
+          (event) => {
+            count += 1;
+            event.preventDefault();
+            resolve(count);
+          },
+          { once: true }
+        );
+      });
+    });
+
+    await thirdTab.click();
+
+    expect(await emitCount).toBe(1);
+    await expect(page.locator('ix-tab-item').nth(0)).toHaveClass(
+      /\bselected\b/
+    );
+    await expect(thirdTab).not.toHaveClass(/\bselected\b/);
+  }
+);
+
+regressionTest(
   'should render label prop in tab item',
   async ({ mount, page }) => {
     await mount(`

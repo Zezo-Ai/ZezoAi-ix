@@ -2618,22 +2618,21 @@ export declare interface IxTabItem extends Components.IxTabItem {
 
 
 @ProxyCmp({
-  inputs: ['activeTabKey', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small']
+  inputs: ['activeTabKey', 'ariaLabelMoreTabs', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small']
 })
 @Component({
   selector: 'ix-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabKey', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small'],
-  outputs: ['tabChange', 'tabClose', 'selectedChange'],
+  inputs: ['activeTabKey', 'ariaLabelMoreTabs', 'keyboardNavigation', 'layout', 'placement', 'rounded', 'small'],
+  outputs: ['tabChange', 'tabClose'],
   standalone: false
 })
 export class IxTabs {
   protected el: HTMLIxTabsElement;
   @Output() tabChange = new EventEmitter<CustomEvent<string | undefined>>();
   @Output() tabClose = new EventEmitter<CustomEvent<string | undefined>>();
-  @Output() selectedChange = new EventEmitter<CustomEvent<number>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -2650,12 +2649,6 @@ export declare interface IxTabs extends Components.IxTabs {
    * Tab close event. Event detail contains the closed tab key. @since 5.0.0
    */
   tabClose: EventEmitter<CustomEvent<string | undefined>>;
-  /**
-   * Tab selection event. Event detail is the zero-based tab index. Fires when
-the user selects a tab, or when the tab list changes and the selected index
-is adjusted. Not emitted when `selected` is set from outside. @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
-   */
-  selectedChange: EventEmitter<CustomEvent<number>>;
 }
 
 
