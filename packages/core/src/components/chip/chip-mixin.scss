@@ -80,23 +80,24 @@ $border-radius: 100px;
           }
         }
       }
+
       &.closable:not(.inactive) {
         padding-right: calc(0.25rem - 1px);
       }
-      &:not(.closable) {
-        padding-right: calc(0.5rem - 1px);
-      }
+
       &.closable.inactive,
-      &.icon:not(.closable) {
+      &:not(.closable) {
         padding-right: calc($padding-block - 1px);
       }
     }
 
     &:not(.outline) {
       padding-left: $padding-block;
+
       &.closable:not(.inactive) {
         padding-right: 0.25rem;
       }
+
       &.closable.inactive,
       &:not(.closable) {
         padding-right: $padding-block;
