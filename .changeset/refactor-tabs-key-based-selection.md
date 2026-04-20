@@ -12,7 +12,7 @@ Replaces the index-based tab selection model with a string key-based approach, i
 
 - Removed `selected` prop (number index). Use `activeTabKey` (string) instead.
 - Removed `ariaLabelChevronLeftIconButton` and `ariaLabelChevronRightIconButton` props. Overflow is now handled via a dropdown menu instead of scroll arrows.
-- `selectedChange` event is deprecated. Use `tabChange` which emits the active `tabKey` string instead of an index.
+- Removed `selectedChange` event. Use `tabChange` which emits the active `tabKey` string instead of an index.
 
 ### ix-tab-item
 
@@ -38,7 +38,7 @@ Replaces the index-based tab selection model with a string key-based approach, i
 </ix-tabs>
 ```
 
-Replace `selectedChange` event listeners with `tabChange`:
+Replace removed `selectedChange` event listeners with `tabChange`:
 
 ```js
 // Before

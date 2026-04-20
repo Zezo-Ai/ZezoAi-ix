@@ -85,15 +85,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
    */
   @Event() tabClose!: EventEmitter<string | undefined>;
 
-  /**
-   * Tab selection event. Event detail is the zero-based tab index. Fires when
-   * the user selects a tab, or when the tab list changes and the selected index
-   * is adjusted. Not emitted when `selected` is set from outside.
-   *
-   * @deprecated Since 5.0.0 use tabChange event instead which provides the tabKey in the event detail.
-   */
-  @Event() selectedChange!: EventEmitter<number>;
-
   @State() private isTabsOverflow = false;
   @State() private activeIndicatorOffset = 0;
   @State() private activeIndicatorWidth = 0;
@@ -290,11 +281,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
       this.tabChange,
       (oldKey) => this.setTabActive(oldKey!)
     );
-
-    const selectedIndex = this.tabs.findIndex((tab) => tab.tabKey === tabKey);
-    if (selectedIndex !== -1) {
-      this.selectedChange.emit(selectedIndex);
-    }
   }
 
   private onTabsNavigate(event: KeyboardEvent) {
