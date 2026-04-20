@@ -2148,11 +2148,6 @@ export namespace Components {
     }
     interface IxIconToggleButton {
         /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -2783,7 +2778,7 @@ export namespace Components {
          */
         "closeModal": <T = unknown>(reason: T) => Promise<void>;
         /**
-          * Dismiss modal on backdrop click
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true`.
           * @default false
          */
         "closeOnBackdropClick": boolean;
@@ -2793,11 +2788,6 @@ export namespace Components {
          */
         "disableAnimation": boolean;
         /**
-          * If set to true the modal cannot be closed by pressing the Escape key
-          * @default false
-         */
-        "disableEscapeClose": boolean;
-        /**
           * Dismiss the dialog
          */
         "dismissModal": <T = unknown>(reason?: T) => Promise<void>;
@@ -2806,6 +2796,11 @@ export namespace Components {
           * @default false
          */
         "hideBackdrop": boolean;
+        /**
+          * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`. Set before calling `showModal()`; changing while open is unsupported.
+          * @default false
+         */
+        "isNonBlocking": boolean;
         /**
           * Show the dialog
          */
@@ -4299,11 +4294,6 @@ export namespace Components {
         "value": string;
     }
     interface IxToggleButton {
-        /**
-          * ARIA label that will be set on the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
         /**
           * Disable the button
           * @default false
@@ -8630,11 +8620,6 @@ declare namespace LocalJSX {
     }
     interface IxIconToggleButton {
         /**
-          * ARIA label for the icon button Will be set for the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelIconButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -9321,7 +9306,7 @@ declare namespace LocalJSX {
          */
         "centered"?: boolean;
         /**
-          * Dismiss modal on backdrop click
+          * Dismiss modal on backdrop click (outside the dialog panel). Ignored when **`isNonBlocking`** is `true`.
           * @default false
          */
         "closeOnBackdropClick"?: boolean;
@@ -9331,15 +9316,15 @@ declare namespace LocalJSX {
          */
         "disableAnimation"?: boolean;
         /**
-          * If set to true the modal cannot be closed by pressing the Escape key
-          * @default false
-         */
-        "disableEscapeClose"?: boolean;
-        /**
           * Hide the backdrop behind the modal dialog
           * @default false
          */
         "hideBackdrop"?: boolean;
+        /**
+          * Non-modal dialog: page stays interactive, no lightbox or focus trap; `aria-modal` is `false`. Set before calling `showModal()`; changing while open is unsupported.
+          * @default false
+         */
+        "isNonBlocking"?: boolean;
         /**
           * Dialog close
          */
@@ -10937,11 +10922,6 @@ declare namespace LocalJSX {
     }
     interface IxToggleButton {
         /**
-          * ARIA label that will be set on the native HTML button element
-          * @since 3.2.0
-         */
-        "ariaLabelButton"?: string;
-        /**
           * Disable the button
           * @default false
          */
@@ -11711,7 +11691,6 @@ declare namespace LocalJSX {
         "size": '24' | '16' | '12';
         "disabled": boolean;
         "loading": boolean;
-        "ariaLabelIconButton": string;
     }
     interface IxInputAttributes {
         "type": 'text' | 'email' | 'password' | 'tel' | 'url';
@@ -11865,7 +11844,7 @@ declare namespace LocalJSX {
         "hideBackdrop": boolean;
         "closeOnBackdropClick": boolean;
         "centered": boolean;
-        "disableEscapeClose": boolean;
+        "isNonBlocking": boolean;
     }
     interface IxModalHeaderAttributes {
         "hideClose": boolean;
@@ -12208,7 +12187,6 @@ declare namespace LocalJSX {
         "icon": string;
         "iconRight": string;
         "pressed": boolean;
-        "ariaLabelButton": string;
     }
     interface IxTooltipAttributes {
         "for": ElementReference | ElementReference[];
