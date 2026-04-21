@@ -149,7 +149,6 @@ regressionTest('required', async ({ mount, page }) => {
   );
 
   await input.focus();
-  // Allow focus / validation hooks to settle before blur (matches datetime-input CT)
   await page.waitForTimeout(50);
   await input.blur();
 
