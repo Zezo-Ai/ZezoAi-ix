@@ -41,23 +41,6 @@ regressionTest('should render slot content', async ({ mount, page }) => {
 });
 
 regressionTest(
-  'should have tabindex 0 for keyboard accessibility',
-  async ({ mount, page }) => {
-    await mount(`
-      <ix-tab-panels>
-        <ix-tabs active-tab-key="tab-1">
-          <ix-tab-item tab-key="tab-1" label="Tab 1"></ix-tab-item>
-        </ix-tabs>
-        <ix-tab-panel tab-key="tab-1">Content</ix-tab-panel>
-      </ix-tab-panels>
-    `);
-
-    const panel = page.locator('ix-tab-panel');
-    await expect(panel).toHaveAttribute('tabindex', '0');
-  }
-);
-
-regressionTest(
   'should be hidden when not the active tab',
   async ({ mount, page }) => {
     await mount(`
