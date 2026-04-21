@@ -8,7 +8,8 @@
  */
 
 import { useLayoutEffect, useState } from 'react';
-import { IxButton, IxTabItem, IxTabPanel, IxTabPanels, IxTabs } from '../..';
+import { IxButton, IxTabItem, IxTabs } from '../..';
+import { IxTabPanel, IxTabPanels } from './../../tabs';
 
 type TabContentProps = {
   label: string;
