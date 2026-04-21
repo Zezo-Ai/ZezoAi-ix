@@ -9259,9 +9259,6 @@ declare namespace LocalJSX {
           * Settings Item label
          */
         "label"?: string;
-        /**
-          * Label changed
-         */
         "onLabelChange"?: (event: IxMenuSettingsItemCustomEvent<CustomLabelChangeEvent>) => void;
         /**
           * Key of the tab, used for identifying the tab in events

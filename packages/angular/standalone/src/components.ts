@@ -2023,11 +2023,9 @@ export declare interface IxMenuSettings extends Components.IxMenuSettings {
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
   inputs: ['label', { name: 'tabKey', required: true }],
-  outputs: ['labelChange'],
 })
 export class IxMenuSettingsItem {
   protected el: HTMLIxMenuSettingsItemElement;
-  @Output() labelChange = new EventEmitter<CustomEvent<IIxMenuSettingsItemCustomLabelChangeEvent>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -2035,14 +2033,7 @@ export class IxMenuSettingsItem {
 }
 
 
-import type { CustomLabelChangeEvent as IIxMenuSettingsItemCustomLabelChangeEvent } from '@siemens/ix/components';
-
-export declare interface IxMenuSettingsItem extends Components.IxMenuSettingsItem {
-  /**
-   * Label changed
-   */
-  labelChange: EventEmitter<CustomEvent<IIxMenuSettingsItemCustomLabelChangeEvent>>;
-}
+export declare interface IxMenuSettingsItem extends Components.IxMenuSettingsItem {}
 
 
 @ProxyCmp({

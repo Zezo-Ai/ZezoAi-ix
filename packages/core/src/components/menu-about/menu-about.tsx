@@ -13,8 +13,10 @@ import {
   Element,
   Event,
   EventEmitter,
+  forceUpdate,
   h,
   Host,
+  Listen,
   Prop,
 } from '@stencil/core';
 import { CustomCloseEvent } from '../utils/menu-tabs/menu-tabs-utils';
@@ -70,6 +72,8 @@ export class MenuAbout {
     this.itemsObserver.observe(this.hostElement, {
       childList: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ['label'],
     });
     this.onItemsChange();
   }
@@ -82,6 +86,11 @@ export class MenuAbout {
     if (this.activeTabKey === undefined && this.items.length > 0) {
       this.activeTabKey = this.items[0].tabKey;
     }
+  }
+
+  @Listen('labelChange')
+  handleLabelChange() {
+    forceUpdate(this);
   }
 
   render() {

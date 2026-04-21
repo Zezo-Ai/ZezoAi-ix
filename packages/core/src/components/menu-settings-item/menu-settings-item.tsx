@@ -34,7 +34,7 @@ export class MenuSettingsItem
   @Prop({ reflect: true }) label?: string;
 
   /**
-   * Label changed
+   * @internal
    */
   @Event() labelChange!: EventEmitter<CustomLabelChangeEvent>;
 
