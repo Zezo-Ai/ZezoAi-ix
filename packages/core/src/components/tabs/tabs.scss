@@ -93,6 +93,11 @@
     }
   }
 
+  .tabs:focus-visible {
+    outline-offset: -1px;
+    outline: 1px solid var(--theme-color-focus-bdr);
+  }
+
   .tabs-context-menu {
     margin-right: 0.5rem;
   }

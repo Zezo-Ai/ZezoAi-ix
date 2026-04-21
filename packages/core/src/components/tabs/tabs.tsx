@@ -301,6 +301,19 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   }
 
   private onTabsNavigate(event: KeyboardEvent) {
+    console.log(
+      'Key down on tabs',
+      event.key,
+      'Keyboard navigation mode:',
+      this.keyboardNavigation
+    );
+    if (
+      event.target instanceof HTMLElement &&
+      event.target.getAttribute('role') === 'tablist'
+    ) {
+      return;
+    }
+
     const tabs = this.tabs.filter((tab) => !tab.disabled);
     let currentIndex = tabs.findIndex((tab) => tab.selected);
 
@@ -321,6 +334,7 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
       if (currentIndex === -1) {
         return;
       }
+
       const indexOffset = event.key === 'ArrowRight' ? 1 : -1;
       const nextIndex =
         (currentIndex + indexOffset + tabs.length) % tabs.length;
@@ -346,7 +360,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
         onTabClick={(event: CustomEvent<TabClickDetail>) =>
           this.onTabClick(event)
         }
-        onKeyDown={(event: KeyboardEvent) => this.onTabsNavigate(event)}
         class={{
           small: this.small,
         }}
@@ -377,6 +390,8 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
                 tabs: true,
               }}
               onScroll={() => this.scheduleMeasurements()}
+              tabIndex={this.isTabsOverflow ? 0 : -1}
+              onKeyDown={(event: KeyboardEvent) => this.onTabsNavigate(event)}
             >
               <slot></slot>
             </div>
