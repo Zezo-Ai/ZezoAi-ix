@@ -678,14 +678,10 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     return isWithinTimePickerConstraints(candidate, min, max);
   }
 
-  private hasActiveTimeConstraints(): boolean {
-    const { min, max } = this.getConstraintBounds();
-    return hasActiveTimePickerConstraints(min, max);
-  }
-
   private canSelectUnitValue(
     unit: TimePickerDescriptorUnit,
-    rawValue: number
+    rawValue: number,
+    bounds?: { min: DateTime | null; max: DateTime | null }
   ): boolean {
     const base = this._time ?? DateTime.now().startOf('day');
     const candidate = computeTimeWithRawUnitValue(
@@ -697,17 +693,21 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     if (!candidate) {
       return true;
     }
+    if (bounds) {
+      return isWithinTimePickerConstraints(candidate, bounds.min, bounds.max);
+    }
     return this.isWithinTimeConstraints(candidate);
   }
 
   private stepFocusedValue(direction: 1 | -1) {
     const unit = this.focusedUnit;
     const arr = this.getNumberArrayForUnit(unit);
+    const bounds = this.getConstraintBounds();
     const next = findNextSelectableRingValue(
       arr,
       this.focusedValue,
       direction,
-      (candidate) => this.canSelectUnitValue(unit, candidate)
+      (candidate) => this.canSelectUnitValue(unit, candidate, bounds)
     );
     if (next === null) {
       return;
@@ -717,11 +717,12 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   }
 
   private isConfirmDisabled(): boolean {
-    if (!this.hasActiveTimeConstraints()) {
+    const { min, max } = this.getConstraintBounds();
+    if (!hasActiveTimePickerConstraints(min, max)) {
       return false;
     }
-    const t = this._time ?? DateTime.now().startOf('day');
-    return !this.isWithinTimeConstraints(t);
+    const t = this._time ?? DateTime.now();
+    return !isWithinTimePickerConstraints(t, min, max);
   }
 
   private getInitialFocusedValueForUnit(
@@ -800,6 +801,24 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   private isSelected(unit: TimePickerDescriptorUnit, number: number): boolean {
     return this.formattedTime![unit] === String(number);
+  }
+
+  /**
+   * Roving tabindex: while a column has keyboard focus, only the focused cell
+   * participates in sequential navigation so Tab/Shift+Tab move between
+   * columns instead of between cells inside the same column.
+   */
+  private getUnitCellTabIndex(
+    unit: TimePickerDescriptorUnit,
+    number: number
+  ): number {
+    if (this.isUnitFocused && this.focusedUnit === unit) {
+      return this.focusedValue === number ? 0 : -1;
+    }
+    if (this.isSelected(unit, number)) {
+      return 0;
+    }
+    return -1;
   }
 
   private select(unit: TimePickerDescriptorUnit, number: number) {
@@ -910,6 +929,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   }
 
   override render() {
+    const constraintBounds = this.getConstraintBounds();
+
     return (
       <Host>
         <ix-date-time-card
@@ -938,16 +959,15 @@ export class TimePicker extends Mixin(...DefaultMixins) {
                       class="element-list"
                     >
                       {descriptor.numberArray.map((number) => {
-                        const tabIndex = this.isSelected(
+                        const tabIndex = this.getUnitCellTabIndex(
                           descriptor.unit,
                           number
-                        )
-                          ? 0
-                          : -1;
+                        );
 
                         const disabled = !this.canSelectUnitValue(
                           descriptor.unit,
-                          number
+                          number,
+                          constraintBounds
                         );
 
                         return (
@@ -973,7 +993,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
                             }
                             aria-label={`${descriptor.header}: ${number}`}
                             tabindex={tabIndex}
-                            autofocus={tabIndex === 0}
+                            autofocus={tabIndex === 0 && !this.isUnitFocused}
                           >
                             {this.formatUnitValue(descriptor.unit, number)}
                           </button>

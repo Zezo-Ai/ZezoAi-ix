@@ -8,12 +8,10 @@
  */
 
 import { Component } from '@angular/core';
-import { IxTimePicker } from '@siemens/ix-angular/standalone';
 
 @Component({
-  standalone: true,
+  standalone: false,
   selector: 'app-example',
-  imports: [IxTimePicker],
   templateUrl: './timepicker-min-max-time.html',
 })
 export default class TimepickerMinMaxTime {}

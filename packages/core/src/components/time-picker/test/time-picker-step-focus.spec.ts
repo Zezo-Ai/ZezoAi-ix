@@ -46,9 +46,9 @@ describe('findNextSelectableRingValue', () => {
     ).toBe(11);
   });
 
-  it('when currentValue is not in the list, starts from index 0 then steps', () => {
+  it('when currentValue is not in the list, forward step considers the first entry', () => {
     expect(findNextSelectableRingValue([10, 20, 30], 999, 1, () => true)).toBe(
-      20
+      10
     );
   });
 });

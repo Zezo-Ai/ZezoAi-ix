@@ -25,7 +25,8 @@ export function findNextSelectableRingValue(
 
   let idx = values.indexOf(currentValue);
   if (idx === -1) {
-    idx = 0;
+    // Start "before" first or "after" last so the first loop advance lands on an array edge.
+    idx = direction === 1 ? -1 : values.length;
   }
 
   for (const _ of values) {
