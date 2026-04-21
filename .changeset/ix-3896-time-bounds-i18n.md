@@ -5,8 +5,6 @@
 '@siemens/ix-vue': major
 ---
 
-**`ix-time-picker` — time bounds:** optional **`minTime`** and **`maxTime`** (same string shape as **`format`** / the current **`time`** value). Ring values outside that inclusive range are disabled in the picker columns.
+**`ix-time-picker`:** optional **`minTime`** and **`maxTime`** constrain selectable values (same string shape as **`format`** / **`time`**). Values outside the inclusive range are disabled in the picker rings.
 
-**`ix-time-picker` — breaking (v5, attribute markup):** the hour column header **attribute** was renamed from **`i18n-column-header`** to **`i18n-hour-column-header`**. The **`i18nHourColumnHeader`** property name is unchanged—update static HTML or templates that still use the old attribute. Details: **`BREAKING_CHANGES/v5.md`**.
-
-**`@siemens/ix-angular`**, **`@siemens/ix-react`**, **`@siemens/ix-vue`:** regenerated bindings expose the same **`ix-time-picker`** API, including **`minTime`** and **`maxTime`**.
+**Breaking (v5):** the hour column header **attribute** is renamed from **`i18n-column-header`** to **`i18n-hour-column-header`**. The **`i18nHourColumnHeader`** property is unchanged—update static HTML or attribute-based markup. Migration: **`BREAKING_CHANGES/v5.md`**.
