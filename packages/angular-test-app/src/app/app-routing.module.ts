@@ -69,12 +69,10 @@ import Datepicker from '../preview-examples/datepicker';
 import DatepickerLocale from '../preview-examples/datepicker-locale';
 import DatepickerRange from '../preview-examples/datepicker-range';
 import Datetimepicker from '../preview-examples/datetimepicker';
-import DatetimepickerMinMaxTime from '../preview-examples/datetimepicker-min-max-time';
 import DatetimeInput from '../preview-examples/datetime-input';
 import DatetimeInputDisabled from '../preview-examples/datetime-input-disabled';
 import DatetimeInputLabel from '../preview-examples/datetime-input-label';
 import DatetimeInputMinMaxDate from '../preview-examples/datetime-input-min-max-date';
-import DatetimeInputMinMaxTime from '../preview-examples/datetime-input-min-max-time';
 import DatetimeInputReadonly from '../preview-examples/datetime-input-readonly';
 import DatetimeInputValidation from '../preview-examples/datetime-input-validation';
 import DatetimeInputWithSlots from '../preview-examples/datetime-input-with-slots';
@@ -229,7 +227,6 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeService from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
-import TimeInputMinMaxTime from '../preview-examples/time-input-min-max-time';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
 import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
@@ -521,10 +518,6 @@ const routes: Routes = [
         component: Datetimepicker,
       },
       {
-        path: 'datetimepicker-min-max-time',
-        component: DatetimepickerMinMaxTime,
-      },
-      {
         path: 'datetime-input',
         component: DatetimeInput,
       },
@@ -539,10 +532,6 @@ const routes: Routes = [
       {
         path: 'datetime-input-min-max-date',
         component: DatetimeInputMinMaxDate,
-      },
-      {
-        path: 'datetime-input-min-max-time',
-        component: DatetimeInputMinMaxTime,
       },
       {
         path: 'datetime-input-readonly',
@@ -878,7 +867,6 @@ const routes: Routes = [
       { path: 'theme-switcher', component: ThemeService },
       { path: 'tile', component: Tile },
       { path: 'time-input', component: TimeInput },
-      { path: 'time-input-min-max-time', component: TimeInputMinMaxTime },
       { path: 'time-range', component: TimeRange },
       { path: 'timepicker', component: Timepicker },
       { path: 'timepicker-min-max-time', component: TimepickerMinMaxTime },

@@ -106,28 +106,6 @@ export class TimeInput
   @Prop() format: string = 'TT';
 
   /**
-   * Earliest selectable time of day (string format must match `format`).
-   *
-   * @since 5.0.0
-   */
-  @Prop() minTime?: string;
-
-  /**
-   * Latest selectable time of day (string format must match `format`).
-   *
-   * @since 5.0.0
-   */
-  @Prop() maxTime?: string;
-
-  @Watch('minTime')
-  @Watch('maxTime')
-  watchTimeBoundsProp() {
-    if (this.value) {
-      void this.onInput(this.value);
-    }
-  }
-
-  /**
    * Required attribute.
    */
   @Prop() required?: boolean;
@@ -408,42 +386,6 @@ export class TimeInput
     return Promise.resolve(this.formInternals.form);
   }
 
-  private getTimeConstraintBoundsOnDay(reference: DateTime): {
-    min: DateTime | null;
-    max: DateTime | null;
-  } {
-    let min: DateTime | null = null;
-    let max: DateTime | null = null;
-    const day = reference.startOf('day');
-
-    if (this.minTime?.trim()) {
-      const p = DateTime.fromFormat(this.minTime.trim(), this.format);
-      if (p.isValid) {
-        min = day.set({
-          hour: p.hour,
-          minute: p.minute,
-          second: p.second,
-          millisecond: p.millisecond,
-        });
-      }
-    }
-    if (this.maxTime?.trim()) {
-      const p = DateTime.fromFormat(this.maxTime.trim(), this.format);
-      if (p.isValid) {
-        max = day.set({
-          hour: p.hour,
-          minute: p.minute,
-          second: p.second,
-          millisecond: p.millisecond,
-        });
-      }
-    }
-    if (min && max && min > max) {
-      return { min: null, max: null };
-    }
-    return { min, max };
-  }
-
   async onInput(value: string) {
     this.value = value;
     if (!value) {
@@ -461,17 +403,8 @@ export class TimeInput
 
     const time = DateTime.fromFormat(value, this.format);
     if (time.isValid) {
-      const { min, max } = this.getTimeConstraintBoundsOnDay(time);
-      if (min && time < min) {
-        this.isInputInvalid = true;
-        this.invalidReason = 'rangeUnderflow';
-      } else if (max && time > max) {
-        this.isInputInvalid = true;
-        this.invalidReason = 'rangeOverflow';
-      } else {
-        this.isInputInvalid = false;
-        this.invalidReason = undefined;
-      }
+      this.isInputInvalid = false;
+      this.invalidReason = undefined;
     } else {
       this.isInputInvalid = true;
       this.invalidReason = time.invalidReason ?? undefined;
@@ -682,8 +615,6 @@ export class TimeInput
           <ix-time-picker
             ref={this.timePickerRef}
             format={this.format}
-            minTime={this.minTime}
-            maxTime={this.maxTime}
             time={this.time ?? ''}
             hourInterval={this.hourInterval}
             minuteInterval={this.minuteInterval}

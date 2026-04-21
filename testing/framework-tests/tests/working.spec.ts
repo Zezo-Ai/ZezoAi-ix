@@ -10,13 +10,11 @@ import './generated/date-range.spec';
 import './generated/datetime-input-disabled.spec';
 import './generated/datetime-input-label.spec';
 import './generated/datetime-input-min-max-date.spec';
-import './generated/datetime-input-min-max-time.spec';
 import './generated/datetime-input-readonly.spec';
 import './generated/datetime-input-validation.spec';
 import './generated/datetime-input-with-slots.spec';
 import './generated/datetime-input.spec';
 import './generated/datetime-range.spec';
-import './generated/datetimepicker-min-max-time.spec';
 import './generated/modal-close.spec';
 import './generated/modal-form-ix-button-submit.spec';
 import './generated/modal-non-blocking.spec';
@@ -27,7 +25,6 @@ import './generated/tabs-overflow.spec';
 import './generated/tabs-rounded.spec';
 import './generated/tabs.spec';
 import './generated/time-range.spec';
-import './generated/time-input-min-max-time.spec';
 import './generated/timepicker-min-max-time.spec';
 
 // Button tests - basic

@@ -69,14 +69,12 @@ import DatetimeInput from './preview-examples/datetime-input.vue';
 import DatetimeInputDisabled from './preview-examples/datetime-input-disabled.vue';
 import DatetimeInputLabel from './preview-examples/datetime-input-label.vue';
 import DatetimeInputMinMaxDate from './preview-examples/datetime-input-min-max-date.vue';
-import DatetimeInputMinMaxTime from './preview-examples/datetime-input-min-max-time.vue';
 import DatetimeInputReadonly from './preview-examples/datetime-input-readonly.vue';
 import DatetimeInputValidation from './preview-examples/datetime-input-validation.vue';
 import DatetimeInputWithSlots from './preview-examples/datetime-input-with-slots.vue';
 import DatepickerRange from './preview-examples/datepicker-range.vue';
 import Datepicker from './preview-examples/datepicker.vue';
 import Datetimepicker from './preview-examples/datetimepicker.vue';
-import DatetimepickerMinMaxTime from './preview-examples/datetimepicker-min-max-time.vue';
 import Divider from './preview-examples/divider.vue';
 import DrawerFullHeight from './preview-examples/drawer-full-height.vue';
 import Drawer from './preview-examples/drawer.vue';
@@ -214,7 +212,6 @@ import TextareaField from './preview-examples/textarea.vue';
 import ThemeSwitcher from './preview-examples/theme-switcher.vue';
 import Tile from './preview-examples/tile.vue';
 import TimeRange from './preview-examples/time-range.vue';
-import TimeInputMinMaxTime from './preview-examples/time-input-min-max-time.vue';
 import Timepicker from './preview-examples/timepicker.vue';
 import TimepickerMinMaxTime from './preview-examples/timepicker-min-max-time.vue';
 import ToastCustom from './preview-examples/toast-custom.vue';
@@ -313,7 +310,6 @@ const routes: IxPreviewRoutes = {
   '/preview/datepicker': Datepicker,
   '/preview/datepicker-locale': DatepickerLocale,
   '/preview/datetimepicker': Datetimepicker,
-  '/preview/datetimepicker-min-max-time': DatetimepickerMinMaxTime,
   '/preview/divider': Divider,
   '/preview/drawer-full-height': DrawerFullHeight,
   '/preview/drawer': Drawer,
@@ -409,7 +405,6 @@ const routes: IxPreviewRoutes = {
   '/preview/input-with-slots': InputWithSlots,
   '/preview/tile': Tile,
   '/preview/time-range': TimeRange,
-  '/preview/time-input-min-max-time': TimeInputMinMaxTime,
   '/preview/timepicker': Timepicker,
   '/preview/timepicker-min-max-time': TimepickerMinMaxTime,
   '/preview/toast': Toast,
@@ -438,7 +433,6 @@ const routes: IxPreviewRoutes = {
   '/preview/datetime-input-disabled': DatetimeInputDisabled,
   '/preview/datetime-input-label': DatetimeInputLabel,
   '/preview/datetime-input-min-max-date': DatetimeInputMinMaxDate,
-  '/preview/datetime-input-min-max-time': DatetimeInputMinMaxTime,
   '/preview/datetime-input-readonly': DatetimeInputReadonly,
   '/preview/datetime-input-validation': DatetimeInputValidation,
   '/preview/datetime-input-with-slots': DatetimeInputWithSlots,

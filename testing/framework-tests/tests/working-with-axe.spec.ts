@@ -11,7 +11,6 @@ import './generated/datetime-input-axe.spec';
 import './generated/datetime-input-disabled-axe.spec';
 import './generated/datetime-input-label-axe.spec';
 import './generated/datetime-input-min-max-date-axe.spec';
-import './generated/datetime-input-min-max-time-axe.spec';
 import './generated/datetime-input-readonly-axe.spec';
 import './generated/datetime-input-validation-axe.spec';
 import './generated/datetime-input-with-slots-axe.spec';
@@ -26,7 +25,6 @@ import './generated/tabs-axe.spec';
 import './generated/tabs-overflow-axe.spec';
 import './generated/tabs-rounded-axe.spec';
 import './generated/time-range-axe.spec';
-import './generated/time-input-min-max-time-axe.spec';
 import './generated/timepicker-min-max-time-axe.spec';
 
 // Button tests - basic

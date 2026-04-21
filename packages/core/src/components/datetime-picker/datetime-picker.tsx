@@ -53,20 +53,6 @@ export class DatetimePicker
   @Prop() maxDate?: string;
 
   /**
-   * Earliest selectable time of day (must match `timeFormat`).
-   *
-   * @since 5.0.0
-   */
-  @Prop() minTime?: string;
-
-  /**
-   * Latest selectable time of day (must match `timeFormat`).
-   *
-   * @since 5.0.0
-   */
-  @Prop() maxTime?: string;
-
-  /**
    * Date format string.
    * See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens} for all available tokens.
    */
@@ -117,34 +103,6 @@ export class DatetimePicker
    * @since 3.0.0
    */
   @Prop({ attribute: 'i18n-time' }) i18nTime: string = 'Time';
-
-  /**
-   * Text for the embedded time picker hour column header.
-   *
-   * @since 5.0.0
-   */
-  @Prop() i18nHourColumnHeader?: string;
-
-  /**
-   * Text for the embedded time picker minute column header.
-   *
-   * @since 5.0.0
-   */
-  @Prop() i18nMinuteColumnHeader?: string;
-
-  /**
-   * Text for the embedded time picker second column header.
-   *
-   * @since 5.0.0
-   */
-  @Prop() i18nSecondColumnHeader?: string;
-
-  /**
-   * Text for the embedded time picker millisecond column header.
-   *
-   * @since 5.0.0
-   */
-  @Prop() i18nMillisecondColumnHeader?: string;
 
   /**
    * ARIA label for the previous month icon button.
@@ -283,13 +241,7 @@ export class DatetimePicker
                   dateTimePickerAppearance={true}
                   onTimeChange={(event) => this.onTimeChange(event)}
                   format={this.timeFormat}
-                  minTime={this.minTime}
-                  maxTime={this.maxTime}
                   time={this.time}
-                  i18nHourColumnHeader={this.i18nHourColumnHeader}
-                  i18nMinuteColumnHeader={this.i18nMinuteColumnHeader}
-                  i18nSecondColumnHeader={this.i18nSecondColumnHeader}
-                  i18nMillisecondColumnHeader={this.i18nMillisecondColumnHeader}
                   {...{
                     tabIndex: this.embedded ? -1 : 0,
                     [TRAP_FOCUS_INCLUDE_ATTRIBUTE]: this.embedded,

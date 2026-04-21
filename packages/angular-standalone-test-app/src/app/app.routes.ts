@@ -147,10 +147,6 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/datepicker-range').then((m) => m.default),
   'preview/datetimepicker': () =>
     import('../preview-examples/datetimepicker').then((m) => m.default),
-  'preview/datetimepicker-min-max-time': () =>
-    import('../preview-examples/datetimepicker-min-max-time').then(
-      (m) => m.default
-    ),
   'preview/datetime-input': () =>
     import('../preview-examples/datetime-input').then((m) => m.default),
   'preview/datetime-input-disabled': () =>
@@ -159,10 +155,6 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/datetime-input-label').then((m) => m.default),
   'preview/datetime-input-min-max-date': () =>
     import('../preview-examples/datetime-input-min-max-date').then(
-      (m) => m.default
-    ),
-  'preview/datetime-input-min-max-time': () =>
-    import('../preview-examples/datetime-input-min-max-time').then(
       (m) => m.default
     ),
   'preview/datetime-input-readonly': () =>
@@ -616,10 +608,6 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/time-input-disabled').then((m) => m.default),
   'preview/time-input-label': () =>
     import('../preview-examples/time-input-label').then((m) => m.default),
-  'preview/time-input-min-max-time': () =>
-    import('../preview-examples/time-input-min-max-time').then(
-      (m) => m.default
-    ),
   'preview/time-input-readonly': () =>
     import('../preview-examples/time-input-readonly').then((m) => m.default),
   'preview/time-input-validation': () =>
