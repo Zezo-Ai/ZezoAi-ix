@@ -653,11 +653,13 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   private setTimeRef() {
     const uses12HourFormat = isFormat12Hour(this.format);
 
-    if (uses12HourFormat && this._time) {
-      this.timeRef = this._time!.hour >= 12 ? 'PM' : 'AM';
-    } else {
+    if (!uses12HourFormat) {
       this.timeRef = undefined;
+      return;
     }
+
+    const clock = this._time ?? DateTime.now();
+    this.timeRef = clock.hour >= 12 ? 'PM' : 'AM';
   }
 
   private getConstraintBounds(): {
@@ -691,7 +693,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
       this.timeRef
     );
     if (!candidate) {
-      return true;
+      return false;
     }
     if (bounds) {
       return isWithinTimePickerConstraints(candidate, bounds.min, bounds.max);

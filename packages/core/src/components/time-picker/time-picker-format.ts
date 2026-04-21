@@ -17,8 +17,8 @@ export const LUXON_FORMAT_PATTERNS = {
   minutes: /\bm\b|mm|t|tt|ttt|tttt|T|TT|TTT|TTTT/,
   // s, ss and time formats that include seconds
   seconds: /\bs\b|ss|tt|ttt|tttt|TT|TTT|TTTT/,
-  // S, SSS (milliseconds), u/uu/uuu (fractional seconds), x/X (timestamps)
-  milliseconds: /\bS\b|SSS|u|uu|uuu/,
+  // S–SSS, u–uuu (fractional seconds); ttt/tttt/TTT/TTTT include sub-second parts
+  milliseconds: /S{1,3}|u{1,3}|[tT]{3,4}/,
 };
 
 /**

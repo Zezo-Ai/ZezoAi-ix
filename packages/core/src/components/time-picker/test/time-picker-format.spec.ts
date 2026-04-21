@@ -42,4 +42,9 @@ describe('LUXON_FORMAT_PATTERNS', () => {
     expect(LUXON_FORMAT_PATTERNS.seconds.test('HH:mm')).toBe(false);
     expect(LUXON_FORMAT_PATTERNS.milliseconds.test('HH:mm')).toBe(false);
   });
+
+  it('detects two-digit fractional S and composite ttt for milliseconds column', () => {
+    expect(LUXON_FORMAT_PATTERNS.milliseconds.test('HH:mm:ss.SS')).toBe(true);
+    expect(LUXON_FORMAT_PATTERNS.milliseconds.test('ttt')).toBe(true);
+  });
 });
