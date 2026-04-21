@@ -69,7 +69,7 @@ describe('getTimePickerConstraintBounds', () => {
 
 describe('isWithinTimePickerConstraints', () => {
   it('returns false for invalid candidate', () => {
-    const invalid = DateTime.fromMillis(NaN);
+    const invalid = DateTime.fromMillis(Number.NaN);
     expect(
       isWithinTimePickerConstraints(invalid, baseDay.set({ hour: 9 }), null)
     ).toBe(false);

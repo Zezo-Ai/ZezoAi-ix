@@ -10,6 +10,37 @@
 import { DateTime } from 'luxon';
 import type { TimePickerDescriptorUnit } from './time-picker.types';
 
+function maxValueForNonHourUnit(unit: TimePickerDescriptorUnit): number {
+  switch (unit) {
+    case 'minute':
+    case 'second':
+      return 59;
+    case 'millisecond':
+      return 999;
+    case 'hour':
+      return 23;
+  }
+}
+
+function mapHourColumnValue(
+  rawValue: number,
+  timeRef: 'AM' | 'PM' | undefined
+): { value: number; maxValue: number } {
+  if (timeRef === 'PM') {
+    return {
+      value: rawValue === 12 ? 12 : rawValue + 12,
+      maxValue: 23,
+    };
+  }
+  if (timeRef === 'AM') {
+    return {
+      value: rawValue === 12 ? 0 : rawValue,
+      maxValue: 11,
+    };
+  }
+  return { value: rawValue, maxValue: 23 };
+}
+
 /**
  * Applies a raw column value to a base time (including 12h rules).
  */
@@ -19,23 +50,16 @@ export function computeTimeWithRawUnitValue(
   rawValue: number,
   timeRef: 'AM' | 'PM' | undefined
 ): DateTime | null {
-  let value = rawValue;
-  let maxValue =
-    unit === 'hour'
-      ? 23
-      : unit === 'minute'
-        ? 59
-        : unit === 'second'
-          ? 59
-          : 999;
+  let value: number;
+  let maxValue: number;
 
   if (unit === 'hour') {
-    if (timeRef === 'PM') {
-      value = value === 12 ? 12 : value + 12;
-    } else if (timeRef === 'AM') {
-      value = value === 12 ? 0 : value;
-      maxValue = 12;
-    }
+    const mapped = mapHourColumnValue(rawValue, timeRef);
+    value = mapped.value;
+    maxValue = mapped.maxValue;
+  } else {
+    value = rawValue;
+    maxValue = maxValueForNonHourUnit(unit);
   }
 
   if (value > maxValue) {

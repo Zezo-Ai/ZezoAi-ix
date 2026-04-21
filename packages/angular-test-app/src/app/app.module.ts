@@ -474,7 +474,6 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     TimeInput,
     TimeRange,
     Timepicker,
-    TimepickerMinMaxTime,
     ToastCustom,
     ToastPosition,
     Toast,
@@ -520,6 +519,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    TimepickerMinMaxTime,
     IxModule.forRoot(),
     AgGridModule,
     FormsModule,

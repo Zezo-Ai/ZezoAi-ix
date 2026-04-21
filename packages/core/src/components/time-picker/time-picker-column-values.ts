@@ -30,16 +30,16 @@ export function buildTimePickerColumnNumberArrays(
     intervals;
 
   let hourNumbers: number[];
-  if (timeRef !== undefined) {
-    hourNumbers = Array.from(
-      { length: Math.ceil(12 / hourInterval) },
-      (_, i) => i * hourInterval + 1
-    ).filter((hour) => hour <= 12);
-  } else {
+  if (timeRef === undefined) {
     hourNumbers = Array.from(
       { length: Math.ceil(24 / hourInterval) },
       (_, i) => i * hourInterval
     );
+  } else {
+    hourNumbers = Array.from(
+      { length: Math.ceil(12 / hourInterval) },
+      (_, i) => i * hourInterval + 1
+    ).filter((hour) => hour <= 12);
   }
 
   const minuteNumbers = Array.from(

@@ -28,7 +28,7 @@ export function findNextSelectableRingValue(
     idx = 0;
   }
 
-  for (let i = 0; i < values.length; i++) {
+  for (const _ of values) {
     idx = (idx + direction + values.length) % values.length;
     const candidate = values[idx];
     if (canSelect(candidate)) {

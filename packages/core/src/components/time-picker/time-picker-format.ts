@@ -29,8 +29,7 @@ export function isFormat12Hour(format: string): boolean {
   let cleanFormat = '';
   let inQuote = false;
 
-  for (let i = 0; i < format.length; i++) {
-    const char = format[i];
+  for (const char of format) {
     if (char === "'") {
       inQuote = !inQuote;
     } else if (!inQuote) {
@@ -40,5 +39,5 @@ export function isFormat12Hour(format: string): boolean {
 
   // Check for specific 12-hour format tokens
   // Case-sensitive matching to distinguish between 'h' and 'H'
-  return /h|a|t/.test(cleanFormat);
+  return /[hat]/.test(cleanFormat);
 }

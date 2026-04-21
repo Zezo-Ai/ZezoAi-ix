@@ -9,7 +9,7 @@
 
 import { IxTimePicker } from '@siemens/ix-react';
 
-export default () => {
+function TimepickerMinMaxTimePreview() {
   return (
     <IxTimePicker
       format="HH:mm:ss"
@@ -18,4 +18,6 @@ export default () => {
       maxTime="17:30:00"
     />
   );
-};
+}
+
+export default TimepickerMinMaxTimePreview;

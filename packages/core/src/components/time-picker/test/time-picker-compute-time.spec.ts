@@ -41,6 +41,11 @@ describe('computeTimeWithRawUnitValue', () => {
     expect(t!.hour).toBe(11);
   });
 
+  it('AM: clamps invalid raw hour above 11 to 11 (not noon)', () => {
+    const t = computeTimeWithRawUnitValue(noon, 'hour', 13, 'AM');
+    expect(t!.hour).toBe(11);
+  });
+
   it('sets minute on base time', () => {
     const t = computeTimeWithRawUnitValue(noon, 'minute', 45, undefined);
     expect(t!.minute).toBe(45);
