@@ -8,7 +8,7 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-import { defineCustomElements } from './../loader';
+import { defineCustomElements } from './loader';
 
 defineCustomElements(window);
 

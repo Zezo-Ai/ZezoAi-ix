@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { defineVitestConfig } from '@stencil/vitest/config';
-import { config as stencilConfig } from '../stencil.config';
+import { config as stencilConfig } from './stencil.config';
 
 const vitestStencilConfig = {
   ...stencilConfig,
@@ -38,7 +38,7 @@ export default defineVitestConfig({
           name: 'spec',
           include: ['**/*.spec.{ts,tsx}'],
           environment: 'jsdom',
-          setupFiles: ['./src/vitest-setup.ts'],
+          setupFiles: ['./vitest-setup.ts'],
         },
       },
     ],
