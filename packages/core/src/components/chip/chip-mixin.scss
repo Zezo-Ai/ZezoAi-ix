@@ -13,7 +13,7 @@
 $predefined-chips: alarm, critical, warning, info, neutral, success;
 $border-radius: 100px;
 
-@mixin chip-container($interaction: true, $padding-block: 0.75rem) {
+@mixin chip-container($interaction: true, $padding-inline: 0.75rem) {
   .container {
     display: inline-flex;
     width: inherit;
@@ -65,7 +65,7 @@ $border-radius: 100px;
 
   .container {
     &.outline {
-      padding-left: calc($padding-block - 1px);
+      padding-left: calc($padding-inline - 1px);
       &.icon {
         @each $color in $predefined-chips {
           &.#{$color} {
@@ -87,12 +87,12 @@ $border-radius: 100px;
 
       &.closable.inactive,
       &:not(.closable) {
-        padding-right: calc($padding-block - 1px);
+        padding-right: calc($padding-inline - 1px);
       }
     }
 
     &:not(.outline) {
-      padding-left: $padding-block;
+      padding-left: $padding-inline;
 
       &.closable:not(.inactive) {
         padding-right: 0.25rem;
@@ -100,7 +100,7 @@ $border-radius: 100px;
 
       &.closable.inactive,
       &:not(.closable) {
-        padding-right: $padding-block;
+        padding-right: $padding-inline;
       }
     }
   }
