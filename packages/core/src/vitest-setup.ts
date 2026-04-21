@@ -8,8 +8,7 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-
-const { defineCustomElements } = await import('../loader');
+import { defineCustomElements } from './../loader';
 
 defineCustomElements(window);
 

@@ -14,9 +14,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 describe('ix-message-bar', () => {
   async function setup() {
-    const rendered = await render(
-      <ix-message-bar type="danger"></ix-message-bar>
-    );
+    const rendered = await render(<ix-message-bar></ix-message-bar>);
     const messageBar = rendered.root as HTMLIxMessageBarElement;
     const closeButton = messageBar.shadowRoot!.querySelector(
       '[data-testid="close-btn"]'

@@ -19,7 +19,7 @@ describe('ix-typography', () => {
     );
 
     expect(root).toHaveClass('typography-body');
-    expect(root).toHaveAttribute('text-color', 'soft');
+    expect(root.getAttribute('text-color')).toBe('soft');
   });
 
   it('should show format', async () => {

@@ -13,8 +13,12 @@ import { describe, expect, it, vi } from 'vitest';
 describe('select-item', () => {
   it('should throw exception if value is missing', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root, waitForChanges } = await render(
+      <ix-select-item value="test"></ix-select-item>
+    );
 
-    await render(<ix-select-item></ix-select-item>);
+    root.removeAttribute('value');
+    await waitForChanges();
 
     expect(warnSpy).toHaveBeenCalledWith(
       'ix-select-item must have a `value` property'
