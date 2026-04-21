@@ -12,12 +12,8 @@ import {
   defineContainer,
   type StencilVueComponent,
 } from '@stencil/vue-output-target/runtime';
-import {
-  defineCustomElement as defineIxTabPanel,
-} from '@siemens/ix/components/ix-tab-panel.js';
-import {
-  defineCustomElement as defineIxTabPanels,
-} from '@siemens/ix/components/ix-tab-panels.js';
+import { defineCustomElement as defineIxTabPanel } from '@siemens/ix/components/ix-tab-panel.js';
+import { defineCustomElement as defineIxTabPanels } from '@siemens/ix/components/ix-tab-panels.js';
 import {
   defineComponent,
   h,
@@ -36,9 +32,11 @@ import {
 
 const InternalIxTabPanel: StencilVueComponent<JSX.IxTabPanel> =
   // eslint-disable-next-line no-inline-comments
-  /*@__PURE__*/ defineContainer<JSX.IxTabPanel>('ix-tab-panel', defineIxTabPanel, [
-    'tabKey',
-  ]);
+  /*@__PURE__*/ defineContainer<JSX.IxTabPanel>(
+    'ix-tab-panel',
+    defineIxTabPanel,
+    ['tabKey']
+  );
 
 const InternalIxTabPanels: StencilVueComponent<JSX.IxTabPanels> =
   // eslint-disable-next-line no-inline-comments
@@ -70,7 +68,9 @@ function getNestedChildren(child: VNode): VNode[] {
 
   if (children && typeof children === 'object') {
     return Object.values(children)
-      .filter((slot): slot is () => VNode[] | VNode => typeof slot === 'function')
+      .filter(
+        (slot): slot is () => VNode[] | VNode => typeof slot === 'function'
+      )
       .flatMap((slot) => normalizeChildren(slot()));
   }
 
@@ -134,7 +134,9 @@ export const IxTabPanels = defineComponent({
       const slotState = findTabState(normalizeChildren(slots.default?.()));
 
       activeTabKey.value =
-        tabsElement?.activeTabKey ?? slotState.activeTabKey ?? slotState.firstTabKey;
+        tabsElement?.activeTabKey ??
+        slotState.activeTabKey ??
+        slotState.firstTabKey;
     };
 
     const handleTabChange = (event: Event) => {
