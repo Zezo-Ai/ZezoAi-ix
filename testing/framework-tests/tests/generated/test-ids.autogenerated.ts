@@ -56,6 +56,7 @@ export const testIds = [
   "slider-marker",
   "slider-error",
   "settings",
+  "settings-legacy",
   "select",
   "select-validation",
   "select-multiple",
@@ -245,5 +246,6 @@ export const testIds = [
   "aggrid",
   "add-icons",
   "action-card",
-  "about-and-legal"
+  "about-and-legal",
+  "about-and-legal-legacy"
 ] as const;

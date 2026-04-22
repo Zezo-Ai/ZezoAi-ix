@@ -26,6 +26,8 @@ export const routePaths: IxPreviewRoutes = {
   '': () => import('../playground/playground').then((m) => m.default),
   'preview/about-and-legal': () =>
     import('../preview-examples/about-and-legal').then((m) => m.default),
+  'preview/about-and-legal-legacy': () =>
+    import('../preview-examples/about-and-legal-legacy').then((m) => m.default),
   'preview/action-card': () =>
     import('../preview-examples/action-card').then((m) => m.default),
   'preview/add-icons': () =>
@@ -451,6 +453,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/select-validation').then((m) => m.default),
   'preview/settings': () =>
     import('../preview-examples/settings').then((m) => m.default),
+  'preview/settings-legacy': () =>
+    import('../preview-examples/settings-legacy').then((m) => m.default),
   'preview/slider': () =>
     import('../preview-examples/slider').then((m) => m.default),
   'preview/slider-error': () =>
