@@ -411,11 +411,20 @@ export class TimePicker extends Mixin(...DefaultMixins) {
         break;
 
       case 'Enter':
-      case ' ':
-        if (this.canSelectUnitValue(this.focusedUnit, this.focusedValue)) {
+      case ' ': {
+        const { bounds, selectionBase } = this.getUnitSelectionContext();
+        if (
+          this.canSelectUnitValue(
+            this.focusedUnit,
+            this.focusedValue,
+            bounds,
+            selectionBase
+          )
+        ) {
           this.select(this.focusedUnit, this.focusedValue);
         }
         break;
+      }
 
       default:
         return;
@@ -650,6 +659,11 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     this.timeChange.emit(this._time.toFormat(this.format));
   }
 
+  /** Picker value if set; otherwise the current instant (for constraints, AM/PM, confirm, etc.). */
+  private referenceOrNow(): DateTime {
+    return this._time ?? DateTime.now();
+  }
+
   private setTimeRef() {
     const uses12HourFormat = isFormat12Hour(this.format);
 
@@ -658,21 +672,33 @@ export class TimePicker extends Mixin(...DefaultMixins) {
       return;
     }
 
-    const clock = this._time ?? DateTime.now();
+    const clock = this.referenceOrNow();
     this.timeRef = clock.hour >= 12 ? 'PM' : 'AM';
   }
 
-  private getConstraintBounds(): {
+  private getConstraintBounds(referenceClock?: DateTime): {
     min: DateTime | null;
     max: DateTime | null;
   } {
-    const baseDay = (this._time ?? DateTime.now()).startOf('day');
+    const baseDay = (referenceClock ?? this.referenceOrNow()).startOf('day');
     return getTimePickerConstraintBounds(
       this.minTime,
       this.maxTime,
       this.format,
       baseDay
     );
+  }
+
+  /** Min/max bounds plus candidate base time, both derived from the same {@link referenceOrNow} value. */
+  private getUnitSelectionContext(): {
+    bounds: { min: DateTime | null; max: DateTime | null };
+    selectionBase: DateTime;
+  } {
+    const referenceClock = this.referenceOrNow();
+    return {
+      bounds: this.getConstraintBounds(referenceClock),
+      selectionBase: this._time ?? referenceClock.startOf('day'),
+    };
   }
 
   private isWithinTimeConstraints(candidate: DateTime): boolean {
@@ -683,9 +709,10 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   private canSelectUnitValue(
     unit: TimePickerDescriptorUnit,
     rawValue: number,
-    bounds?: { min: DateTime | null; max: DateTime | null }
+    bounds?: { min: DateTime | null; max: DateTime | null },
+    selectionBase?: DateTime
   ): boolean {
-    const base = this._time ?? DateTime.now().startOf('day');
+    const base = selectionBase ?? this._time ?? DateTime.now().startOf('day');
     const candidate = computeTimeWithRawUnitValue(
       base,
       unit,
@@ -704,12 +731,13 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   private stepFocusedValue(direction: 1 | -1) {
     const unit = this.focusedUnit;
     const arr = this.getNumberArrayForUnit(unit);
-    const bounds = this.getConstraintBounds();
+    const { bounds, selectionBase } = this.getUnitSelectionContext();
     const next = findNextSelectableRingValue(
       arr,
       this.focusedValue,
       direction,
-      (candidate) => this.canSelectUnitValue(unit, candidate, bounds)
+      (candidate) =>
+        this.canSelectUnitValue(unit, candidate, bounds, selectionBase)
     );
     if (next === null) {
       return;
@@ -719,12 +747,12 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   }
 
   private isConfirmDisabled(): boolean {
-    const { min, max } = this.getConstraintBounds();
+    const referenceClock = this.referenceOrNow();
+    const { min, max } = this.getConstraintBounds(referenceClock);
     if (!hasActiveTimePickerConstraints(min, max)) {
       return false;
     }
-    const t = this._time ?? DateTime.now();
-    return !isWithinTimePickerConstraints(t, min, max);
+    return !isWithinTimePickerConstraints(referenceClock, min, max);
   }
 
   private getInitialFocusedValueForUnit(
@@ -828,7 +856,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
       return;
     }
 
-    if (!this.canSelectUnitValue(unit, number)) {
+    const { bounds, selectionBase } = this.getUnitSelectionContext();
+    if (!this.canSelectUnitValue(unit, number, bounds, selectionBase)) {
       return;
     }
 
@@ -931,7 +960,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
   }
 
   override render() {
-    const constraintBounds = this.getConstraintBounds();
+    const { bounds, selectionBase } = this.getUnitSelectionContext();
 
     return (
       <Host>
@@ -969,7 +998,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
                         const disabled = !this.canSelectUnitValue(
                           descriptor.unit,
                           number,
-                          constraintBounds
+                          bounds,
+                          selectionBase
                         );
 
                         return (
