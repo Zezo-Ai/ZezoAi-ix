@@ -12,7 +12,7 @@ import { regressionTest } from '@utils/test';
 regressionTest('renders', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-about>
+        <ix-menu-about enable-legacy-tabs>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -32,7 +32,7 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
   await mount(`
     <ix-application>
       <ix-menu>
-        <ix-menu-about active-tab-key="tab-2">
+        <ix-menu-about enable-legacy-tabs active-tab-key="tab-2">
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -53,7 +53,7 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
 regressionTest('should not change tab', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-about>
+        <ix-menu-about enable-legacy-tabs>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -82,7 +82,7 @@ regressionTest(
   async ({ mount, page }) => {
     await mount(`
       <ix-menu>
-        <ix-menu-about>
+        <ix-menu-about enable-legacy-tabs>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>

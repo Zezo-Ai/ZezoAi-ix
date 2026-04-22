@@ -12,7 +12,7 @@ import { test } from '@utils/test';
 test('should not change tab', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-settings>
+        <ix-menu-settings enable-legacy-tabs>
           <ix-menu-settings-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-settings-item>
           <ix-menu-settings-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-settings-item>
         </ix-menu-settings>
@@ -42,7 +42,7 @@ test('tabChange event should fire exactly once per tab click', async ({
 }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-settings>
+        <ix-menu-settings enable-legacy-tabs>
           <ix-menu-settings-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-settings-item>
           <ix-menu-settings-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-settings-item>
         </ix-menu-settings>
