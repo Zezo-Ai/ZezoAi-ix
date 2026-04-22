@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Siemens AG
+ * SPDX-FileCopyrightText: 2026 Siemens AG
  *
  * SPDX-License-Identifier: MIT
  *
@@ -12,13 +12,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   standalone: false,
   selector: 'app-example',
-  templateUrl: './settings.html',
+  templateUrl: './settings-legacy.html',
 })
-export default class Settings implements AfterViewInit {
+export default class SettingsLegacy implements AfterViewInit {
   @ViewChild('menu', { read: ElementRef })
   menuRef!: ElementRef<HTMLIxMenuElement>;
-
-  activeTabKey = 'tab-1';
 
   ngAfterViewInit() {
     const { nativeElement } = this.menuRef;

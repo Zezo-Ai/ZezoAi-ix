@@ -1768,14 +1768,14 @@ export declare interface IxMenu extends Components.IxMenu {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuAbout,
-  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label']
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'enableLegacyTabs', 'label']
 })
 @Component({
   selector: 'ix-menu-about',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label'],
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'enableLegacyTabs', 'label'],
   outputs: ['tabChange', 'close'],
 })
 export class IxMenuAbout {
@@ -1978,14 +1978,14 @@ export declare interface IxMenuItem extends Components.IxMenuItem {}
 
 @ProxyCmp({
   defineCustomElementFn: defineIxMenuSettings,
-  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label']
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'enableLegacyTabs', 'label']
 })
 @Component({
   selector: 'ix-menu-settings',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'label'],
+  inputs: ['activeTabKey', 'ariaLabelCloseButton', 'enableLegacyTabs', 'label'],
   outputs: ['tabChange', 'close'],
 })
 export class IxMenuSettings {

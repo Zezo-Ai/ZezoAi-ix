@@ -301,12 +301,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   }
 
   private onTabsNavigate(event: KeyboardEvent) {
-    console.log(
-      'Key down on tabs',
-      event.key,
-      'Keyboard navigation mode:',
-      this.keyboardNavigation
-    );
     if (
       event.target instanceof HTMLElement &&
       event.target.getAttribute('role') === 'tablist'

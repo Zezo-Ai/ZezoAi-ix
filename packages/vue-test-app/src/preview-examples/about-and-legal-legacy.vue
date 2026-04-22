@@ -1,5 +1,5 @@
 <!--
- * SPDX-FileCopyrightText: 2024 Siemens AG
+ * SPDX-FileCopyrightText: 2026 Siemens AG
  *
  * SPDX-License-Identifier: MIT
  *
@@ -14,8 +14,13 @@ import {
   IxMenu,
   IxMenuAbout,
   IxMenuAboutItem,
-  IxMenuAboutNews,
 } from '@siemens/ix-vue';
+import { onMounted, useTemplateRef } from 'vue';
+
+const input = useTemplateRef<HTMLIxMenuElement>('menu');
+onMounted(() => {
+  input.value?.toggleAbout(true);
+});
 </script>
 
 <template>
@@ -23,13 +28,15 @@ import {
     <IxApplicationHeader>
       <div className="placeholder-logo" slot="logo"></div>
     </IxApplicationHeader>
-    <IxMenu>
+    <IxMenu ref="menu">
       <IxMenuAbout enableLegacyTabs activeTabKey="tab-1">
-        <IxMenuAboutItem tabKey="tab-1" label="Example"> </IxMenuAboutItem>
+        <IxMenuAboutItem tabKey="tab-1" label="Tab 1"
+          >Content 1</IxMenuAboutItem
+        >
+        <IxMenuAboutItem tabKey="tab-2" label="Tab 2"
+          >Content 2</IxMenuAboutItem
+        >
       </IxMenuAbout>
-      <IxMenuAboutNews label="Test" show activeAboutTabKey="tab-1">
-        Test
-      </IxMenuAboutNews>
     </IxMenu>
   </IxApplication>
 </template>

@@ -2496,6 +2496,7 @@ export namespace Components {
     interface IxMenuAbout {
         /**
           * Active tab
+          * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -2504,6 +2505,13 @@ export namespace Components {
           * @default 'Close About'
          */
         "ariaLabelCloseButton": string;
+        /**
+          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
+          * @since 5.0.0
+          * @default false
+         */
+        "enableLegacyTabs": boolean;
         /**
           * Content of the header
           * @default 'About & legal information'
@@ -2514,6 +2522,9 @@ export namespace Components {
          */
         "show": boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface IxMenuAboutItem {
         /**
           * About Item label
@@ -2725,6 +2736,13 @@ export namespace Components {
          */
         "ariaLabelCloseButton": string;
         /**
+          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
+          * @since 5.0.0
+          * @default false
+         */
+        "enableLegacyTabs": boolean;
+        /**
           * Label of first tab
           * @default 'Settings'
          */
@@ -2734,6 +2752,9 @@ export namespace Components {
          */
         "show": boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface IxMenuSettingsItem {
         /**
           * Settings Item label
@@ -3154,6 +3175,8 @@ export namespace Components {
     | 'neutral'
     | 'success'
     | 'custom';
+    }
+    interface IxPlayground {
     }
     /**
      * @since 3.2.0
@@ -5594,6 +5617,9 @@ declare global {
     interface HTMLIxMenuAboutItemElementEventMap {
         "labelChange": CustomLabelChangeEvent;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface HTMLIxMenuAboutItemElement extends Components.IxMenuAboutItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxMenuAboutItemElementEventMap>(type: K, listener: (this: HTMLIxMenuAboutItemElement, ev: IxMenuAboutItemCustomEvent<HTMLIxMenuAboutItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5710,6 +5736,9 @@ declare global {
     interface HTMLIxMenuSettingsItemElementEventMap {
         "labelChange": CustomLabelChangeEvent;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface HTMLIxMenuSettingsItemElement extends Components.IxMenuSettingsItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxMenuSettingsItemElementEventMap>(type: K, listener: (this: HTMLIxMenuSettingsItemElement, ev: IxMenuSettingsItemCustomEvent<HTMLIxMenuSettingsItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5868,6 +5897,12 @@ declare global {
     var HTMLIxPillElement: {
         prototype: HTMLIxPillElement;
         new (): HTMLIxPillElement;
+    };
+    interface HTMLIxPlaygroundElement extends Components.IxPlayground, HTMLStencilElement {
+    }
+    var HTMLIxPlaygroundElement: {
+        prototype: HTMLIxPlaygroundElement;
+        new (): HTMLIxPlaygroundElement;
     };
     /**
      * @since 3.2.0
@@ -6404,6 +6439,7 @@ declare global {
         "ix-pane": HTMLIxPaneElement;
         "ix-pane-layout": HTMLIxPaneLayoutElement;
         "ix-pill": HTMLIxPillElement;
+        "ix-playground": HTMLIxPlaygroundElement;
         "ix-progress-indicator": HTMLIxProgressIndicatorElement;
         "ix-push-card": HTMLIxPushCardElement;
         "ix-radio": HTMLIxRadioElement;
@@ -8978,6 +9014,7 @@ declare namespace LocalJSX {
     interface IxMenuAbout {
         /**
           * Active tab
+          * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -8986,6 +9023,13 @@ declare namespace LocalJSX {
           * @default 'Close About'
          */
         "ariaLabelCloseButton"?: string;
+        /**
+          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
+          * @since 5.0.0
+          * @default false
+         */
+        "enableLegacyTabs"?: boolean;
         /**
           * Content of the header
           * @default 'About & legal information'
@@ -9005,6 +9049,9 @@ declare namespace LocalJSX {
          */
         "show"?: boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface IxMenuAboutItem {
         /**
           * About Item label
@@ -9236,6 +9283,13 @@ declare namespace LocalJSX {
          */
         "ariaLabelCloseButton"?: string;
         /**
+          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
+          * @since 5.0.0
+          * @default false
+         */
+        "enableLegacyTabs"?: boolean;
+        /**
           * Label of first tab
           * @default 'Settings'
          */
@@ -9254,6 +9308,9 @@ declare namespace LocalJSX {
          */
         "show"?: boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface IxMenuSettingsItem {
         /**
           * Settings Item label
@@ -9712,6 +9769,8 @@ declare namespace LocalJSX {
     | 'neutral'
     | 'success'
     | 'custom';
+    }
+    interface IxPlayground {
     }
     /**
      * @since 3.2.0
@@ -11756,6 +11815,7 @@ declare namespace LocalJSX {
         "i18nCollapse": string;
     }
     interface IxMenuAboutAttributes {
+        "enableLegacyTabs": boolean;
         "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
@@ -11816,6 +11876,7 @@ declare namespace LocalJSX {
         "isCategory": boolean;
     }
     interface IxMenuSettingsAttributes {
+        "enableLegacyTabs": boolean;
         "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
@@ -12325,6 +12386,7 @@ declare namespace LocalJSX {
         "ix-pane": Omit<IxPane, keyof IxPaneAttributes> & { [K in keyof IxPane & keyof IxPaneAttributes]?: IxPane[K] } & { [K in keyof IxPane & keyof IxPaneAttributes as `attr:${K}`]?: IxPaneAttributes[K] } & { [K in keyof IxPane & keyof IxPaneAttributes as `prop:${K}`]?: IxPane[K] };
         "ix-pane-layout": Omit<IxPaneLayout, keyof IxPaneLayoutAttributes> & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes]?: IxPaneLayout[K] } & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes as `attr:${K}`]?: IxPaneLayoutAttributes[K] } & { [K in keyof IxPaneLayout & keyof IxPaneLayoutAttributes as `prop:${K}`]?: IxPaneLayout[K] };
         "ix-pill": Omit<IxPill, keyof IxPillAttributes> & { [K in keyof IxPill & keyof IxPillAttributes]?: IxPill[K] } & { [K in keyof IxPill & keyof IxPillAttributes as `attr:${K}`]?: IxPillAttributes[K] } & { [K in keyof IxPill & keyof IxPillAttributes as `prop:${K}`]?: IxPill[K] };
+        "ix-playground": IxPlayground;
         "ix-progress-indicator": Omit<IxProgressIndicator, keyof IxProgressIndicatorAttributes> & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes]?: IxProgressIndicator[K] } & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes as `attr:${K}`]?: IxProgressIndicatorAttributes[K] } & { [K in keyof IxProgressIndicator & keyof IxProgressIndicatorAttributes as `prop:${K}`]?: IxProgressIndicator[K] };
         "ix-push-card": Omit<IxPushCard, keyof IxPushCardAttributes> & { [K in keyof IxPushCard & keyof IxPushCardAttributes]?: IxPushCard[K] } & { [K in keyof IxPushCard & keyof IxPushCardAttributes as `attr:${K}`]?: IxPushCardAttributes[K] } & { [K in keyof IxPushCard & keyof IxPushCardAttributes as `prop:${K}`]?: IxPushCard[K] };
         "ix-radio": Omit<IxRadio, keyof IxRadioAttributes> & { [K in keyof IxRadio & keyof IxRadioAttributes]?: IxRadio[K] } & { [K in keyof IxRadio & keyof IxRadioAttributes as `attr:${K}`]?: IxRadioAttributes[K] } & { [K in keyof IxRadio & keyof IxRadioAttributes as `prop:${K}`]?: IxRadio[K] };
@@ -12449,6 +12511,9 @@ declare module "@stencil/core" {
             "ix-link-button": LocalJSX.IntrinsicElements["ix-link-button"] & JSXBase.HTMLAttributes<HTMLIxLinkButtonElement>;
             "ix-menu": LocalJSX.IntrinsicElements["ix-menu"] & JSXBase.HTMLAttributes<HTMLIxMenuElement>;
             "ix-menu-about": LocalJSX.IntrinsicElements["ix-menu-about"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutElement>;
+            /**
+             * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+             */
             "ix-menu-about-item": LocalJSX.IntrinsicElements["ix-menu-about-item"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutItemElement>;
             "ix-menu-about-news": LocalJSX.IntrinsicElements["ix-menu-about-news"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutNewsElement>;
             "ix-menu-avatar": LocalJSX.IntrinsicElements["ix-menu-avatar"] & JSXBase.HTMLAttributes<HTMLIxMenuAvatarElement>;
@@ -12457,6 +12522,9 @@ declare module "@stencil/core" {
             "ix-menu-expand-icon": LocalJSX.IntrinsicElements["ix-menu-expand-icon"] & JSXBase.HTMLAttributes<HTMLIxMenuExpandIconElement>;
             "ix-menu-item": LocalJSX.IntrinsicElements["ix-menu-item"] & JSXBase.HTMLAttributes<HTMLIxMenuItemElement>;
             "ix-menu-settings": LocalJSX.IntrinsicElements["ix-menu-settings"] & JSXBase.HTMLAttributes<HTMLIxMenuSettingsElement>;
+            /**
+             * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+             */
             "ix-menu-settings-item": LocalJSX.IntrinsicElements["ix-menu-settings-item"] & JSXBase.HTMLAttributes<HTMLIxMenuSettingsItemElement>;
             "ix-message-bar": LocalJSX.IntrinsicElements["ix-message-bar"] & JSXBase.HTMLAttributes<HTMLIxMessageBarElement>;
             "ix-modal": LocalJSX.IntrinsicElements["ix-modal"] & JSXBase.HTMLAttributes<HTMLIxModalElement>;
@@ -12472,6 +12540,7 @@ declare module "@stencil/core" {
             "ix-pane": LocalJSX.IntrinsicElements["ix-pane"] & JSXBase.HTMLAttributes<HTMLIxPaneElement>;
             "ix-pane-layout": LocalJSX.IntrinsicElements["ix-pane-layout"] & JSXBase.HTMLAttributes<HTMLIxPaneLayoutElement>;
             "ix-pill": LocalJSX.IntrinsicElements["ix-pill"] & JSXBase.HTMLAttributes<HTMLIxPillElement>;
+            "ix-playground": LocalJSX.IntrinsicElements["ix-playground"] & JSXBase.HTMLAttributes<HTMLIxPlaygroundElement>;
             /**
              * @since 3.2.0
              */

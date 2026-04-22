@@ -20,6 +20,9 @@ import {
 import { BaseTabMixin, BaseTabMixinContract } from '../tab-item/tab.mixin';
 import { CustomLabelChangeEvent } from '../utils/menu-tabs/menu-tabs-utils';
 
+/**
+ * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+ */
 @Component({
   tag: 'ix-menu-about-item',
   shadow: false,

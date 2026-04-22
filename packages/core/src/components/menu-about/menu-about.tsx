@@ -30,8 +30,17 @@ export class MenuAbout {
   @Element() hostElement!: HTMLIxMenuAboutElement;
 
   /**
+   * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+   *
+   * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
+   * @since 5.0.0
+   */
+  @Prop() enableLegacyTabs = false;
+
+  /**
    * Active tab
    *
+   * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
    * @since 5.0.0
    */
   @Prop({ mutable: true }) activeTabKey?: string;
@@ -83,6 +92,9 @@ export class MenuAbout {
   }
 
   private onItemsChange() {
+    if (!this.enableLegacyTabs) {
+      return;
+    }
     if (this.activeTabKey === undefined && this.items.length > 0) {
       this.activeTabKey = this.items[0].tabKey;
     }
@@ -90,6 +102,9 @@ export class MenuAbout {
 
   @Listen('labelChange')
   handleLabelChange() {
+    if (!this.enableLegacyTabs) {
+      return;
+    }
     forceUpdate(this);
   }
 
@@ -99,6 +114,7 @@ export class MenuAbout {
         slot={'ix-menu-about'}
         class={{
           show: this.show,
+          ['legacy-tabs']: this.enableLegacyTabs,
         }}
       >
         <div class={'about-header'}>
@@ -117,18 +133,22 @@ export class MenuAbout {
             }
           ></ix-icon-button>
         </div>
-        <ix-tab-panels>
-          <ix-tabs activeTabKey={this.activeTabKey}>
-            {this.items.map(({ label, tabKey }) => (
-              <ix-tab-item
-                tabKey={tabKey}
-                selected={tabKey === this.activeTabKey}
-                label={label}
-              ></ix-tab-item>
-            ))}
-          </ix-tabs>
+        {this.enableLegacyTabs ? (
+          <ix-tab-panels>
+            <ix-tabs activeTabKey={this.activeTabKey}>
+              {this.items.map(({ label, tabKey }) => (
+                <ix-tab-item
+                  tabKey={tabKey}
+                  selected={tabKey === this.activeTabKey}
+                  label={label}
+                ></ix-tab-item>
+              ))}
+            </ix-tabs>
+            <slot></slot>
+          </ix-tab-panels>
+        ) : (
           <slot></slot>
-        </ix-tab-panels>
+        )}
       </Host>
     );
   }

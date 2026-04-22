@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2024 Siemens AG
+SPDX-FileCopyrightText: 2026 Siemens AG
 
 SPDX-License-Identifier: MIT
 
@@ -12,7 +12,7 @@ LICENSE file in the root directory of this source tree.
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Popover news example</title>
+    <title>About and legal legacy example</title>
   </head>
   <body>
     <ix-application>
@@ -21,14 +21,23 @@ LICENSE file in the root directory of this source tree.
       </ix-application-header>
       <ix-menu>
         <ix-menu-about enable-legacy-tabs active-tab-key="tab-1">
-          <ix-menu-about-item tab-key="tab-1" label="Example">
-          </ix-menu-about-item>
+          <ix-menu-about-item tab-key="tab-1" label="Tab 1"
+            >Content 1</ix-menu-about-item
+          >
+          <ix-menu-about-item tab-key="tab-2" label="Tab 2"
+            >Content 2</ix-menu-about-item
+          >
         </ix-menu-about>
-        <ix-menu-about-news label="Test" show active-about-tab-key="tab-1">
-          Test
-        </ix-menu-about-news>
       </ix-menu>
     </ix-application>
+
+    <script>
+      (async function () {
+        await window.customElements.whenDefined('ix-menu');
+        const instance = document.querySelector('ix-menu');
+        await instance.toggleAbout(true);
+      })();
+    </script>
     <script type="module" src="./init.js"></script>
   </body>
 </html>
