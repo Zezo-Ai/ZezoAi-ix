@@ -29,7 +29,8 @@ function axeDisabledRulesForTestId(testId: string): string {
     'page-has-heading-one',
     ...(AXE_EXTRA_DISABLED_RULES[testId] ?? []),
   ];
-  return `['${rules.join(`', '`)}']`;
+  const separator = "', '";
+  return `['${rules.join(separator)}']`;
 }
 
 async function main() {
