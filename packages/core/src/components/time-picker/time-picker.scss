@@ -96,7 +96,7 @@
         cursor: pointer;
         color: var(--theme-color-primary);
 
-        &:hover {
+        &:hover:not(.disabled) {
           background-color: var(--theme-datepicker-day--background--hover);
         }
 
@@ -105,8 +105,13 @@
         }
 
         &.disabled {
-          cursor: not-allowed;
-          opacity: 0.4;
+          cursor: default;
+          color: var(--theme-color-weak-text);
+        }
+
+        &:not(.selected).disabled:hover,
+        &:not(.selected).disabled:active {
+          background-color: transparent;
         }
       }
 
@@ -115,7 +120,7 @@
         color: var(--theme-datepicker-day--color--selected);
         font-weight: var(--theme-font-weight-bold);
 
-        &:hover {
+        &:hover:not(.disabled) {
           background-color: var(
             --theme-datepicker-day--background--selected-hover
           );
@@ -123,6 +128,10 @@
 
         &:focus-visible {
           border: 0.0625rem solid var(--theme-color-inv-contrast-text);
+        }
+
+        &.disabled {
+          color: var(--theme-color-weak-text);
         }
       }
 
