@@ -7,6 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { describe, expect, it } from 'vitest';
 import { DateTime } from 'luxon';
 import { computeTimeWithRawUnitValue } from '../time-picker-compute-time';
 

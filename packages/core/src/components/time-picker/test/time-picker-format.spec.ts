@@ -7,6 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { describe, expect, it } from 'vitest';
 import { isFormat12Hour, LUXON_FORMAT_PATTERNS } from '../time-picker-format';
 
 describe('isFormat12Hour', () => {
