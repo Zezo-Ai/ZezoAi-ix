@@ -4097,7 +4097,7 @@ export namespace Components {
          */
         "i18nSecondColumnHeader": string;
         /**
-          * Latest selectable time of day (string format must match `format`). If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
           * @since 5.0.0
          */
         "maxTime"?: string;
@@ -4108,7 +4108,7 @@ export namespace Components {
          */
         "millisecondInterval": number;
         /**
-          * Earliest selectable time of day (string format must match `format`). If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
           * @since 5.0.0
          */
         "minTime"?: string;
@@ -10644,7 +10644,7 @@ declare namespace LocalJSX {
          */
         "i18nSecondColumnHeader"?: string;
         /**
-          * Latest selectable time of day (string format must match `format`). If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
           * @since 5.0.0
          */
         "maxTime"?: string;
@@ -10655,7 +10655,7 @@ declare namespace LocalJSX {
          */
         "millisecondInterval"?: number;
         /**
-          * Earliest selectable time of day (string format must match `format`). If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
           * @since 5.0.0
          */
         "minTime"?: string;

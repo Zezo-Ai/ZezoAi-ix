@@ -35,10 +35,3 @@ export function getTimePickerColumnSeparator(
 
   return ':';
 }
-
-export function getTimePickerInitialFocusedValueForUnit(
-  selectedValue: number,
-  numberArray: number[]
-): number {
-  return numberArray.includes(selectedValue) ? selectedValue : numberArray[0];
-}

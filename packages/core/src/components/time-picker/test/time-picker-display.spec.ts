@@ -11,7 +11,6 @@ import { describe, expect, it } from 'vitest';
 import {
   formatTimePickerUnitValue,
   getTimePickerColumnSeparator,
-  getTimePickerInitialFocusedValueForUnit,
 } from '../time-picker-display';
 
 describe('formatTimePickerUnitValue', () => {
@@ -46,17 +45,5 @@ describe('getTimePickerColumnSeparator', () => {
 
   it('returns colon when there is no next column', () => {
     expect(getTimePickerColumnSeparator(0, [{ unit: 'hour' }])).toBe(':');
-  });
-});
-
-describe('getTimePickerInitialFocusedValueForUnit', () => {
-  it('returns selected when in array', () => {
-    expect(getTimePickerInitialFocusedValueForUnit(30, [0, 15, 30, 45])).toBe(
-      30
-    );
-  });
-
-  it('falls back to first when selected not in array', () => {
-    expect(getTimePickerInitialFocusedValueForUnit(7, [0, 15, 30, 45])).toBe(0);
   });
 });
