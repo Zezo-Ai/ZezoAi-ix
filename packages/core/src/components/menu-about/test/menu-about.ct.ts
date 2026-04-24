@@ -12,7 +12,7 @@ import { regressionTest } from '@utils/test';
 regressionTest('renders', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-about enable-legacy-tabs>
+        <ix-menu-about>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -32,7 +32,7 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
   await mount(`
     <ix-application>
       <ix-menu>
-        <ix-menu-about enable-legacy-tabs active-tab-key="tab-2">
+        <ix-menu-about active-tab-key="tab-2">
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -53,7 +53,7 @@ regressionTest('active-tab-label', async ({ mount, page }) => {
 regressionTest('should not change tab', async ({ mount, page }) => {
   await mount(`
       <ix-menu>
-        <ix-menu-about enable-legacy-tabs>
+        <ix-menu-about>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -82,7 +82,7 @@ regressionTest(
   async ({ mount, page }) => {
     await mount(`
       <ix-menu>
-        <ix-menu-about enable-legacy-tabs>
+        <ix-menu-about>
           <ix-menu-about-item tab-key="tab-1" label="Tab 1">Content 1</ix-menu-about-item>
           <ix-menu-about-item tab-key="tab-2" label="Tab 2">Content 2</ix-menu-about-item>
         </ix-menu-about>
@@ -111,5 +111,29 @@ regressionTest(
 
     const eventDetail = await eventPromise;
     expect(eventDetail).toBe('tab-2');
+  }
+);
+
+regressionTest(
+  'renders slotted tabs when suppressing legacy tabs',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-menu>
+        <ix-menu-about suppress-legacy-tabs>
+          <ix-tabs active-tab-key="tab-1">
+            <ix-tab-item tab-key="tab-1">Tab 1</ix-tab-item>
+            <ix-tab-item tab-key="tab-2">Tab 2</ix-tab-item>
+          </ix-tabs>
+          <section role="tabpanel">Content 1</section>
+        </ix-menu-about>
+      </ix-menu>
+    `);
+
+    const element = page.locator('#aboutAndLegal');
+    await element.click();
+
+    const aboutAndLegal = page.locator('ix-menu-about');
+    await expect(aboutAndLegal).not.toHaveClass(/legacy-tabs/);
+    await expect(page.getByRole('tab', { name: 'Tab 1' })).toBeVisible();
   }
 );

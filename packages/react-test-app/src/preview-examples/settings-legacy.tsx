@@ -31,7 +31,7 @@ export default () => {
         <div className="placeholder-logo" slot="logo"></div>
       </IxApplicationHeader>
       <IxMenu ref={ref}>
-        <IxMenuSettings enableLegacyTabs activeTabKey="tab-1">
+        <IxMenuSettings activeTabKey="tab-1">
           <IxMenuSettingsItem
             tabKey="tab-1"
             label="Example Setting 1"

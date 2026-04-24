@@ -30,17 +30,18 @@ export class MenuAbout {
   @Element() hostElement!: HTMLIxMenuAboutElement;
 
   /**
-   * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
+   * Whether to suppress legacy tabs (ix-menu-about-item) and use slotted tabs
+   * (ix-tab-item) instead
    *
-   * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
    * @since 5.0.0
    */
-  @Prop() enableLegacyTabs = false;
+  @Prop() suppressLegacyTabs = false;
 
   /**
-   * Active tab
+   * Active tab used for legacy ix-menu-about-item integrations
    *
-   * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
+   * @deprecated since 5.0.0, only used for legacy ix-menu-about-item
+   * integrations
    * @since 5.0.0
    */
   @Prop({ mutable: true }) activeTabKey?: string;
@@ -92,7 +93,7 @@ export class MenuAbout {
   }
 
   private onItemsChange() {
-    if (!this.enableLegacyTabs) {
+    if (this.suppressLegacyTabs) {
       return;
     }
     if (this.activeTabKey === undefined && this.items.length > 0) {
@@ -102,7 +103,7 @@ export class MenuAbout {
 
   @Listen('labelChange')
   handleLabelChange() {
-    if (!this.enableLegacyTabs) {
+    if (this.suppressLegacyTabs) {
       return;
     }
     forceUpdate(this);
@@ -114,7 +115,7 @@ export class MenuAbout {
         slot={'ix-menu-about'}
         class={{
           show: this.show,
-          ['legacy-tabs']: this.enableLegacyTabs,
+          ['legacy-tabs']: !this.suppressLegacyTabs,
         }}
       >
         <div class={'about-header'}>
@@ -133,7 +134,7 @@ export class MenuAbout {
             }
           ></ix-icon-button>
         </div>
-        {this.enableLegacyTabs ? (
+        {!this.suppressLegacyTabs ? (
           <ix-tab-panels>
             <ix-tabs activeTabKey={this.activeTabKey}>
               {this.items.map(({ label, tabKey }) => (

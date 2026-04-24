@@ -23,7 +23,7 @@ export default () => {
         <div className="placeholder-logo" slot="logo"></div>
       </IxApplicationHeader>
       <IxMenu>
-        <IxMenuAbout enableLegacyTabs activeTabKey="tab-1">
+        <IxMenuAbout activeTabKey="tab-1">
           <IxMenuAboutItem tabKey="tab-1" label="Example">
             {' '}
           </IxMenuAboutItem>

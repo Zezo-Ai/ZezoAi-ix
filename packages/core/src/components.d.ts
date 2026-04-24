@@ -2495,8 +2495,8 @@ export namespace Components {
     }
     interface IxMenuAbout {
         /**
-          * Active tab
-          * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
+          * Active tab used for legacy ix-menu-about-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-about-item integrations
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -2506,13 +2506,6 @@ export namespace Components {
          */
         "ariaLabelCloseButton": string;
         /**
-          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
-          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
-          * @since 5.0.0
-          * @default false
-         */
-        "enableLegacyTabs": boolean;
-        /**
           * Content of the header
           * @default 'About & legal information'
          */
@@ -2521,6 +2514,12 @@ export namespace Components {
           * @default false
          */
         "show": boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-about-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs": boolean;
     }
     /**
      * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
@@ -2726,7 +2725,8 @@ export namespace Components {
     }
     interface IxMenuSettings {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-settings-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-settings-item integrations
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -2736,13 +2736,6 @@ export namespace Components {
          */
         "ariaLabelCloseButton": string;
         /**
-          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
-          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
-          * @since 5.0.0
-          * @default false
-         */
-        "enableLegacyTabs": boolean;
-        /**
           * Label of first tab
           * @default 'Settings'
          */
@@ -2751,6 +2744,12 @@ export namespace Components {
           * @default false
          */
         "show": boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-settings-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs": boolean;
     }
     /**
      * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
@@ -9004,8 +9003,8 @@ declare namespace LocalJSX {
     }
     interface IxMenuAbout {
         /**
-          * Active tab
-          * @deprecated since 5.0.0, will be removed together with `enableLegacyTabs`
+          * Active tab used for legacy ix-menu-about-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-about-item integrations
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -9014,13 +9013,6 @@ declare namespace LocalJSX {
           * @default 'Close About'
          */
         "ariaLabelCloseButton"?: string;
-        /**
-          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
-          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
-          * @since 5.0.0
-          * @default false
-         */
-        "enableLegacyTabs"?: boolean;
         /**
           * Content of the header
           * @default 'About & legal information'
@@ -9039,6 +9031,12 @@ declare namespace LocalJSX {
           * @default false
          */
         "show"?: boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-about-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs"?: boolean;
     }
     /**
      * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
@@ -9264,7 +9262,8 @@ declare namespace LocalJSX {
     }
     interface IxMenuSettings {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-settings-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-settings-item integrations
           * @since 5.0.0
          */
         "activeTabKey"?: string;
@@ -9273,13 +9272,6 @@ declare namespace LocalJSX {
           * @default 'Close Settings'
          */
         "ariaLabelCloseButton"?: string;
-        /**
-          * Whether to use legacy tabs (ix-menu-about-item) or tabs (ix-tab-item)
-          * @deprecated since 5.0.0, use ix-tabs and ix-tab-item instead of ix-menu-about-item
-          * @since 5.0.0
-          * @default false
-         */
-        "enableLegacyTabs"?: boolean;
         /**
           * Label of first tab
           * @default 'Settings'
@@ -9298,6 +9290,12 @@ declare namespace LocalJSX {
           * @default false
          */
         "show"?: boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-settings-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs"?: boolean;
     }
     /**
      * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
@@ -11804,7 +11802,7 @@ declare namespace LocalJSX {
         "i18nCollapse": string;
     }
     interface IxMenuAboutAttributes {
-        "enableLegacyTabs": boolean;
+        "suppressLegacyTabs": boolean;
         "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
@@ -11865,7 +11863,7 @@ declare namespace LocalJSX {
         "isCategory": boolean;
     }
     interface IxMenuSettingsAttributes {
-        "enableLegacyTabs": boolean;
+        "suppressLegacyTabs": boolean;
         "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;

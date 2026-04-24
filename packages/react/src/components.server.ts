@@ -1203,7 +1203,7 @@ export type IxMenuAboutEvents = {
 export const IxMenuAbout: StencilReactComponent<IxMenuAboutElement, IxMenuAboutEvents, Components.IxMenuAbout> = /*@__PURE__*/ createComponent<IxMenuAboutElement, IxMenuAboutEvents, Components.IxMenuAbout>({
     tagName: 'ix-menu-about',
     properties: {
-        enableLegacyTabs: 'enable-legacy-tabs',
+        suppressLegacyTabs: 'suppress-legacy-tabs',
         activeTabKey: 'active-tab-key',
         label: 'label',
         ariaLabelCloseButton: 'aria-label-close-button',
@@ -1326,7 +1326,7 @@ export type IxMenuSettingsEvents = {
 export const IxMenuSettings: StencilReactComponent<IxMenuSettingsElement, IxMenuSettingsEvents, Components.IxMenuSettings> = /*@__PURE__*/ createComponent<IxMenuSettingsElement, IxMenuSettingsEvents, Components.IxMenuSettings>({
     tagName: 'ix-menu-settings',
     properties: {
-        enableLegacyTabs: 'enable-legacy-tabs',
+        suppressLegacyTabs: 'suppress-legacy-tabs',
         activeTabKey: 'active-tab-key',
         label: 'label',
         ariaLabelCloseButton: 'aria-label-close-button',
