@@ -201,6 +201,33 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     );
   }
 
+  private warnIfConstraintTimeInvalid(
+    prop: 'minTime' | 'maxTime',
+    value: string | undefined
+  ): void {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      return;
+    }
+    const parsed = DateTime.fromFormat(trimmed, this.format);
+    if (parsed.isValid) {
+      return;
+    }
+    const detail = [parsed.invalidReason, parsed.invalidExplanation]
+      .filter(Boolean)
+      .join(': ');
+    console.warn(
+      `[ix-time-picker] ${prop}="${trimmed}" does not match format "${this.format}". ` +
+        'The constraint is ignored until the value matches `format`.' +
+        (detail ? ` (${detail})` : '')
+    );
+  }
+
+  private warnConstraintTimesIfInvalid(): void {
+    this.warnIfConstraintTimeInvalid('minTime', this.minTime);
+    this.warnIfConstraintTimeInvalid('maxTime', this.maxTime);
+  }
+
   /**
    * Selected time value.
    * Format has to match the `format` property.
@@ -219,6 +246,7 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   /**
    * Earliest selectable time of day (string format must match `format`).
+   * If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
    *
    * @since 5.0.0
    */
@@ -226,10 +254,21 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   /**
    * Latest selectable time of day (string format must match `format`).
+   * If the value is non-empty but invalid for `format`, the constraint is ignored and a console warning is emitted.
    *
    * @since 5.0.0
    */
   @Prop() maxTime?: string;
+
+  @Watch('minTime')
+  watchMinTimePropHandler() {
+    this.warnIfConstraintTimeInvalid('minTime', this.minTime);
+  }
+
+  @Watch('maxTime')
+  watchMaxTimePropHandler() {
+    this.warnIfConstraintTimeInvalid('maxTime', this.maxTime);
+  }
 
   /**
    * Get default time value
@@ -345,6 +384,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     this.watchMinuteIntervalPropHandler(this.minuteInterval);
     this.watchSecondIntervalPropHandler(this.secondInterval);
     this.watchMillisecondIntervalPropHandler(this.millisecondInterval);
+
+    this.warnConstraintTimesIfInvalid();
   }
 
   override componentDidLoad() {
