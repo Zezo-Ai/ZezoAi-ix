@@ -243,13 +243,13 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     this._time = timeFormat;
   }
 
-  /** Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`). 
-   * 
+  /** Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+   *
    * @since 5.0.0 */
   @Prop() minTime?: string;
 
-  /** Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`). 
-   * 
+  /** Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+   *
    * @since 5.0.0 */
   @Prop() maxTime?: string;
 
