@@ -783,7 +783,10 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     let base = this._time ?? selectionBase;
 
     for (let i = 1; i < targetIndex; i++) {
-      const unit = order[i]!;
+      const unit = order[i];
+      if (unit === undefined) {
+        continue;
+      }
       const raw = this.getProvisionalRawValue(unit);
       const next = computeTimeWithRawUnitValue(base, unit, raw, this.timeRef);
       if (next) {
