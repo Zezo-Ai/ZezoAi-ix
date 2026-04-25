@@ -17,6 +17,23 @@ regressionTest('renders', async ({ mount, page }) => {
   await expect(datePicker).toHaveClass(/hydrated/);
 });
 
+regressionTest(
+  'passes minTime/maxTime constraints to nested time-picker',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-datetime-picker time-format="HH:mm:ss" time="12:00:00" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+    );
+
+    const picker = page.locator('ix-time-picker').first();
+    await expect(
+      picker.locator('[data-element-container-id="hour-12"]')
+    ).toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-13"]')
+    ).not.toBeDisabled();
+  }
+);
+
 regressionTest.describe('datetime picker tests single', () => {
   regressionTest.beforeEach(async ({ mount }) => {
     await mount(

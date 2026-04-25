@@ -1430,9 +1430,19 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Show AM/PM time reference control.
           * @default false
@@ -7782,9 +7792,19 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Date change event. Emitted when the date changes in the embedded date picker.
          */
@@ -11410,6 +11430,8 @@ declare namespace LocalJSX {
         "maxDate": string;
         "dateFormat": string;
         "timeFormat": string;
+        "minTime": string;
+        "maxTime": string;
         "from": string;
         "to": string;
         "time": string;

@@ -528,6 +528,8 @@ export const IxDatetimePicker: StencilVueComponent<JSX.IxDatetimePicker> = /*@__
   'maxDate',
   'dateFormat',
   'timeFormat',
+  'minTime',
+  'maxTime',
   'from',
   'to',
   'time',

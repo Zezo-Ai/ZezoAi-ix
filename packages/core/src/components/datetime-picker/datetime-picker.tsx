@@ -65,6 +65,20 @@ export class DatetimePicker
   @Prop() timeFormat: string = 'HH:mm:ss';
 
   /**
+   * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+   *
+   * @since 5.0.0
+   */
+  @Prop() minTime?: string;
+
+  /**
+   * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+   *
+   * @since 5.0.0
+   */
+  @Prop() maxTime?: string;
+
+  /**
    * The selected starting date. If the picker is not in range mode, this is the selected date.
    * Format has to match the `dateFormat` property.
    */
@@ -242,6 +256,8 @@ export class DatetimePicker
                   onTimeChange={(event) => this.onTimeChange(event)}
                   format={this.timeFormat}
                   time={this.time}
+                  minTime={this.minTime}
+                  maxTime={this.maxTime}
                   {...{
                     tabIndex: this.embedded ? -1 : 0,
                     [TRAP_FOCUS_INCLUDE_ATTRIBUTE]: this.embedded,

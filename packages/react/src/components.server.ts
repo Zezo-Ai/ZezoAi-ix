@@ -661,6 +661,8 @@ export const IxDatetimePicker: StencilReactComponent<IxDatetimePickerElement, Ix
         maxDate: 'max-date',
         dateFormat: 'date-format',
         timeFormat: 'time-format',
+        minTime: 'min-time',
+        maxTime: 'max-time',
         from: 'from',
         to: 'to',
         time: 'time',
