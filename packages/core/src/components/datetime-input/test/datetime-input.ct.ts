@@ -591,6 +591,80 @@ regressionTest('validates maxDate constraint', async ({ mount, page }) => {
 });
 
 regressionTest(
+  'applies minTime/maxTime only on matching minDate/maxDate boundaries',
+  async ({ mount, page }) => {
+    await mount(`
+    <ix-datetime-input
+      value="2026/02/02 12:00:00"
+      min-date="2026/02/01"
+      max-date="2026/02/28"
+      min-time="13:00:00"
+      max-time="17:30:00"
+    ></ix-datetime-input>
+  `);
+
+    const dateTimeInput = page.locator('ix-datetime-input');
+    const input = dateTimeInput.getByRole('textbox');
+    await expect(input).not.toHaveClass(/is-invalid/);
+  }
+);
+
+regressionTest(
+  'validates minTime on minDate boundary when date bounds are set',
+  async ({ mount, page }) => {
+    await mount(`
+    <ix-datetime-input
+      value="2026/02/01 12:00:00"
+      min-date="2026/02/01"
+      max-date="2026/02/28"
+      min-time="13:00:00"
+      max-time="17:30:00"
+    ></ix-datetime-input>
+  `);
+
+    const dateTimeInput = page.locator('ix-datetime-input');
+    const input = dateTimeInput.getByRole('textbox');
+    await expect(input).toHaveClass(/is-invalid/);
+  }
+);
+
+regressionTest(
+  'validates maxTime on maxDate boundary when date bounds are set',
+  async ({ mount, page }) => {
+    await mount(`
+    <ix-datetime-input
+      value="2026/02/28 18:00:00"
+      min-date="2026/02/01"
+      max-date="2026/02/28"
+      min-time="13:00:00"
+      max-time="17:30:00"
+    ></ix-datetime-input>
+  `);
+
+    const dateTimeInput = page.locator('ix-datetime-input');
+    const input = dateTimeInput.getByRole('textbox');
+    await expect(input).toHaveClass(/is-invalid/);
+  }
+);
+
+regressionTest(
+  'without date bounds minTime/maxTime act as daily time window',
+  async ({ mount, page }) => {
+    await mount(`
+    <ix-datetime-input
+      value="2026/02/15 12:00:00"
+      min-time="13:00:00"
+      max-time="17:30:00"
+    ></ix-datetime-input>
+  `);
+
+    const dateTimeInput = page.locator('ix-datetime-input');
+    const input = dateTimeInput.getByRole('textbox');
+    await expect(input).toHaveClass(/is-invalid/);
+  }
+);
+
+regressionTest(
   'validates minDate with date boundary',
   async ({ mount, page }) => {
     await mount(`

@@ -1324,9 +1324,17 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -7668,9 +7676,17 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -11405,6 +11421,8 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "minDate": string;
         "maxDate": string;
+        "minTime": string;
+        "maxTime": string;
         "label": string;
         "helperText": string;
         "invalidText": string;
