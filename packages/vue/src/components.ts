@@ -1422,6 +1422,8 @@ export const IxTimeInput: StencilVueComponent<JSX.IxTimeInput> = /*@__PURE__*/ d
   'placeholder',
   'value',
   'format',
+  'minTime',
+  'maxTime',
   'required',
   'helperText',
   'label',

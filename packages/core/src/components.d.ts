@@ -3970,10 +3970,20 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -10507,10 +10517,20 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -11981,6 +12001,8 @@ declare namespace LocalJSX {
         "placeholder": string;
         "value": string;
         "format": string;
+        "minTime": string;
+        "maxTime": string;
         "required": boolean;
         "helperText": string;
         "label": string;

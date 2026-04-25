@@ -1862,6 +1862,8 @@ export const IxTimeInput: StencilReactComponent<IxTimeInputElement, IxTimeInputE
         placeholder: 'placeholder',
         value: 'value',
         format: 'format',
+        minTime: 'min-time',
+        maxTime: 'max-time',
         required: 'required',
         helperText: 'helper-text',
         label: 'label',
