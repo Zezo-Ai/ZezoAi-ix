@@ -222,9 +222,36 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     );
   }
 
+  private warnIfConstraintRangeInverted(
+    minValue: string | undefined,
+    maxValue: string | undefined
+  ): void {
+    const minTrimmed = minValue?.trim();
+    const maxTrimmed = maxValue?.trim();
+
+    if (!minTrimmed || !maxTrimmed) {
+      return;
+    }
+
+    const minParsed = DateTime.fromFormat(minTrimmed, this.format);
+    const maxParsed = DateTime.fromFormat(maxTrimmed, this.format);
+
+    if (!minParsed.isValid || !maxParsed.isValid) {
+      return;
+    }
+
+    if (minParsed > maxParsed) {
+      console.warn(
+        `[ix-time-picker] minTime="${minTrimmed}" is later than maxTime="${maxTrimmed}" for format "${this.format}". ` +
+          'Both constraints are ignored.'
+      );
+    }
+  }
+
   private warnConstraintTimesIfInvalid(): void {
     this.warnIfConstraintTimeInvalid('minTime', this.minTime);
     this.warnIfConstraintTimeInvalid('maxTime', this.maxTime);
+    this.warnIfConstraintRangeInverted(this.minTime, this.maxTime);
   }
 
   /**
@@ -255,13 +282,13 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   @Watch('minTime')
   watchMinTimePropHandler() {
-    this.warnIfConstraintTimeInvalid('minTime', this.minTime);
+    this.warnConstraintTimesIfInvalid();
     this.syncKeyboardFocusWithConstraints();
   }
 
   @Watch('maxTime')
   watchMaxTimePropHandler() {
-    this.warnIfConstraintTimeInvalid('maxTime', this.maxTime);
+    this.warnConstraintTimesIfInvalid();
     this.syncKeyboardFocusWithConstraints();
   }
 
