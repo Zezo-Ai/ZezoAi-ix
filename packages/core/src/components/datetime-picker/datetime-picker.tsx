@@ -14,9 +14,12 @@ import {
   EventEmitter,
   h,
   Host,
+  State,
   Prop,
   Method,
+  Watch,
 } from '@stencil/core';
+import { DateTime } from 'luxon';
 import { IxDatePickerComponent } from '../date-picker/date-picker-component';
 import type { DateChangeEvent } from '../date-picker/date-picker.events';
 import type {
@@ -65,14 +68,14 @@ export class DatetimePicker
   @Prop() timeFormat: string = 'HH:mm:ss';
 
   /**
-   * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+   * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
    *
    * @since 5.0.0
    */
   @Prop() minTime?: string;
 
   /**
-   * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored (`console.warn`).
+   * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
    *
    * @since 5.0.0
    */
@@ -169,6 +172,104 @@ export class DatetimePicker
 
   private datePickerElement?: HTMLIxDatePickerElement;
   private timePickerElement?: HTMLIxTimePickerElement;
+  @State() private selectedFromDate?: string;
+
+  @Watch('from')
+  watchFromPropHandler(value: string | undefined) {
+    this.selectedFromDate = value;
+  }
+
+  componentWillLoad() {
+    this.selectedFromDate = this.from;
+  }
+
+  private get dateOnlyFormat(): string {
+    const timeTokenIndex = this.dateFormat.search(/[HhmsaSZ]/);
+    if (timeTokenIndex === -1) {
+      return this.dateFormat;
+    }
+
+    let end = timeTokenIndex;
+    while (end > 0 && " \t'T".includes(this.dateFormat[end - 1])) {
+      end--;
+    }
+
+    return this.dateFormat.slice(0, end);
+  }
+
+  private parseDateValue(value: string | undefined): DateTime | null {
+    if (!value) {
+      return null;
+    }
+
+    let parsed = DateTime.fromFormat(value, this.dateFormat, {
+      locale: this.locale,
+    });
+
+    if (!parsed.isValid) {
+      parsed = DateTime.fromFormat(value, this.dateOnlyFormat, {
+        locale: this.locale,
+      });
+    }
+
+    if (!parsed.isValid) {
+      return null;
+    }
+
+    return parsed;
+  }
+
+  private parseDateConstraint(
+    value: string | undefined,
+    boundary: 'start' | 'end'
+  ): DateTime | null {
+    const parsed = this.parseDateValue(value);
+    if (!parsed) {
+      return null;
+    }
+
+    return boundary === 'start' ? parsed.startOf('day') : parsed.endOf('day');
+  }
+
+  private getSelectedDateTime(): DateTime | null {
+    const parsed = this.parseDateValue(this.selectedFromDate);
+    if (!parsed) {
+      return null;
+    }
+
+    return parsed.startOf('day');
+  }
+
+  private getEffectiveTimeConstraints(): {
+    minTime: string | undefined;
+    maxTime: string | undefined;
+  } {
+    const hasDateBounds = !!(this.minDate || this.maxDate);
+    if (!hasDateBounds) {
+      return {
+        minTime: this.minTime,
+        maxTime: this.maxTime,
+      };
+    }
+
+    const selectedDate = this.getSelectedDateTime();
+    if (!selectedDate?.isValid) {
+      return { minTime: undefined, maxTime: undefined };
+    }
+
+    const minDate = this.parseDateConstraint(this.minDate, 'start');
+    const maxDate = this.parseDateConstraint(this.maxDate, 'end');
+
+    const applyMinTime =
+      !!minDate?.isValid && selectedDate.hasSame(minDate, 'day');
+    const applyMaxTime =
+      !!maxDate?.isValid && selectedDate.hasSame(maxDate, 'day');
+
+    return {
+      minTime: applyMinTime ? this.minTime : undefined,
+      maxTime: applyMaxTime ? this.maxTime : undefined,
+    };
+  }
 
   private async onDone() {
     const date = await this.datePickerElement?.getCurrentDate();
@@ -186,6 +287,11 @@ export class DatetimePicker
     event.stopPropagation();
 
     const { detail: date } = event;
+    if (typeof date === 'string') {
+      this.selectedFromDate = date;
+    } else {
+      this.selectedFromDate = date?.from;
+    }
     this.dateChange.emit(date);
   }
 
@@ -210,6 +316,8 @@ export class DatetimePicker
   }
 
   render() {
+    const { minTime, maxTime } = this.getEffectiveTimeConstraints();
+
     return (
       <Host>
         <ix-date-time-card
@@ -256,8 +364,8 @@ export class DatetimePicker
                   onTimeChange={(event) => this.onTimeChange(event)}
                   format={this.timeFormat}
                   time={this.time}
-                  minTime={this.minTime}
-                  maxTime={this.maxTime}
+                  minTime={minTime}
+                  maxTime={maxTime}
                   {...{
                     tabIndex: this.embedded ? -1 : 0,
                     [TRAP_FOCUS_INCLUDE_ATTRIBUTE]: this.embedded,

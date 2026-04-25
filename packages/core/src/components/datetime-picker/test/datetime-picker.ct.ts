@@ -6,10 +6,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { regressionTest } from '@utils/test';
 
 const DATE_TIME_PICKER_SELECTOR = 'ix-datetime-picker';
+const getHourCell = (page: Page, hour: number) =>
+  page
+    .locator('ix-time-picker')
+    .first()
+    .locator(`[data-element-container-id="hour-${hour}"]`);
 
 regressionTest('renders', async ({ mount, page }) => {
   await mount(`<ix-datetime-picker></ix-datetime-picker>`);
@@ -24,15 +29,134 @@ regressionTest(
       `<ix-datetime-picker time-format="HH:mm:ss" time="12:00:00" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
     );
 
-    const picker = page.locator('ix-time-picker').first();
-    await expect(
-      picker.locator('[data-element-container-id="hour-12"]')
-    ).toBeDisabled();
-    await expect(
-      picker.locator('[data-element-container-id="hour-13"]')
-    ).not.toBeDisabled();
+    await expect(getHourCell(page, 12)).toBeDisabled();
+    await expect(getHourCell(page, 13)).not.toBeDisabled();
   }
 );
+
+regressionTest(
+  'applies minTime/maxTime only on selected boundary dates',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-datetime-picker from="2026/02/02" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+    );
+
+    await expect(getHourCell(page, 12)).not.toBeDisabled();
+  }
+);
+
+regressionTest(
+  'applies minTime on minDate when date bounds are set',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-datetime-picker from="2026/02/01" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+    );
+
+    await expect(getHourCell(page, 12)).toBeDisabled();
+  }
+);
+
+regressionTest(
+  'applies minTime on minDate when dateFormat includes time tokens and selected date is date-only',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-datetime-picker from="2026/02/01" date-format="yyyy/LL/dd HH:mm:ss" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+    );
+
+    await expect(getHourCell(page, 12)).toBeDisabled();
+    await expect(getHourCell(page, 13)).not.toBeDisabled();
+  }
+);
+
+regressionTest.describe('min/max time combination matrix', () => {
+  regressionTest(
+    'without minDate/maxDate: minTime only constrains all dates',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/10" date-format="yyyy/LL/dd" time-format="HH:mm:ss" min-time="13:00:00"></ix-datetime-picker>`
+      );
+
+      await expect(getHourCell(page, 12)).toBeDisabled();
+      await expect(getHourCell(page, 13)).not.toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'without minDate/maxDate: maxTime only constrains all dates',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/10" date-format="yyyy/LL/dd" time-format="HH:mm:ss" max-time="17:30:00"></ix-datetime-picker>`
+      );
+
+      await expect(getHourCell(page, 18)).toBeDisabled();
+      await expect(getHourCell(page, 17)).not.toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'with minDate/maxDate: middle dates are not constrained by minTime/maxTime',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/10" date-format="yyyy/LL/dd" time-format="HH:mm:ss" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+      );
+
+      await expect(getHourCell(page, 12)).not.toBeDisabled();
+      await expect(getHourCell(page, 18)).not.toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'with minDate only: minTime applies on minDate',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/01" date-format="yyyy/LL/dd" time-format="HH:mm:ss" min-date="2026/02/01" min-time="13:00:00"></ix-datetime-picker>`
+      );
+      await expect(getHourCell(page, 12)).toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'with minDate only: minTime does not apply after minDate',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/02" date-format="yyyy/LL/dd" time-format="HH:mm:ss" min-date="2026/02/01" min-time="13:00:00"></ix-datetime-picker>`
+      );
+      await expect(getHourCell(page, 12)).not.toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'with maxDate only: maxTime applies on maxDate',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/28" date-format="yyyy/LL/dd" time-format="HH:mm:ss" max-date="2026/02/28" max-time="17:30:00"></ix-datetime-picker>`
+      );
+      await expect(getHourCell(page, 18)).toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'with maxDate only: maxTime does not apply before maxDate',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/27" date-format="yyyy/LL/dd" time-format="HH:mm:ss" max-date="2026/02/28" max-time="17:30:00"></ix-datetime-picker>`
+      );
+      await expect(getHourCell(page, 18)).not.toBeDisabled();
+    }
+  );
+
+  regressionTest(
+    'init time outside range does not affect boundary-date decision',
+    async ({ mount, page }) => {
+      await mount(
+        `<ix-datetime-picker from="2026/02/01" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
+      );
+
+      await expect(getHourCell(page, 12)).toBeDisabled();
+      await expect(getHourCell(page, 13)).not.toBeDisabled();
+    }
+  );
+});
 
 regressionTest.describe('datetime picker tests single', () => {
   regressionTest.beforeEach(async ({ mount }) => {

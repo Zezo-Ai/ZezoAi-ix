@@ -125,6 +125,27 @@ regressionTest(
 );
 
 regressionTest(
+  'minTime with minute precision keeps boundary hour selectable',
+  async ({ mount, page }) => {
+    await mount(
+      `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="13:30:00" max-time="17:30:00"></ix-time-picker>`
+    );
+    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    await expect(picker).toHaveClass(/hydrated/);
+
+    await expect(
+      picker.locator('[data-element-container-id="hour-12"]')
+    ).toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-13"]')
+    ).not.toBeDisabled();
+    await expect(
+      picker.locator('[data-element-container-id="hour-14"]')
+    ).not.toBeDisabled();
+  }
+);
+
+regressionTest(
   'minTime/maxTime: Tab skips minute column until hour is committed (out-of-range time)',
   async ({ mount, page }) => {
     await mount(
@@ -412,7 +433,7 @@ regressionTest.describe('time picker tests', () => {
       }
       await page.keyboard.press('Tab');
 
-      const checkScrollAlignment = async (locator: any) => {
+      const checkScrollAlignment = async (locator: Locator) => {
         return await locator.evaluate((el: HTMLElement) => {
           const list = el.parentElement!;
           // Offset from time-picker.tsx elementListScrollToTop
