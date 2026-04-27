@@ -1325,6 +1325,7 @@ export namespace Components {
         "maxDate"?: string;
         /**
           * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
          */
         "maxTime"?: string;
         /**
@@ -1333,6 +1334,7 @@ export namespace Components {
         "minDate"?: string;
         /**
           * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
          */
         "minTime"?: string;
         /**
@@ -7677,6 +7679,7 @@ declare namespace LocalJSX {
         "maxDate"?: string;
         /**
           * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
          */
         "maxTime"?: string;
         /**
@@ -7685,6 +7688,7 @@ declare namespace LocalJSX {
         "minDate"?: string;
         /**
           * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
          */
         "minTime"?: string;
         /**

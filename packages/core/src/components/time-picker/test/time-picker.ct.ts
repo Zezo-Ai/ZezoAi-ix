@@ -130,18 +130,12 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="13:30:00" max-time="17:30:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
 
-    await expect(
-      picker.locator('[data-element-container-id="hour-12"]')
-    ).toBeDisabled();
-    await expect(
-      picker.locator('[data-element-container-id="hour-13"]')
-    ).not.toBeDisabled();
-    await expect(
-      picker.locator('[data-element-container-id="hour-14"]')
-    ).not.toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 12)).toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 13)).not.toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 14)).not.toBeDisabled();
   }
 );
 
