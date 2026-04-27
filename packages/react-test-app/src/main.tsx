@@ -170,6 +170,7 @@ import MessageBar from './preview-examples/message-bar';
 import MessageBarRemoval from './preview-examples/message-bar-removal.tsx';
 import Modal from './preview-examples/modal';
 import ModalClose from './preview-examples/modal-close.tsx';
+import ModalNonBlockingPreview from './preview-examples/modal-non-blocking.tsx';
 import ModalFormIxButtonSubmit from './preview-examples/modal-form-ix-button-submit.tsx';
 import ModalSizes from './preview-examples/modal-sizes';
 import NumberInput from './preview-examples/number-input';
@@ -236,6 +237,7 @@ import TimeRange from './preview-examples/time-range';
 import Timepicker from './preview-examples/timepicker';
 import timepickerFormatAdjusted from './preview-examples/timepicker-format-adjusted.tsx';
 import timepickerIntervals from './preview-examples/timepicker-intervals.tsx';
+import timepickerMinMaxTime from './preview-examples/timepicker-min-max-time.tsx';
 import Toast from './preview-examples/toast';
 import ToastCustom from './preview-examples/toast-custom';
 import ToastPosition from './preview-examples/toast-position';
@@ -409,6 +411,7 @@ const routes: IxPreviewRoutes = {
   '/preview/modal-form-ix-button-submit': ModalFormIxButtonSubmit,
   '/preview/modal': Modal,
   '/preview/modal-close': ModalClose,
+  '/preview/modal-non-blocking': ModalNonBlockingPreview,
   '/preview/pagination-advanced': PaginationAdvanced,
   '/preview/pagination': Pagination,
   '/preview/pane': Pane,
@@ -520,6 +523,7 @@ const routes: IxPreviewRoutes = {
   '/preview/time-input-with-slots': timeInputWithSlots,
   '/preview/timepicker-format-adjusted': timepickerFormatAdjusted,
   '/preview/timepicker-intervals': timepickerIntervals,
+  '/preview/timepicker-min-max-time': timepickerMinMaxTime,
   '/preview/toggle-button-primary': toggleButtonPrimary,
 };
 

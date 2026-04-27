@@ -386,6 +386,8 @@ export const routePaths: IxPreviewRoutes = {
     ),
   'preview/modal-sizes': () =>
     import('../preview-examples/modal-sizes').then((m) => m.default),
+  'preview/modal-non-blocking': () =>
+    import('../preview-examples/modal-non-blocking').then((m) => m.default),
   'preview/number-input': () =>
     import('../preview-examples/number-input').then((m) => m.default),
   'preview/number-input-disabled': () =>
@@ -496,6 +498,10 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/time-range').then((m) => m.default),
   'preview/timepicker': () =>
     import('../preview-examples/timepicker').then((m) => m.default),
+  'preview/timepicker-min-max-time': () =>
+    import('../preview-examples/timepicker-min-max-time').then(
+      (m) => m.default
+    ),
   'preview/toast': () =>
     import('../preview-examples/toast').then((m) => m.default),
   'preview/toast-custom': () =>
