@@ -105,10 +105,18 @@ export class DatetimeInput
   /** Maximum allowed date (matching format or date-only, e.g., "2026/12/31") */
   @Prop() maxDate?: string;
 
-  /** Earliest selectable time (`format` tokens). Invalid non-empty values are ignored. */
+  /**
+   * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+   *
+   * @since 5.0.0
+   */
   @Prop() minTime?: string;
 
-  /** Latest selectable time (`format` tokens). Invalid non-empty values are ignored. */
+  /**
+   * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+   *
+   * @since 5.0.0
+   */
   @Prop() maxTime?: string;
 
   /** Label text displayed above the input */
@@ -212,6 +220,8 @@ export class DatetimeInput
   private readonly dropdownElementRef = makeRef<HTMLIxDropdownElement>();
   private readonly datetimePickerRef = makeRef<HTMLIxDatetimePickerElement>();
 
+  private static readonly defaultTimeOnlyFormat = 'HH:mm:ss';
+
   @State() show: boolean = false;
 
   @State() from?: string | null = null;
@@ -262,7 +272,9 @@ export class DatetimeInput
 
   private get timeOnlyFormat(): string {
     const timeTokenIndex = this.format.search(/[HhmsaSZ]/);
-    if (timeTokenIndex === -1) return this.format;
+    if (timeTokenIndex === -1) {
+      return DatetimeInput.defaultTimeOnlyFormat;
+    }
     return this.format.slice(timeTokenIndex);
   }
 
@@ -305,21 +317,7 @@ export class DatetimeInput
       locale: this.locale,
     });
 
-    const minDateTime = this.parseConstraintDate(this.minDate, 'start');
-    const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
-    const { min: minTime, max: maxTime } = this.getTimeConstraintBoundsForDate(
-      dateTime,
-      minDateTime,
-      maxDateTime
-    );
-
-    const validationResult = this.validateConstraints(
-      dateTime,
-      minDateTime,
-      maxDateTime,
-      minTime,
-      maxTime
-    );
+    const validationResult = this.computeConstraintValidation(dateTime);
 
     this.isInputInvalid = validationResult.isInvalid;
     this.invalidReason = validationResult.reason;
@@ -407,6 +405,10 @@ export class DatetimeInput
     min: DateTime | null;
     max: DateTime | null;
   } {
+    if (!dateTime.isValid) {
+      return { min: null, max: null };
+    }
+
     const bounds = getTimePickerConstraintBounds(
       this.minTime,
       this.maxTime,
@@ -415,7 +417,7 @@ export class DatetimeInput
     );
 
     const hasDateBounds = !!(minDateTime?.isValid || maxDateTime?.isValid);
-    if (!hasDateBounds || !dateTime.isValid) {
+    if (!hasDateBounds) {
       return bounds;
     }
 
@@ -430,6 +432,26 @@ export class DatetimeInput
     };
   }
 
+  private computeConstraintValidation(dateTime: DateTime): {
+    isInvalid: boolean;
+    reason: string | undefined;
+  } {
+    const minDateTime = this.parseConstraintDate(this.minDate, 'start');
+    const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
+    const { min: minTime, max: maxTime } = this.getTimeConstraintBoundsForDate(
+      dateTime,
+      minDateTime,
+      maxDateTime
+    );
+    return this.validateConstraints(
+      dateTime,
+      minDateTime,
+      maxDateTime,
+      minTime,
+      maxTime
+    );
+  }
+
   private revalidateCurrentValue() {
     if (!this.value || !this.format) {
       return;
@@ -442,21 +464,7 @@ export class DatetimeInput
       return;
     }
 
-    const minDateTime = this.parseConstraintDate(this.minDate, 'start');
-    const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
-    const { min: minTime, max: maxTime } = this.getTimeConstraintBoundsForDate(
-      dateTime,
-      minDateTime,
-      maxDateTime
-    );
-
-    const validationResult = this.validateConstraints(
-      dateTime,
-      minDateTime,
-      maxDateTime,
-      minTime,
-      maxTime
-    );
+    const validationResult = this.computeConstraintValidation(dateTime);
 
     this.isInputInvalid = validationResult.isInvalid;
     this.invalidReason = validationResult.reason;

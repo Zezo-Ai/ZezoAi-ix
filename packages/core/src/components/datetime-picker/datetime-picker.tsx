@@ -36,6 +36,9 @@ import { TRAP_FOCUS_INCLUDE_ATTRIBUTE } from '../utils/focus/focus-trap';
 export class DatetimePicker
   implements Omit<IxDatePickerComponent, 'corners' | 'format'>
 {
+  /** Used when `dateFormat` has no date prefix before time tokens (Luxon `[HhmsaSZ]`). */
+  private static readonly defaultDateOnlyFormat = 'yyyy/LL/dd';
+
   @Element() hostElement!: HTMLIxDatetimePickerElement;
 
   /**
@@ -194,7 +197,8 @@ export class DatetimePicker
       end--;
     }
 
-    return this.dateFormat.slice(0, end);
+    const prefix = this.dateFormat.slice(0, end).trimEnd();
+    return prefix !== '' ? prefix : DatetimePicker.defaultDateOnlyFormat;
   }
 
   private parseDateValue(value: string | undefined): DateTime | null {
