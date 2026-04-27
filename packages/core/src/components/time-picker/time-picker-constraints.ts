@@ -71,3 +71,28 @@ export function hasActiveTimePickerConstraints(
 ): boolean {
   return !!(min || max);
 }
+
+/**
+ * Whether the inclusive wall-clock range `[rangeStart, rangeEnd]` can intersect
+ * inclusive constraint bounds `[min, max]` (either bound may be null = unbounded).
+ */
+export function timeOfDayRangeIntersectsInclusiveBounds(
+  rangeStart: DateTime,
+  rangeEnd: DateTime,
+  min: DateTime | null,
+  max: DateTime | null
+): boolean {
+  if (!rangeStart.isValid || !rangeEnd.isValid) {
+    return false;
+  }
+  if (!min && !max) {
+    return true;
+  }
+  if (min && rangeEnd < min) {
+    return false;
+  }
+  if (max && rangeStart > max) {
+    return false;
+  }
+  return true;
+}

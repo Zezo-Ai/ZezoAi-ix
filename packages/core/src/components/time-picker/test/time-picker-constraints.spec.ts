@@ -14,6 +14,7 @@ import {
   hasActiveTimePickerConstraints,
   isWithinTimePickerConstraints,
   parseTimeOnDay,
+  timeOfDayRangeIntersectsInclusiveBounds,
 } from '../time-picker-constraints';
 
 const baseDay = DateTime.fromObject(
@@ -99,5 +100,49 @@ describe('hasActiveTimePickerConstraints', () => {
   it('is true when either bound set', () => {
     expect(hasActiveTimePickerConstraints(baseDay, null)).toBe(true);
     expect(hasActiveTimePickerConstraints(null, baseDay)).toBe(true);
+  });
+});
+
+describe('timeOfDayRangeIntersectsInclusiveBounds', () => {
+  const h8 = baseDay.set({ hour: 8, minute: 0, second: 0, millisecond: 0 });
+  const h8end = baseDay.set({
+    hour: 8,
+    minute: 59,
+    second: 59,
+    millisecond: 999,
+  });
+  const min0810 = baseDay.set({ hour: 8, minute: 10, second: 0 });
+
+  it('is true when the hour span reaches min later in the hour', () => {
+    expect(
+      timeOfDayRangeIntersectsInclusiveBounds(h8, h8end, min0810, null)
+    ).toBe(true);
+  });
+
+  it('is false when the whole hour is before min', () => {
+    const h7 = baseDay.set({ hour: 7, minute: 0, second: 0 });
+    const h7end = baseDay.set({
+      hour: 7,
+      minute: 59,
+      second: 59,
+      millisecond: 999,
+    });
+    expect(
+      timeOfDayRangeIntersectsInclusiveBounds(h7, h7end, min0810, null)
+    ).toBe(false);
+  });
+
+  it('is false when the whole hour is after max', () => {
+    const max14 = baseDay.set({ hour: 14, minute: 0, second: 0 });
+    const h15 = baseDay.set({ hour: 15, minute: 0, second: 0 });
+    const h15end = baseDay.set({
+      hour: 15,
+      minute: 59,
+      second: 59,
+      millisecond: 999,
+    });
+    expect(
+      timeOfDayRangeIntersectsInclusiveBounds(h15, h15end, null, max14)
+    ).toBe(false);
   });
 });

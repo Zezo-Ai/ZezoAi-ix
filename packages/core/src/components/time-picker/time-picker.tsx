@@ -31,6 +31,7 @@ import {
   getTimePickerConstraintBounds,
   hasActiveTimePickerConstraints,
   isWithinTimePickerConstraints,
+  timeOfDayRangeIntersectsInclusiveBounds,
 } from './time-picker-constraints';
 import {
   formatTimePickerUnitValue,
@@ -202,7 +203,8 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   private warnIfConstraintTimeInvalid(
     prop: 'minTime' | 'maxTime',
-    value: string | undefined
+    value: string | undefined,
+    omitUnparsableWarning?: boolean
   ): void {
     const trimmed = value?.trim();
     if (!trimmed) {
@@ -210,6 +212,9 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     }
     const parsed = DateTime.fromFormat(trimmed, this.format);
     if (parsed.isValid) {
+      return;
+    }
+    if (omitUnparsableWarning) {
       return;
     }
     const detail = [parsed.invalidReason, parsed.invalidExplanation]
@@ -248,9 +253,12 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     }
   }
 
-  private warnConstraintTimesIfInvalid(): void {
-    this.warnIfConstraintTimeInvalid('minTime', this.minTime);
-    this.warnIfConstraintTimeInvalid('maxTime', this.maxTime);
+  private warnConstraintTimesIfInvalid(options?: {
+    omitUnparsableConstraintWarnings?: boolean;
+  }): void {
+    const omit = options?.omitUnparsableConstraintWarnings ?? false;
+    this.warnIfConstraintTimeInvalid('minTime', this.minTime, omit);
+    this.warnIfConstraintTimeInvalid('maxTime', this.maxTime, omit);
     this.warnIfConstraintRangeInverted(this.minTime, this.maxTime);
   }
 
@@ -382,11 +390,13 @@ export class TimePicker extends Mixin(...DefaultMixins) {
 
   private initPicker() {
     let parsedTime: DateTime | undefined;
+    let timePropDoesNotMatchFormat = false;
 
     if (this.time) {
       parsedTime = DateTime.fromFormat(this.time, this.format);
 
       if (!parsedTime.isValid) {
+        timePropDoesNotMatchFormat = true;
         console.error(
           `Invalid time format. The configured format does not match the format of the passed time. ${parsedTime.invalidReason}: ${parsedTime.invalidExplanation}`
         );
@@ -408,7 +418,9 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     this.watchSecondIntervalPropHandler(this.secondInterval);
     this.watchMillisecondIntervalPropHandler(this.millisecondInterval);
 
-    this.warnConstraintTimesIfInvalid();
+    this.warnConstraintTimesIfInvalid({
+      omitUnparsableConstraintWarnings: timePropDoesNotMatchFormat,
+    });
   }
 
   override componentDidLoad() {
@@ -759,6 +771,35 @@ export class TimePicker extends Mixin(...DefaultMixins) {
     selectionBase?: DateTime
   ): boolean {
     const base = selectionBase ?? this._time ?? DateTime.now().startOf('day');
+    const effectiveBounds = bounds ?? this.getConstraintBounds();
+
+    if (
+      unit === 'hour' &&
+      hasActiveTimePickerConstraints(effectiveBounds.min, effectiveBounds.max)
+    ) {
+      const dayStart = base.startOf('day');
+      const hourStart = computeTimeWithRawUnitValue(
+        dayStart,
+        'hour',
+        rawValue,
+        this.timeRef
+      );
+      if (!hourStart) {
+        return false;
+      }
+      const hourEnd = hourStart.set({
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+      });
+      return timeOfDayRangeIntersectsInclusiveBounds(
+        hourStart,
+        hourEnd,
+        effectiveBounds.min,
+        effectiveBounds.max
+      );
+    }
+
     const candidate = computeTimeWithRawUnitValue(
       base,
       unit,
