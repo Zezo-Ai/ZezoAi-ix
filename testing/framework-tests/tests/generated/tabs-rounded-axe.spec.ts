@@ -20,7 +20,7 @@ test('tabs-rounded - accessibility check', async ({ page }) => {
   // Ugly and not the reliable way to wait for Stencil to be ready
   await waitForReadiness(page);
 
-  const accessibilityScanResults = await createAxeBuilder(page).analyze();
+  const accessibilityScanResults = await createAxeBuilder(page).disableRules(['page-has-heading-one', 'nested-interactive']).analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
 });

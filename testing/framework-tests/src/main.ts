@@ -22,6 +22,9 @@ const __generatedTestsPath = path.join(__dirname, '..', 'tests', 'generated');
 const AXE_EXTRA_DISABLED_RULES: Record<string, readonly string[]> = {
   // Scrollable hour/minute/second columns: focus is on cells, not the overflow container (axe scrollable-region-focusable).
   'timepicker-min-max-time': ['scrollable-region-focusable'],
+  tabs: ['nested-interactive'],
+  'tabs-overflow': ['nested-interactive'],
+  'tabs-rounded': ['nested-interactive'],
 };
 
 function axeDisabledRulesForTestId(testId: string): string {

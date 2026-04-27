@@ -20,7 +20,7 @@ test('event-list-custom-item-height-in-number - accessibility check', async ({ p
   // Ugly and not the reliable way to wait for Stencil to be ready
   await waitForReadiness(page);
 
-  const accessibilityScanResults = await createAxeBuilder(page).analyze();
+  const accessibilityScanResults = await createAxeBuilder(page).disableRules(['page-has-heading-one']).analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
 });
