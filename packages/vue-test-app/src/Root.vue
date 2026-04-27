@@ -215,6 +215,7 @@ import ThemeSwitcher from './preview-examples/theme-switcher.vue';
 import Tile from './preview-examples/tile.vue';
 import TimeRange from './preview-examples/time-range.vue';
 import Timepicker from './preview-examples/timepicker.vue';
+import TimepickerMinMaxTime from './preview-examples/timepicker-min-max-time.vue';
 import ToastCustom from './preview-examples/toast-custom.vue';
 import ToastPosition from './preview-examples/toast-position.vue';
 import Toast from './preview-examples/toast.vue';
@@ -406,6 +407,7 @@ const routes: IxPreviewRoutes = {
   '/preview/tile': Tile,
   '/preview/time-range': TimeRange,
   '/preview/timepicker': Timepicker,
+  '/preview/timepicker-min-max-time': TimepickerMinMaxTime,
   '/preview/toast': Toast,
   '/preview/toast-custom': ToastCustom,
   '/preview/toast-position': ToastPosition,

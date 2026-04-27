@@ -13,7 +13,7 @@ import AxeBuilder from '@axe-core/playwright';
  * Rules disabled globally for all framework axe tests.
  * Add rules here when they represent known issues tracked separately.
  */
-const DISABLED_AXE_RULES = ['page-has-heading-one', 'nested-interactive'];
+const DISABLED_AXE_RULES = ['page-has-heading-one'];
 
 export async function waitForReadiness(page: Page) {
   await page.waitForTimeout(250);

@@ -241,6 +241,7 @@ import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
+import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
 import ToastPosition from '../preview-examples/toast-position';
@@ -477,6 +478,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     TimeInput,
     TimeRange,
     Timepicker,
+    TimepickerMinMaxTime,
     ToastCustom,
     ToastPosition,
     Toast,

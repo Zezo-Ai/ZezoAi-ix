@@ -231,6 +231,7 @@ import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
+import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
 import ToastPosition from '../preview-examples/toast-position';
@@ -875,6 +876,7 @@ const routes: Routes = [
       { path: 'time-input', component: TimeInput },
       { path: 'time-range', component: TimeRange },
       { path: 'timepicker', component: Timepicker },
+      { path: 'timepicker-min-max-time', component: TimepickerMinMaxTime },
       { path: 'toggle-button-primary', component: ToggleButtonPrimary },
       { path: 'toggle-button-secondary', component: ToggleButtonSecondary },
       {

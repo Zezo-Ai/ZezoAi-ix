@@ -4170,11 +4170,21 @@ export namespace Components {
          */
         "i18nSecondColumnHeader": string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -10815,11 +10825,21 @@ declare namespace LocalJSX {
          */
         "i18nSecondColumnHeader"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -12193,6 +12213,8 @@ declare namespace LocalJSX {
         "secondInterval": number;
         "millisecondInterval": number;
         "time": string;
+        "minTime": string;
+        "maxTime": string;
         "i18nConfirmTime": string;
         "i18nHeader": string;
         "i18nHourColumnHeader": string;
