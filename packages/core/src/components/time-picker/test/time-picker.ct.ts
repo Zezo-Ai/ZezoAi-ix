@@ -6,10 +6,26 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { regressionTest } from '@utils/test';
 
 const TIME_PICKER_SELECTOR = 'ix-time-picker';
+
+function timePickerCell(
+  picker: Locator,
+  unit: 'hr' | 'min' | 'sec',
+  value: number
+) {
+  return picker.getByRole('button', {
+    name: `${unit}: ${value}`,
+    exact: true,
+  });
+}
+
+function timePickerUnitList(picker: Locator, unit: 'hr' | 'min' | 'sec') {
+  return timePickerCell(picker, unit, 0).locator('..');
+}
+
 const getTimeObjs = async (page: Page) => {
   return await page.$$eval(TIME_PICKER_SELECTOR, (elements) => {
     return Promise.all(elements.map((elem) => elem.getCurrentTime()));
@@ -100,17 +116,11 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="10:00:00" max-time="14:00:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    await expect(
-      picker.locator('[data-element-container-id="hour-8"]')
-    ).toBeDisabled();
-    await expect(
-      picker.locator('[data-element-container-id="hour-12"]')
-    ).not.toBeDisabled();
-    await expect(
-      picker.locator('[data-element-container-id="hour-15"]')
-    ).toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 8)).toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 12)).not.toBeDisabled();
+    await expect(timePickerCell(picker, 'hr', 15)).toBeDisabled();
   }
 );
 
@@ -120,18 +130,14 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="13:00:00" max-time="17:30:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    const hour13 = picker.locator('[data-element-container-id="hour-13"]');
+    const hour13 = timePickerCell(picker, 'hr', 13);
     await expect(hour13).not.toBeDisabled();
     await hour13.focus();
     await page.keyboard.press('Tab');
-    await expect(
-      picker.locator('[data-element-container-id="minute-0"]')
-    ).not.toBeFocused();
-    await expect(
-      picker.locator('[data-element-list-id="minute"]')
-    ).not.toBeFocused();
+    await expect(timePickerCell(picker, 'min', 0)).not.toBeFocused();
+    await expect(timePickerUnitList(picker, 'min')).not.toBeFocused();
   }
 );
 
@@ -141,16 +147,14 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="13:00:00" max-time="17:30:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    const hour13 = picker.locator('[data-element-container-id="hour-13"]');
+    const hour13 = timePickerCell(picker, 'hr', 13);
     await expect(hour13).not.toBeDisabled();
     await hour13.focus();
     await page.keyboard.press('Enter');
     await page.keyboard.press('Tab');
-    await expect(
-      picker.locator('[data-element-container-id="minute-0"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'min', 0)).toBeFocused();
   }
 );
 
@@ -160,32 +164,22 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="13:00:00" max-time="17:30:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    await picker.locator('[data-element-container-id="hour-13"]').focus();
+    await timePickerCell(picker, 'hr', 13).focus();
     await page.keyboard.press('Enter');
     await page.keyboard.press('Tab');
-    await expect(
-      picker.locator('[data-element-container-id="minute-0"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'min', 0)).toBeFocused();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
-    await expect(
-      picker.locator('[data-element-container-id="minute-2"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'min', 2)).toBeFocused();
     await page.keyboard.press('Tab');
-    await expect(
-      picker.locator('[data-element-container-id="second-0"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'sec', 0)).toBeFocused();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
-    await expect(
-      picker.locator('[data-element-container-id="second-2"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'sec', 2)).toBeFocused();
     await page.keyboard.press('Shift+Tab');
-    await expect(
-      picker.locator('[data-element-container-id="minute-2"]')
-    ).toBeFocused();
+    await expect(timePickerCell(picker, 'min', 2)).toBeFocused();
   }
 );
 
@@ -195,12 +189,10 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="08:00:00" min-time="10:00:00" max-time="14:00:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    await expect(
-      picker.locator('[data-element-container-id="hour-8"]')
-    ).toBeDisabled();
-    const hour10 = picker.locator('[data-element-container-id="hour-10"]');
+    await expect(timePickerCell(picker, 'hr', 8)).toBeDisabled();
+    const hour10 = timePickerCell(picker, 'hr', 10);
     await expect(hour10).not.toBeDisabled();
     await hour10.focus();
     await page.keyboard.press('ArrowDown');
@@ -218,9 +210,9 @@ regressionTest(
     await mount(
       `<ix-time-picker format="HH:mm:ss" time="12:00:00" min-time="09:00:00" max-time="17:30:00"></ix-time-picker>`
     );
-    const picker = page.locator(TIME_PICKER_SELECTOR).first();
+    const picker = page.locator(TIME_PICKER_SELECTOR);
     await expect(picker).toHaveClass(/hydrated/);
-    await picker.locator('[data-element-container-id="hour-12"]').focus();
+    await timePickerCell(picker, 'hr', 12).focus();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
