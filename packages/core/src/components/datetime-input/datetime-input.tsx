@@ -270,6 +270,7 @@ export class DatetimeInput
     return this.format.slice(0, end);
   }
 
+  /** Suffix of `format` from the first Luxon time token; bounds/picker parse with Luxon as-is. */
   private get timeOnlyFormat(): string {
     const timeTokenIndex = this.format.search(/[HhmsaSZ]/);
     if (timeTokenIndex === -1) {

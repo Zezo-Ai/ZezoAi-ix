@@ -109,14 +109,18 @@ export class TimeInput
    */
   @Prop() format: string = 'TT';
 
-  /** Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+  /**
+   * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
    *
-   * @since 5.0.0 */
+   * @since 5.0.0
+   */
   @Prop() minTime?: string;
 
-  /** Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+  /**
+   * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
    *
-   * @since 5.0.0 */
+   * @since 5.0.0
+   */
   @Prop() maxTime?: string;
 
   @Watch('minTime')
