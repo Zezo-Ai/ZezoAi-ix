@@ -177,13 +177,43 @@ export class DatetimePicker
   private timePickerElement?: HTMLIxTimePickerElement;
   @State() private selectedFromDate?: string;
 
+  private hasTimeConstraintsConfigured(): boolean {
+    return !!(this.minTime?.trim() || this.maxTime?.trim());
+  }
+
+  private warnIfRangeModeIgnoresTimeConstraints(): void {
+    if (this.singleSelection || !this.hasTimeConstraintsConfigured()) {
+      return;
+    }
+
+    console.warn(
+      '[ix-datetime-picker] `minTime`/`maxTime` are ignored when range selection is enabled (`singleSelection=false`).'
+    );
+  }
+
   @Watch('from')
   watchFromPropHandler(value: string | undefined) {
     this.selectedFromDate = value;
   }
 
+  @Watch('singleSelection')
+  watchSingleSelectionPropHandler() {
+    this.warnIfRangeModeIgnoresTimeConstraints();
+  }
+
+  @Watch('minTime')
+  watchMinTimePropHandler() {
+    this.warnIfRangeModeIgnoresTimeConstraints();
+  }
+
+  @Watch('maxTime')
+  watchMaxTimePropHandler() {
+    this.warnIfRangeModeIgnoresTimeConstraints();
+  }
+
   componentWillLoad() {
     this.selectedFromDate = this.from;
+    this.warnIfRangeModeIgnoresTimeConstraints();
   }
 
   private get dateOnlyFormat(): string {
@@ -235,7 +265,7 @@ export class DatetimePicker
     return boundary === 'start' ? parsed.startOf('day') : parsed.endOf('day');
   }
 
-  private getSelectedDateTime(): DateTime | null {
+  private getSelectedFromDateTime(): DateTime | null {
     const parsed = this.parseDateValue(this.selectedFromDate);
     if (!parsed) {
       return null;
@@ -248,6 +278,10 @@ export class DatetimePicker
     minTime: string | undefined;
     maxTime: string | undefined;
   } {
+    if (!this.singleSelection) {
+      return { minTime: undefined, maxTime: undefined };
+    }
+
     const hasDateBounds = !!(this.minDate || this.maxDate);
     if (!hasDateBounds) {
       return {
@@ -256,8 +290,8 @@ export class DatetimePicker
       };
     }
 
-    const selectedDate = this.getSelectedDateTime();
-    if (!selectedDate?.isValid) {
+    const selectedFromDate = this.getSelectedFromDateTime();
+    if (!selectedFromDate?.isValid) {
       return { minTime: undefined, maxTime: undefined };
     }
 
@@ -265,9 +299,12 @@ export class DatetimePicker
     const maxDate = this.parseDateConstraint(this.maxDate, 'end');
 
     const applyMinTime =
-      !!minDate?.isValid && selectedDate.hasSame(minDate, 'day');
+      !!minDate?.isValid &&
+      !!selectedFromDate?.isValid &&
+      selectedFromDate.hasSame(minDate, 'day');
+
     const applyMaxTime =
-      !!maxDate?.isValid && selectedDate.hasSame(maxDate, 'day');
+      !!maxDate?.isValid && selectedFromDate.hasSame(maxDate, 'day');
 
     return {
       minTime: applyMinTime ? this.minTime : undefined,
