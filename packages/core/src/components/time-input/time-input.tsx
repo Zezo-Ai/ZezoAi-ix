@@ -374,11 +374,6 @@ export class TimeInput
     }
 
     this.onInput(this.value);
-    if (this.isInputInvalid) {
-      this.time = null;
-    } else {
-      this.watchValue();
-    }
 
     this.checkClassList();
     this.updateFormInternalValue(this.value);
@@ -395,11 +390,6 @@ export class TimeInput
   override disconnectedCallback(): void {
     this.classObserver?.destroy();
     this.disposableChangesAndVisibilityObservers?.();
-  }
-
-  @Watch('value')
-  watchValue() {
-    this.time = this.value;
   }
 
   /** @internal */
@@ -425,6 +415,22 @@ export class TimeInput
     return isWithinTimePickerConstraints(parsed, min, max);
   }
 
+  private syncPickerTimeFromValue(): void {
+    const trimmed = this.value?.trim() ?? '';
+    if (!trimmed) {
+      this.time = null;
+      return;
+    }
+
+    const parsed = DateTime.fromFormat(trimmed, this.format);
+    if (!parsed.isValid) {
+      this.time = null;
+      return;
+    }
+
+    this.time = trimmed;
+  }
+
   private validateNonEmptyValue(value: string): {
     isInputInvalid: boolean;
     invalidReason: string | undefined;
@@ -445,7 +451,7 @@ export class TimeInput
       isInputInvalid: true,
       invalidReason: time.isValid
         ? 'customError'
-        : (time.invalidReason ?? undefined),
+        : time.invalidReason ?? undefined,
     };
   }
 
@@ -462,6 +468,7 @@ export class TimeInput
     this.isInputInvalid = validity.isInputInvalid;
     this.invalidReason = validity.invalidReason;
     this.emitValidityStateChangeIfChanged();
+    this.syncPickerTimeFromValue();
   }
 
   async onInput(value: string) {
@@ -472,11 +479,13 @@ export class TimeInput
       this.emitValidityStateChangeIfChanged();
       this.updateFormInternalValue(value);
       this.valueChange.emit(value);
+      this.syncPickerTimeFromValue();
       return;
     }
 
     const validity = this.validateNonEmptyValue(value);
     if (!validity) {
+      this.syncPickerTimeFromValue();
       return;
     }
 
@@ -486,6 +495,7 @@ export class TimeInput
     this.emitValidityStateChangeIfChanged();
     this.updateFormInternalValue(value);
     this.valueChange.emit(value);
+    this.syncPickerTimeFromValue();
   }
 
   onTimeIconClick(event: Event) {
@@ -498,7 +508,7 @@ export class TimeInput
   }
 
   async openDropdown() {
-    this.time = this.value;
+    this.syncPickerTimeFromValue();
 
     return openDropdownUtil(this.dropdownElementRef);
   }

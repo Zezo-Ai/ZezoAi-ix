@@ -213,6 +213,21 @@ regressionTest.describe('time input min/max tests', () => {
   );
 
   regressionTest(
+    'picker selection matches input when value is out of range',
+    async ({ page }) => {
+      await page
+        .locator('ix-icon-button[data-testid="open-time-picker"]')
+        .click();
+
+      await expect(
+        page.locator(
+          'ix-time-picker [data-element-container-id="hour-12"]'
+        )
+      ).toHaveClass(/selected/);
+    }
+  );
+
+  regressionTest(
     'updating min/max attributes should revalidate current value',
     async ({ page }) => {
       const timeInput = page.locator('ix-time-input');
