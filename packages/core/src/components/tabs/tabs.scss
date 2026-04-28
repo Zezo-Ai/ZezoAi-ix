@@ -30,9 +30,6 @@
     left: 0;
     bottom: 0;
     transform: translateX(var(--ix-tab-active-indicator-offset));
-    transition:
-      transform 0.2s ease,
-      width 0.2s ease;
   }
 
   @if $position == 'top' {

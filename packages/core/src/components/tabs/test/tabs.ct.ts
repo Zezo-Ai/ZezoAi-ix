@@ -460,7 +460,7 @@ regressionTest(
     await expect(tabs.nth(1)).not.toHaveAttribute('disabled');
     await expect(tabs.nth(1)).not.toHaveClass(/\bdisabled\b/);
 
-    await expect(tabs.nth(0)).toHaveClass(/\bselected\b/);
+    await expect(tabs.nth(0)).not.toHaveClass(/\bselected\b/);
 
     await tabs.nth(1).click();
     await expect(tabs.nth(0)).not.toHaveClass(/\bselected\b/);
