@@ -14,8 +14,8 @@
 import { test, expect } from '@playwright/test';
 import { waitForReadiness, createAxeBuilder } from '../utils';
 
-test('date-dropdown-user-range - accessibility check', async ({ page }) => {
-  await page.goto('/preview/date-dropdown-user-range');
+test('date-dropdown-presets - accessibility check', async ({ page }) => {
+  await page.goto('/preview/date-dropdown-presets');
 
   // Ugly and not the reliable way to wait for Stencil to be ready
   await waitForReadiness(page);
