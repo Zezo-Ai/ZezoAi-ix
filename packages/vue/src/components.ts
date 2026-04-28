@@ -490,8 +490,6 @@ export const IxDatetimeInput: StencilVueComponent<JSX.IxDatetimeInput> = /*@__PU
   'readonly',
   'minDate',
   'maxDate',
-  'minTime',
-  'maxTime',
   'label',
   'helperText',
   'invalidText',

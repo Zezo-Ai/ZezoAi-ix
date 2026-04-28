@@ -31,10 +31,6 @@ import {
   onInputFocus,
 } from '../input/input.util';
 import {
-  getTimePickerConstraintBounds,
-  isWithinTimePickerConstraints,
-} from '../time-picker/time-picker-constraints';
-import {
   ClassMutationObserver,
   HookValidationLifecycle,
   IxInputFieldComponent,
@@ -104,20 +100,6 @@ export class DatetimeInput
 
   /** Maximum allowed date (matching format or date-only, e.g., "2026/12/31") */
   @Prop() maxDate?: string;
-
-  /**
-   * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
-   *
-   * @since 5.0.0
-   */
-  @Prop() minTime?: string;
-
-  /**
-   * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
-   *
-   * @since 5.0.0
-   */
-  @Prop() maxTime?: string;
 
   /** Label text displayed above the input */
   @Prop() label?: string;
@@ -220,8 +202,6 @@ export class DatetimeInput
   private readonly dropdownElementRef = makeRef<HTMLIxDropdownElement>();
   private readonly datetimePickerRef = makeRef<HTMLIxDatetimePickerElement>();
 
-  private static readonly defaultTimeOnlyFormat = 'HH:mm:ss';
-
   @State() show: boolean = false;
 
   @State() from?: string | null = null;
@@ -246,16 +226,6 @@ export class DatetimeInput
     this.syncPickerState();
   }
 
-  @Watch('minTime')
-  watchMinTimePropHandler() {
-    this.revalidateCurrentValue();
-  }
-
-  @Watch('maxTime')
-  watchMaxTimePropHandler() {
-    this.revalidateCurrentValue();
-  }
-
   private get combinedFormat(): string {
     return this.format;
   }
@@ -268,15 +238,6 @@ export class DatetimeInput
       end--;
     }
     return this.format.slice(0, end);
-  }
-
-  /** Suffix of `format` from the first Luxon time token; bounds/picker parse with Luxon as-is. */
-  private get timeOnlyFormat(): string {
-    const timeTokenIndex = this.format.search(/[HhmsaSZ]/);
-    if (timeTokenIndex === -1) {
-      return DatetimeInput.defaultTimeOnlyFormat;
-    }
-    return this.format.slice(timeTokenIndex);
   }
 
   private syncPickerState() {
@@ -292,7 +253,7 @@ export class DatetimeInput
 
     if (dateTime.isValid) {
       this.from = dateTime.toFormat(this.format);
-      this.time = dateTime.toFormat(this.timeOnlyFormat);
+      this.time = dateTime.toFormat(this.format);
     } else {
       this.from = null;
       this.time = null;
@@ -318,7 +279,14 @@ export class DatetimeInput
       locale: this.locale,
     });
 
-    const validationResult = this.computeConstraintValidation(dateTime);
+    const minDateTime = this.parseConstraintDate(this.minDate, 'start');
+    const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
+
+    const validationResult = this.validateConstraints(
+      dateTime,
+      minDateTime,
+      maxDateTime
+    );
 
     this.isInputInvalid = validationResult.isInvalid;
     this.invalidReason = validationResult.reason;
@@ -361,9 +329,7 @@ export class DatetimeInput
   private validateConstraints(
     dateTime: DateTime,
     minDateTime: DateTime | null,
-    maxDateTime: DateTime | null,
-    minTime: DateTime | null,
-    maxTime: DateTime | null
+    maxDateTime: DateTime | null
   ): { isInvalid: boolean; reason: string | undefined } {
     const isFormatInvalid = !dateTime.isValid;
     const isBeforeMin = !!(
@@ -376,100 +342,19 @@ export class DatetimeInput
       dateTime.isValid &&
       dateTime > maxDateTime
     );
-    const isOutsideTimeWindow = !!(
-      dateTime.isValid &&
-      !isWithinTimePickerConstraints(dateTime, minTime, maxTime)
-    );
 
-    const isInvalid =
-      isFormatInvalid || isBeforeMin || isAfterMax || isOutsideTimeWindow;
+    const isInvalid = isFormatInvalid || isBeforeMin || isAfterMax;
 
     let reason: string | undefined;
     if (isBeforeMin) {
       reason = 'rangeUnderflow';
     } else if (isAfterMax) {
       reason = 'rangeOverflow';
-    } else if (isOutsideTimeWindow) {
-      reason = 'customError';
     } else if (isFormatInvalid) {
       reason = dateTime.invalidReason || undefined;
     }
 
     return { isInvalid, reason };
-  }
-
-  private getTimeConstraintBoundsForDate(
-    dateTime: DateTime,
-    minDateTime: DateTime | null,
-    maxDateTime: DateTime | null
-  ): {
-    min: DateTime | null;
-    max: DateTime | null;
-  } {
-    if (!dateTime.isValid) {
-      return { min: null, max: null };
-    }
-
-    const bounds = getTimePickerConstraintBounds(
-      this.minTime,
-      this.maxTime,
-      this.timeOnlyFormat,
-      dateTime.startOf('day')
-    );
-
-    const hasDateBounds = !!(minDateTime?.isValid || maxDateTime?.isValid);
-    if (!hasDateBounds) {
-      return bounds;
-    }
-
-    const applyMinTime =
-      !!minDateTime?.isValid && dateTime.hasSame(minDateTime, 'day');
-    const applyMaxTime =
-      !!maxDateTime?.isValid && dateTime.hasSame(maxDateTime, 'day');
-
-    return {
-      min: applyMinTime ? bounds.min : null,
-      max: applyMaxTime ? bounds.max : null,
-    };
-  }
-
-  private computeConstraintValidation(dateTime: DateTime): {
-    isInvalid: boolean;
-    reason: string | undefined;
-  } {
-    const minDateTime = this.parseConstraintDate(this.minDate, 'start');
-    const maxDateTime = this.parseConstraintDate(this.maxDate, 'end');
-    const { min: minTime, max: maxTime } = this.getTimeConstraintBoundsForDate(
-      dateTime,
-      minDateTime,
-      maxDateTime
-    );
-    return this.validateConstraints(
-      dateTime,
-      minDateTime,
-      maxDateTime,
-      minTime,
-      maxTime
-    );
-  }
-
-  private revalidateCurrentValue() {
-    if (!this.value || !this.format) {
-      return;
-    }
-
-    const dateTime = DateTime.fromFormat(this.value, this.combinedFormat, {
-      locale: this.locale,
-    });
-    if (!dateTime.isValid) {
-      return;
-    }
-
-    const validationResult = this.computeConstraintValidation(dateTime);
-
-    this.isInputInvalid = validationResult.isInvalid;
-    this.invalidReason = validationResult.reason;
-    this.emitValidityStateChangeIfChanged();
   }
 
   private handleInputKeyDown(event: KeyboardEvent) {
@@ -489,7 +374,7 @@ export class DatetimeInput
       const now = DateTime.now();
       if (now.isValid) {
         this.from = now.toFormat(this.format);
-        this.time = now.toFormat(this.timeOnlyFormat);
+        this.time = now.toFormat(this.format);
       }
     }
   }
@@ -683,17 +568,12 @@ export class DatetimeInput
     const timeOnly = DateTime.fromFormat(time, this.format, {
       locale: this.locale,
     });
-    const normalizedTime = timeOnly.isValid
-      ? timeOnly
-      : DateTime.fromFormat(time, this.timeOnlyFormat, {
-          locale: this.locale,
-        });
 
     const dateTimeCombined = dateOnly.set({
-      hour: normalizedTime.hour,
-      minute: normalizedTime.minute,
-      second: normalizedTime.second,
-      millisecond: normalizedTime.millisecond,
+      hour: timeOnly.hour,
+      minute: timeOnly.minute,
+      second: timeOnly.second,
+      millisecond: timeOnly.millisecond,
     });
 
     const displayValue = dateTimeCombined.toFormat(this.format);
@@ -836,13 +716,11 @@ export class DatetimeInput
             locale={this.locale}
             maxDate={this.maxDate}
             minDate={this.minDate}
-            minTime={this.minTime}
-            maxTime={this.maxTime}
             ref={this.datetimePickerRef}
             showWeekNumbers={this.showWeekNumbers}
             singleSelection
             time={this.time ?? ''}
-            timeFormat={this.timeOnlyFormat}
+            timeFormat={this.format}
             weekStartIndex={this.weekStartIndex}
             onDateSelect={this.handleDateSelect}
           ></ix-datetime-picker>

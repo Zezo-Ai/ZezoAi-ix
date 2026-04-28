@@ -623,8 +623,6 @@ export const IxDatetimeInput: StencilReactComponent<IxDatetimeInputElement, IxDa
         readonly: 'readonly',
         minDate: 'min-date',
         maxDate: 'max-date',
-        minTime: 'min-time',
-        maxTime: 'max-time',
         label: 'label',
         helperText: 'helper-text',
         invalidText: 'invalid-text',
