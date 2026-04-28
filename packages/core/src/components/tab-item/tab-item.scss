@@ -172,6 +172,12 @@
   color: var(--theme-tab--color--selected);
 
   &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(100% - 1px);
+    width: 100%;
+    height: 2px;
     background-color: var(--theme-tab-indicator--background--selected);
   }
 }

@@ -95,8 +95,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
   @Event() tabClose!: EventEmitter<string | undefined>;
 
   @State() private isTabsOverflow = false;
-  @State() private activeIndicatorOffset = 0;
-  @State() private activeIndicatorWidth = 0;
   @State() private overflowMenuItems: {
     tabKey: string;
     label: string;
@@ -106,7 +104,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
 
   private resizeObserver?: ResizeObserver;
   private itemsObserver?: MutationObserver;
-  private measureFrame?: number;
 
   private readonly tabsContainerRef = makeRef<HTMLDivElement>();
   private readonly tabsRef = makeRef<HTMLDivElement>();
@@ -124,10 +121,10 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
       subtree: true,
     });
 
-    this.resizeObserver = new ResizeObserver(() => this.scheduleMeasurements());
+    this.resizeObserver = new ResizeObserver(() => this.onComponentResize());
     this.resizeObserver.observe(this.hostElement);
 
-    this.scheduleMeasurements();
+    this.onComponentResize();
   }
 
   override componentWillLoad() {
@@ -143,9 +140,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
     }
     if (this.itemsObserver) {
       this.itemsObserver.disconnect();
-    }
-    if (this.measureFrame !== undefined) {
-      cancelAnimationFrame(this.measureFrame);
     }
   }
 
@@ -184,7 +178,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
 
     this.onComponentChildrenChange();
     this.activeTabKey = newTab.tabKey;
-    this.updateActiveIndicator();
 
     newTab.scrollIntoView({
       behavior: 'smooth',
@@ -217,8 +210,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
       disabled: item.disabled,
     }));
 
-    this.scheduleMeasurements();
-
     const isTabSelected = tabItems.some((tab) => tab.selected);
     if (!isTabSelected && tabItems.length > 0 && hasKeyboardMode()) {
       tabItems[0].focus();
@@ -234,45 +225,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
 
     const isOverflowing = tabContainer.scrollWidth > tabContainer.clientWidth;
     this.isTabsOverflow = isOverflowing;
-  }
-
-  private getActiveTabWidth() {
-    const activeTab = this.tabs.find((tab) => tab.selected);
-    if (!activeTab) {
-      return 0;
-    }
-    return activeTab.offsetWidth;
-  }
-
-  private getActiveTabOffset() {
-    const activeTab = this.tabs.find((tab) => tab.selected);
-    const tabsContainer = this.tabsContainerRef.current;
-
-    if (!activeTab || !tabsContainer) {
-      return 0;
-    }
-
-    const activeTabRect = activeTab.getBoundingClientRect();
-    const tabsContainerRect = tabsContainer.getBoundingClientRect();
-
-    return activeTabRect.left - tabsContainerRect.left;
-  }
-
-  private updateActiveIndicator() {
-    this.activeIndicatorWidth = this.getActiveTabWidth();
-    this.activeIndicatorOffset = this.getActiveTabOffset();
-  }
-
-  private scheduleMeasurements() {
-    if (this.measureFrame !== undefined) {
-      cancelAnimationFrame(this.measureFrame);
-    }
-
-    this.measureFrame = requestAnimationFrame(() => {
-      this.measureFrame = undefined;
-      this.onComponentResize();
-      this.updateActiveIndicator();
-    });
   }
 
   private onTabClick(event: CustomEvent<TabClickDetail>) {
@@ -369,10 +321,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
             top: this.placement === 'top',
             bottom: this.placement === 'bottom',
           }}
-          style={{
-            '--ix-tab-active-indicator-width': `${this.activeIndicatorWidth}px`,
-            '--ix-tab-active-indicator-offset': `${this.activeIndicatorOffset}px`,
-          }}
         >
           <div
             class={{
@@ -387,7 +335,6 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
               class={{
                 tabs: true,
               }}
-              onScroll={() => this.scheduleMeasurements()}
               tabIndex={this.isTabsOverflow ? 0 : -1}
               onKeyDown={(event: KeyboardEvent) => this.onTabsNavigate(event)}
             >
