@@ -3680,11 +3680,6 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Placement of the dropdown
-          * @default 'bottom-start'
-         */
-        "placement": AlignedPlacement;
-        /**
           * Icon of the button on the right
          */
         "splitIcon"?: string;
@@ -10243,11 +10238,6 @@ declare namespace LocalJSX {
          */
         "onButtonClick"?: (event: IxSplitButtonCustomEvent<MouseEvent>) => void;
         /**
-          * Placement of the dropdown
-          * @default 'bottom-start'
-         */
-        "placement"?: AlignedPlacement;
-        /**
           * Icon of the button on the right
          */
         "splitIcon"?: string;
@@ -11993,7 +11983,6 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "disableButton": boolean;
         "disableDropdownButton": boolean;
-        "placement": AlignedPlacement;
         "enableTopLayer": boolean;
     }
     interface IxTabItemAttributes {
