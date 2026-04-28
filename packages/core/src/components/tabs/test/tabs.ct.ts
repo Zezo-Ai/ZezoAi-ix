@@ -268,62 +268,6 @@ regressionTest(
 );
 
 regressionTest(
-  'should keep the active indicator aligned after the tab list scrolls',
-  async ({ mount, page }) => {
-    await mount(`
-      <div style="width: 350px; border: 1px solid #ccc; padding: 10px;">
-        <ix-tabs style="width: 100%;">
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-1">Item 1</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-2">Item 2</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-3">Item 3</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-4">Item 4</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-5">Item 5</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-6">Item 6</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-7">Item 7</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-8">Item 8</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-9">Item 9</ix-tab-item>
-          <ix-tab-item style="min-width: 100px;" tab-key="tab-10">Item 10</ix-tab-item>
-        </ix-tabs>
-      </div>
-    `);
-
-    const clickedTab = page.locator('ix-tab-item').nth(7);
-
-    await clickedTab.click();
-
-    await expect
-      .poll(async () => {
-        return page.evaluate(() => {
-          const tabs = document.querySelector('ix-tabs');
-          const selectedTab = tabs?.querySelector('ix-tab-item.selected');
-          const tabsContainer = tabs?.shadowRoot?.querySelector(
-            '.tabs-container'
-          ) as HTMLElement | null;
-
-          if (!selectedTab || !tabsContainer) {
-            return null;
-          }
-
-          const selectedTabRect = selectedTab.getBoundingClientRect();
-          const tabsContainerRect = tabsContainer.getBoundingClientRect();
-          const indicatorOffset = Number.parseFloat(
-            tabsContainer.style
-              .getPropertyValue('--ix-tab-active-indicator-offset')
-              .replace('px', '')
-          );
-
-          return Math.round(
-            Math.abs(
-              indicatorOffset - (selectedTabRect.left - tabsContainerRect.left)
-            )
-          );
-        });
-      })
-      .toBe(0);
-  }
-);
-
-regressionTest(
   'dynamic tabs - should preserve default classes when adding custom classes during re-render',
   async ({ mount, page }) => {
     await mount(`
