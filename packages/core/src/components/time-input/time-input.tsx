@@ -566,6 +566,7 @@ export class TimeInput
         >
           <ix-icon-button
             tabindex={-1}
+            ref={(ref) => (ref!.tabIndex = -1)}
             data-testid="open-time-picker"
             class={{ 'time-icon-hidden': this.disabled || this.readonly }}
             variant="subtle-tertiary"
