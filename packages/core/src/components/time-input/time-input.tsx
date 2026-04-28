@@ -451,7 +451,7 @@ export class TimeInput
       isInputInvalid: true,
       invalidReason: time.isValid
         ? 'customError'
-        : time.invalidReason ?? undefined,
+        : (time.invalidReason ?? undefined),
     };
   }
 

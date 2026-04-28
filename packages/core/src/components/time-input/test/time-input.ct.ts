@@ -220,9 +220,7 @@ regressionTest.describe('time input min/max tests', () => {
         .click();
 
       await expect(
-        page.locator(
-          'ix-time-picker [data-element-container-id="hour-12"]'
-        )
+        page.locator('ix-time-picker [data-element-container-id="hour-12"]')
       ).toHaveClass(/selected/);
     }
   );
