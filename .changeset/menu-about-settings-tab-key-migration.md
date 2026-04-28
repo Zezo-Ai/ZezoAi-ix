@@ -28,7 +28,7 @@
 
 ### Migration
 
-Use the existing `ix-tabs` pattern in your framework app inside `ix-menu-about` / `ix-menu-settings`, and show the matching slotted content based on the active tab key. In the slotted path, set `suppressLegacyTabs` on the parent menu component and `active-tab-key` on the nested `ix-tabs`, not on `ix-menu-about` or `ix-menu-settings`.
+Use the existing `ix-tabs` pattern in your application (`ix-menu-about` / `ix-menu-settings`), and show the matching slotted content based on the active tab key. Set `suppressLegacyTabs` on the `ix-menu-about` / `ix-menu-settings` and `active-tab-key` on the nested `ix-tabs`, not on `ix-menu-about` or `ix-menu-settings`.
 
 ```html
 <!-- Slotted ix-tabs path -->

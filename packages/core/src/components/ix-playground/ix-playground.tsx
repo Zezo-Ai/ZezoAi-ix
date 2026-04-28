@@ -41,7 +41,7 @@ export class IxPlayground {
             <ix-tab-item icon={iconAdd} tabKey="tab-2">
               Tab Item 2
             </ix-tab-item>
-            <ix-tab-item icon={iconAdd} tabKey="tab-3">
+            <ix-tab-item icon={iconAdd} tabKey="tab-3" disabled>
               Tab Item 3
             </ix-tab-item>
             <ix-tab-item

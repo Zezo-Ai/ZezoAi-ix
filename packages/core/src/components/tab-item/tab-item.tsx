@@ -111,6 +111,11 @@ export class TabItem
       return;
     }
 
+    if (this.disabled) {
+      event.preventDefault();
+      return;
+    }
+
     const clientEvent = this.tabClick.emit({
       tabKey: this.tabKey,
       nativeEvent: event,

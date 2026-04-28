@@ -7,12 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Component, Element, Host, Prop, State, h } from '@stencil/core';
+import { Component, Element, Host, Mixin, Prop, h } from '@stencil/core';
+import { DefaultMixins } from '../utils/internal/component';
 import {
-  ContextConsumerSubscription,
-  useContextConsumer,
-} from '../utils/context';
-import { panelsContext } from '../tab-panels/tab-panels.context';
+  ComponentIdMixin,
+  ComponentIdMixinContract,
+} from '../utils/internal/mixins/id.mixin';
 
 /**
  * @internal
@@ -23,38 +23,20 @@ import { panelsContext } from '../tab-panels/tab-panels.context';
   styleUrl: 'tab-panel.scss',
   shadow: true,
 })
-export class TabPanel {
-  @Element() hostElement!: HTMLIxTabPanelElement;
+export class TabPanel
+  extends Mixin(...DefaultMixins, ComponentIdMixin)
+  implements ComponentIdMixinContract
+{
+  @Element() override hostElement!: HTMLIxTabPanelElement;
 
   /**
    * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
    */
-  @Prop() tabKey!: string;
+  @Prop({ reflect: true }) tabKey!: string;
 
-  @State() tabId?: string;
-
-  private subscriber?: ContextConsumerSubscription;
-
-  componentWillLoad() {
-    this.subscriber = useContextConsumer(
-      this.hostElement,
-      panelsContext,
-      (context) => {
-        if (context.tabs[this.tabKey]) {
-          this.tabId = context.tabs[this.tabKey];
-        }
-      },
-      true
-    );
-  }
-
-  disconnectedCallback() {
-    this.subscriber?.unsubscribe();
-  }
-
-  render() {
+  override render() {
     return (
-      <Host role="tabpanel" aria-labelledby={this.tabId}>
+      <Host role="tabpanel" id={this.getHostElementId()}>
         <slot></slot>
       </Host>
     );

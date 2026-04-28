@@ -69,11 +69,11 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
    *
    * @since 5.0.0
    */
-  @Prop({ mutable: true }) activeTabKey?: string;
+  @Prop({ mutable: true, reflect: true }) activeTabKey?: string;
 
   /**
    * Keyboard interaction behavior:
-   * automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus.
+   * automatic:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus.
    * manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
    *
    * @since 5.0.0
@@ -172,6 +172,10 @@ export class Tabs extends Mixin(...DefaultMixins, InheritAriaAttributesMixin) {
 
     const newTab = tabs.find((tab) => tab.tabKey === tabKey);
     if (!newTab) {
+      return;
+    }
+
+    if (newTab.disabled) {
       return;
     }
 

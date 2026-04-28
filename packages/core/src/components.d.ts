@@ -3801,7 +3801,7 @@ export namespace Components {
          */
         "ariaLabelMoreTabs": string;
         /**
-          * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * Keyboard interaction behavior: automatic:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
           * @since 5.0.0
           * @default 'automatic'
          */
@@ -10440,7 +10440,7 @@ declare namespace LocalJSX {
          */
         "ariaLabelMoreTabs"?: string;
         /**
-          * Keyboard interaction behavior: automation:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * Keyboard interaction behavior: automatic:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
           * @since 5.0.0
           * @default 'automatic'
          */
