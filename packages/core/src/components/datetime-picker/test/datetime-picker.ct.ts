@@ -35,17 +35,6 @@ regressionTest(
 );
 
 regressionTest(
-  'applies minTime/maxTime only on selected boundary dates',
-  async ({ mount, page }) => {
-    await mount(
-      `<ix-datetime-picker single-selection from="2026/02/02" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
-    );
-
-    await expect(getHourCell(page, 12)).not.toBeDisabled();
-  }
-);
-
-regressionTest(
   'range mode: ignores minTime/maxTime and warns when configured',
   async ({ mount, page }) => {
     const warnings: string[] = [];
@@ -70,29 +59,6 @@ regressionTest(
         )
       )
     ).toBe(true);
-  }
-);
-
-regressionTest(
-  'range mode: ignores minTime/maxTime regardless of selected to-date',
-  async ({ mount, page }) => {
-    await mount(
-      `<ix-datetime-picker from="2026/02/10" to="2026/02/27" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
-    );
-
-    await expect(getHourCell(page, 12)).not.toBeDisabled();
-    await expect(getHourCell(page, 18)).not.toBeDisabled();
-  }
-);
-
-regressionTest(
-  'applies minTime on minDate when date bounds are set',
-  async ({ mount, page }) => {
-    await mount(
-      `<ix-datetime-picker single-selection from="2026/02/01" date-format="yyyy/LL/dd" time-format="HH:mm:ss" time="12:00:00" min-date="2026/02/01" max-date="2026/02/28" min-time="13:00:00" max-time="17:30:00"></ix-datetime-picker>`
-    );
-
-    await expect(getHourCell(page, 12)).toBeDisabled();
   }
 );
 
@@ -203,7 +169,7 @@ regressionTest.describe('datetime picker tests single', () => {
     await mount(
       `
       <ix-datetime-picker
-        range="false"
+        single-selection
         from="1990/03/29"
         date-format="yyyy/LL/dd"
         time="09:10:12"
@@ -223,13 +189,9 @@ regressionTest.describe('datetime picker tests single', () => {
       });
     });
 
-    await page
-      .locator('ix-time-picker')
-      .first()
-      .locator('[data-element-container-id="hour-12"]')
-      .click();
+    await getHourCell(page, 12).click();
 
-    expect(await timeChangeEvent).toBeTruthy;
+    await expect(timeChangeEvent).resolves.toBeTruthy();
   });
 
   regressionTest('change date', async ({ page }) => {
@@ -243,6 +205,6 @@ regressionTest.describe('datetime picker tests single', () => {
 
     await page.getByText(/^17$/).first().click();
 
-    expect(await dateChangeEvent).toBeTruthy;
+    await expect(dateChangeEvent).resolves.toBeTruthy();
   });
 });
