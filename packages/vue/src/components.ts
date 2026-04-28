@@ -528,6 +528,8 @@ export const IxDatetimePicker: StencilVueComponent<JSX.IxDatetimePicker> = /*@__
   'maxDate',
   'dateFormat',
   'timeFormat',
+  'minTime',
+  'maxTime',
   'from',
   'to',
   'time',
@@ -1346,7 +1348,6 @@ export const IxSplitButton: StencilVueComponent<JSX.IxSplitButton> = /*@__PURE__
   'disabled',
   'disableButton',
   'disableDropdownButton',
-  'placement',
   'enableTopLayer',
   'buttonClick'
 ], [
@@ -1436,6 +1437,8 @@ export const IxTimeInput: StencilVueComponent<JSX.IxTimeInput> = /*@__PURE__*/ d
   'placeholder',
   'value',
   'format',
+  'minTime',
+  'maxTime',
   'required',
   'helperText',
   'label',
