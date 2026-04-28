@@ -198,7 +198,7 @@ export class DatetimePicker
     }
 
     const prefix = this.dateFormat.slice(0, end).trimEnd();
-    return prefix !== '' ? prefix : DatetimePicker.defaultDateOnlyFormat;
+    return prefix === '' ? DatetimePicker.defaultDateOnlyFormat : prefix;
   }
 
   private parseDateValue(value: string | undefined): DateTime | null {
