@@ -922,7 +922,8 @@ export const IxMenu: StencilVueComponent<JSX.IxMenu> = /*@__PURE__*/ defineConta
 
 
 export const IxMenuAbout: StencilVueComponent<JSX.IxMenuAbout> = /*@__PURE__*/ defineContainer<JSX.IxMenuAbout>('ix-menu-about', defineIxMenuAbout, [
-  'activeTabLabel',
+  'suppressLegacyTabs',
+  'activeTabKey',
   'label',
   'ariaLabelCloseButton',
   'show',
@@ -935,6 +936,7 @@ export const IxMenuAbout: StencilVueComponent<JSX.IxMenuAbout> = /*@__PURE__*/ d
 
 
 export const IxMenuAboutItem: StencilVueComponent<JSX.IxMenuAboutItem> = /*@__PURE__*/ defineContainer<JSX.IxMenuAboutItem>('ix-menu-about-item', defineIxMenuAboutItem, [
+  'tabKey',
   'label',
   'labelChange'
 ], [
@@ -947,6 +949,7 @@ export const IxMenuAboutNews: StencilVueComponent<JSX.IxMenuAboutNews> = /*@__PU
   'label',
   'i18nShowMore',
   'aboutItemLabel',
+  'activeAboutTabKey',
   'expanded',
   'showMore',
   'closePopover'
@@ -1009,7 +1012,8 @@ export const IxMenuItem: StencilVueComponent<JSX.IxMenuItem> = /*@__PURE__*/ def
 
 
 export const IxMenuSettings: StencilVueComponent<JSX.IxMenuSettings> = /*@__PURE__*/ defineContainer<JSX.IxMenuSettings>('ix-menu-settings', defineIxMenuSettings, [
-  'activeTabLabel',
+  'suppressLegacyTabs',
+  'activeTabKey',
   'label',
   'ariaLabelCloseButton',
   'show',
@@ -1022,6 +1026,7 @@ export const IxMenuSettings: StencilVueComponent<JSX.IxMenuSettings> = /*@__PURE
 
 
 export const IxMenuSettingsItem: StencilVueComponent<JSX.IxMenuSettingsItem> = /*@__PURE__*/ defineContainer<JSX.IxMenuSettingsItem>('ix-menu-settings-item', defineIxMenuSettingsItem, [
+  'tabKey',
   'label',
   'labelChange'
 ], [
@@ -1351,31 +1356,40 @@ export const IxSplitButton: StencilVueComponent<JSX.IxSplitButton> = /*@__PURE__
 
 
 export const IxTabItem: StencilVueComponent<JSX.IxTabItem> = /*@__PURE__*/ defineContainer<JSX.IxTabItem>('ix-tab-item', defineIxTabItem, [
+  'tabKey',
   'selected',
   'disabled',
-  'small',
   'icon',
-  'rounded',
   'counter',
-  'layout',
+  'closable',
+  'label',
+  'ariaLabelCloseButton',
   'placement',
-  'tabClick'
+  'rounded',
+  'small',
+  'layout',
+  'iconOnly',
+  'tabClick',
+  'tabClose'
 ], [
-  'tabClick'
+  'tabClick',
+  'tabClose'
 ]);
 
 
 export const IxTabs: StencilVueComponent<JSX.IxTabs> = /*@__PURE__*/ defineContainer<JSX.IxTabs>('ix-tabs', defineIxTabs, [
   'small',
   'rounded',
-  'selected',
   'layout',
   'placement',
-  'ariaLabelChevronLeftIconButton',
-  'ariaLabelChevronRightIconButton',
-  'selectedChange'
+  'ariaLabelMoreTabs',
+  'activeTabKey',
+  'keyboardNavigation',
+  'tabChange',
+  'tabClose'
 ], [
-  'selectedChange'
+  'tabChange',
+  'tabClose'
 ]);
 
 
